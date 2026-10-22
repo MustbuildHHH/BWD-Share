@@ -132,11 +132,11 @@ const greyTex=canvasTex(1024,1024,(g,w,h)=>{const r=rnd(9);const tw=w/2,th=h/2;
   for(let i=0;i<2;i++)for(let j=0;j<2;j++){const c=168+r()*14|0;g.fillStyle=`rgb(${c},${c},${c-2})`;g.fillRect(i*tw,j*th,tw,th);
     for(let k=0;k<900;k++){const a=r();g.fillStyle=a<.5?'rgba(255,255,255,.06)':'rgba(0,0,0,.05)';g.fillRect(i*tw+r()*tw,j*th+r()*th,1+r()*3,1+r()*3);}
     g.fillStyle='rgba(60,60,60,.35)';g.fillRect(i*tw,j*th,tw,3);g.fillRect(i*tw,j*th,3,th);}},[5.4,5.4]);
-function setFloor(f){M.floor.map=f==='grey'?greyTex:floorTex;M.floor.needsUpdate=true;}
+let fl2;function setFloor(f){const g=f==='grey';fl.visible=!g;fl2.visible=g;}
 // ---------- materials ----------
 const M={
   wall:new THREE.MeshStandardMaterial({color:'#efeae2',roughness:.95}),
-  floor:new THREE.MeshStandardMaterial({map:floorTex,roughness:.8}),
+  floor:new THREE.MeshStandardMaterial({map:floorTex,roughness:.8,side:THREE.DoubleSide}),
   black:new THREE.MeshStandardMaterial({color:'#18191b',roughness:.85}),
   stone:new THREE.MeshStandardMaterial({map:marble,roughness:.16}),
   steel:new THREE.MeshStandardMaterial({color:'#c9ccd0',metalness:1,roughness:.32}),
@@ -167,6 +167,7 @@ const W=21.67,D=21.27,H=10;
 // floor
 const shape=new THREE.Shape();[[0,0],[W,0],[W,D],[3.33,D],[3.33,11],[0,11]].forEach((p,i)=>i?shape.lineTo(p[0],p[1]):shape.moveTo(p[0],p[1]));
 const fl=new THREE.Mesh(new THREE.ShapeGeometry(shape),M.floor);fl.rotation.x=Math.PI/2;fl.receiveShadow=true;scene.add(fl);
+fl2=new THREE.Mesh(fl.geometry,new THREE.MeshStandardMaterial({map:greyTex,roughness:.6,side:THREE.DoubleSide}));fl2.rotation.x=Math.PI/2;fl2.receiveShadow=true;fl2.visible=false;scene.add(fl2);
 // ground plane outside
 const gp=new THREE.Mesh(new THREE.PlaneGeometry(200,200),new THREE.MeshStandardMaterial({color:'#e4ded4',roughness:1}));gp.rotation.x=-Math.PI/2;gp.position.y=-.02;scene.add(gp);
 
