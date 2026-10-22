@@ -1,0 +1,528 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no">
+<title>12 Abilene Drive · Basement 3D</title>
+<style>
+:root{--wal:#8A5A2E;--ink:#1B2A32;--grey:#6B7280;--bg:#faf8f5;--line:#d9d4cc}
+*{box-sizing:border-box;-webkit-tap-highlight-color:transparent}
+html,body{margin:0;height:100%;background:var(--bg);color:var(--ink);font-family:Calibri,Carlito,"Segoe UI",Arial,sans-serif;overflow:hidden;overscroll-behavior:none}
+#top{position:fixed;left:0;right:0;top:0;z-index:5;display:flex;align-items:center;gap:12px;padding:8px 14px;background:rgba(255,255,255,.94);border-bottom:1px solid var(--line)}
+#top img{height:34px;width:auto;display:block}
+#ttl{font-size:17px;font-weight:700;color:var(--ink);line-height:1.15}
+#ttl small{display:block;font-weight:400;font-size:12.5px;color:var(--grey)}
+#note{margin-left:auto;font-size:13px;color:var(--wal);font-weight:600;text-align:right}
+#walk{border:1px solid var(--wal);background:#fff;color:var(--wal);padding:7px 12px;border-radius:3px;font-size:14px;text-decoration:none;white-space:nowrap}
+#cv{position:fixed;inset:0;width:100%;height:100%;display:block;touch-action:none;outline:none}
+#labels{position:fixed;inset:0;pointer-events:none;z-index:2;overflow:hidden}
+.lb{position:absolute;transform:translate(-50%,-50%);font-size:13px;font-weight:700;color:#1B2A32;background:rgba(255,255,255,.88);border:1px solid rgba(138,90,46,.55);padding:3px 8px;border-radius:12px;white-space:nowrap;transition:opacity .25s}
+.lb.minor{font-weight:500;font-size:11.5px;color:#6B7280;border-color:#cfc8bd;background:rgba(255,255,255,.7)}
+#bar{position:fixed;left:0;right:0;bottom:0;z-index:5;background:rgba(255,255,255,.95);border-top:1px solid var(--line);padding:8px 10px calc(8px + env(safe-area-inset-bottom));display:flex;gap:8px;overflow-x:auto;-webkit-overflow-scrolling:touch}
+#bar button{flex:0 0 auto;border:1px solid var(--wal);background:#fff;color:var(--wal);padding:10px 14px;font:inherit;font-size:15px;cursor:pointer;border-radius:4px;white-space:nowrap}
+#bar button.on{background:var(--wal);color:#fff}
+#extra{position:fixed;right:12px;bottom:68px;z-index:5;display:none;gap:8px}
+#extra a{background:var(--wal);color:#fff;font-size:14px;font-weight:600;padding:9px 13px;border-radius:5px;text-decoration:none;box-shadow:0 2px 6px rgba(0,0,0,.25)}
+#tags{position:fixed;inset:0;pointer-events:none;z-index:3;overflow:hidden}
+.tag{position:absolute;transform:translate(-50%,-50%);width:30px;height:30px;border-radius:50%;background:#8A5A2E;color:#fff;font:700 15px Calibri,Carlito,Arial,sans-serif;display:flex;align-items:center;justify-content:center;border:2px solid #fff;box-shadow:0 1px 5px rgba(0,0,0,.4);text-decoration:none;pointer-events:auto;transition:opacity .25s}
+#card{position:fixed;left:12px;top:64px;z-index:5;max-width:330px;background:rgba(255,255,255,.95);border:1px solid var(--line);border-radius:6px;padding:9px 12px;font-size:14px;display:none}
+#card b{display:block;margin-bottom:5px;font-size:15px}
+.chips2 a{display:block;color:var(--ink);text-decoration:none;padding:3px 0}
+.chips2 a span{display:inline-block;width:22px;height:22px;border-radius:50%;background:var(--wal);color:#fff;text-align:center;font-size:12.5px;font-weight:700;line-height:22px;margin-right:6px}
+#tourbar{position:fixed;left:50%;transform:translateX(-50%);bottom:70px;z-index:6;display:none;gap:10px;align-items:center;background:rgba(255,255,255,.96);border:1px solid var(--wal);border-radius:24px;padding:7px 8px 7px 16px;font-size:15px;box-shadow:0 2px 8px rgba(0,0,0,.2)}
+#tourbar button,#endcard button,#endcard a{border:1px solid var(--wal);background:#fff;color:var(--wal);padding:8px 14px;font:inherit;font-size:14px;border-radius:18px;cursor:pointer;text-decoration:none}
+#endcard a{background:var(--wal);color:#fff}
+#endcard{position:fixed;left:50%;top:42%;transform:translate(-50%,-50%);z-index:7;display:none;background:rgba(255,255,255,.97);border:1px solid var(--wal);border-radius:10px;padding:18px 22px;text-align:center;box-shadow:0 4px 16px rgba(0,0,0,.25);max-width:340px;font-size:16px}
+#endcard p{margin:0 0 12px}
+#bar a.lnk{flex:0 0 auto;border:1px solid var(--wal);background:#fff;color:var(--wal);padding:10px 14px;font-size:15px;border-radius:4px;text-decoration:none;white-space:nowrap}
+#bar button.tourbtn{background:var(--wal);color:#fff}
+#hint{position:fixed;left:12px;bottom:68px;z-index:4;font-size:12.5px;color:var(--grey);background:rgba(255,255,255,.8);padding:4px 8px;border-radius:4px}
+#err{position:fixed;inset:80px 20px auto 20px;z-index:9;display:none;background:#fff;border:1px solid var(--wal);padding:14px;font-size:15px}
+@media(max-width:720px){#ttl small{display:none}#note{display:none}}
+</style>
+</head>
+<body>
+<div id="top">
+  <img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAjAAAADLBAMAAACCFbSvAAAWfmNhQlgAABZ+anVtYgAAAB5qdW1kYzJwYQARABCAAACqADibcQNjMnBhAAAAFlhqdW1iAAAAR2p1bWRjMm1hABEAEIAAAKoAOJtxA3VybjpjMnBhOmVjZDlkODU3LTQ4NDItNDQ3OC1hMzAzLTE3OGYxMzNhMWZmMgAAAAOTanVtYgAAAClqdW1kYzJhcwARABCAAACqADibcQNjMnBhLmFzc2VydGlvbnMAAAAAuGp1bWIAAABEanVtZGNib3IAEQAQgAAAqgA4m3ETYzJwYS5pbmdyZWRpZW50LnYzAAAAABhjMnNozSCfowGyjHc1O9Ge28G8pAAAAGxjYm9yo2lkYzpmb3JtYXRpaW1hZ2UvcG5namluc3RhbmNlSUR4LHhtcDppaWQ6MGI2MzI1MjItYzY0ZS00Zjc5LWJkNTQtZjAxNzkyMWU5NDZlbHJlbGF0aW9uc2hpcGhwYXJlbnRPZgAAAeJqdW1iAAAAQWp1bWRjYm9yABEAEIAAAKoAOJtxE2MycGEuYWN0aW9ucy52MgAAAAAYYzJzaL/oJ+VffHEdDNgLWuG3lA8AAAGZY2JvcqJnYWN0aW9uc4KiZmFjdGlvbmtjMnBhLm9wZW5lZGpwYXJhbWV0ZXJzoWtpbmdyZWRpZW50c4GiY3VybHgtc2VsZiNqdW1iZj1jMnBhLmFzc2VydGlvbnMvYzJwYS5pbmdyZWRpZW50LnYzZGhhc2hYIDoX74fr6zga8QLN80rawVGAcPkJIxNdVJO9wzd4FfIKpGZhY3Rpb254HWNvbS5hbnRocm9waWMuY2xhdWRlLnByb3ZpZGVkanBhcmFtZXRlcnOheB9jb20uYW50aHJvcGljLm9yaWdpbi1jb25maWRlbmNlZ3Vua25vd25rZGVzY3JpcHRpb254ZkNsYXVkZSBwcm92aWRlZCB0aGlzIGZpbGUgYXQgdGhlIHJlcXVlc3Qgb2YgYSB1c2VyIGFuZCBtYXkgaGF2ZSBjcmVhdGVkIG9yIG1vZGlmaWVkIHRoZSBmaWxlIGNvbnRlbnRzLm1zb2Z0d2FyZUFnZW50oWRuYW1lZkNsYXVkZXJhbGxBY3Rpb25zSW5jbHVkZWT1AAAAyGp1bWIAAABAanVtZGNib3IAEQAQgAAAqgA4m3ETYzJwYS5oYXNoLmRhdGEAAAAAGGMyc2ieOUuQactGIAIBbUd2SozBAAAAgGNib3KlY2FsZ2ZzaGEyNTZjcGFkTQAAAAAAAAAAAAAAAABkaGFzaFgg7daBgl8g2LW3vHgZYAcL+mZQ3VcvSO5f4G7FIWa46I9kbmFtZW5qdW1iZiBtYW5pZmVzdGpleGNsdXNpb25zgaJlc3RhcnQYIWZsZW5ndGgZFooAAAI+anVtYgAAACdqdW1kYzJjbAARABCAAACqADibcQNjMnBhLmNsYWltLnYyAAAAAg9jYm9ypWNhbGdmc2hhMjU2aXNpZ25hdHVyZXhNc2VsZiNqdW1iZj0vYzJwYS91cm46YzJwYTplY2Q5ZDg1Ny00ODQyLTQ0NzgtYTMwMy0xNzhmMTMzYTFmZjIvYzJwYS5zaWduYXR1cmVqaW5zdGFuY2VJRHgseG1wOmlpZDpmMmE2ZDY2YS04OWJjLTQxMjUtOWZmNy0xYmUxMmJiNjg1ZTRyY3JlYXRlZF9hc3NlcnRpb25zg6JjdXJseC1zZWxmI2p1bWJmPWMycGEuYXNzZXJ0aW9ucy9jMnBhLmluZ3JlZGllbnQudjNkaGFzaFggOhfvh+vrOBrxAs3zStrBUYBw+QkjE11Uk73DN3gV8gqiY3VybHgqc2VsZiNqdW1iZj1jMnBhLmFzc2VydGlvbnMvYzJwYS5hY3Rpb25zLnYyZGhhc2hYIP+J9BR1LO9OVG7KzcXIvSyxIECkxKIu3XQLGEhSZLTnomN1cmx4KXNlbGYjanVtYmY9YzJwYS5hc3NlcnRpb25zL2MycGEuaGFzaC5kYXRhZGhhc2hYIBiicDznAb5dEeIpfWsme/DPPxGsnB5Sg2nPQqjT64HxdGNsYWltX2dlbmVyYXRvcl9pbmZvo2RuYW1lb0FudGhyb3BpYyBGaWxlc2d2ZXJzaW9uZTEuMC4wa3NwZWNWZXJzaW9uZTIuNC4wAAAQOGp1bWIAAAAoanVtZGMyY3MAEQAQgAAAqgA4m3EDYzJwYS5zaWduYXR1cmUAAAAQCGNib3LShFkCEqIBJhghWQIKMIICBjCCAY2gAwIBAgIUQOWgCu7COdC+uIP6BkIFPWdVEwAwCgYIKoZIzj0EAwMwSTEXMBUGA1UEChMOQW50aHJvcGljLCBQQkMxLjAsBgNVBAMTJUFudGhyb3BpYyBDb250ZW50IENyZWRlbnRpYWxzIFJvb3QgQ0EwHhcNMjYwODA3MTg0MzU2WhcNMjgwODA2MTk0MzU2WjBEMRcwFQYDVQQKEw5BbnRocm9waWMsIFBCQzEpMCcGA1UEAxMgQW50aHJvcGljIENsYXVkZSBDb250ZW50IFNpZ25pbmcwWTATBgcqhkjOPQIBBggqhkjOPQMBBwNCAASYegpry1AYBRTVNL1CpTlbROnY3dey+UrsF9C3phYrATN3ZHf93Mo8RQN0KOUuOn19P4oWNFWe5n2/She9N7eTo1gwVjAOBgNVHQ8BAf8EBAMCB4AwFQYDVR0lBA4wDAYKKwYBBAGD6F4CATAMBgNVHRMBAf8EAjAAMB8GA1UdIwQYMBaAFM5R4gSBTmRbI/jjxM+aPpzB11zCMAoGCCqGSM49BAMDA2cAMGQCMDFzHRSeAXrSy1WOzkbhPZ6Km2wGTmZ/2gK18k8BQGXyqz88Rdrz6CTX9flAnYNVxgIwcF9c3fVhqmJKpi+UhasNUMko69cyX6STPfta3Q8EjyzDjzoyrol46FP6VFHhvUcJoWNwYWRZDZ4AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA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" alt="byWilliam">
+  <div id="ttl">12 Abilene Drive, basement<small>Client Paul Moseley &middot; with Cord Woodworks Inc.</small></div>
+  <div id="note">As drawn by Sensus. Redesign to follow.</div>
+  <a id="walk" href="BWD_ABL_WalkRound.html">Walk-round</a>
+</div>
+<canvas id="cv"></canvas>
+<div id="labels"></div>
+<div id="tags"></div>
+<div id="hint">Drag to turn &middot; pinch to zoom &middot; two fingers to move</div>
+<div id="card"></div>
+<div id="tourbar"><span id="tname"></span><button id="tskip">Next area</button><button id="tstop">Stop tour</button></div>
+<div id="endcard"><p>That is the basement as drawn. Next is the walk-round, one stop at a time.</p><a href="BWD_ABL_WalkRound.html#s1">Start the walk-round</a> <button id="eexp">Explore the model</button></div>
+<div id="extra"></div>
+<div id="bar"></div>
+<div id="err">The 3D library could not load. Check the connection and reload the page.</div>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+<script>window.ABL_ONLY="laundry";
+(function(){
+if(typeof THREE==='undefined'){document.getElementById('err').style.display='block';return;}
+const ONLY=window.ABL_ONLY||null;
+const IN=1/12, CX=700, CY=580, H=120, BASE=-24;
+const W3=(x,y,h)=>new THREE.Vector3((x-CX)*IN,(h||0)*IN,-(y-CY)*IN);
+
+/* ---------- procedural textures (world feet, square tile of `ts` feet) ---------- */
+function rnd(seed){let s=seed;return()=>{s=(s*16807)%2147483647;return s/2147483647}}
+function tex(draw,size){const c=document.createElement('canvas');c.width=c.height=size;draw(c.getContext('2d'),size,rnd(7));
+  const t=new THREE.CanvasTexture(c);t.wrapS=t.wrapT=THREE.RepeatWrapping;t.anisotropy=4;return t}
+function woodTex(base,var_,rows){return tex((g,S,r)=>{
+  g.fillStyle=base;g.fillRect(0,0,S,S);const h=S/rows;
+  for(let i=0;i<rows;i++){let x=-r()*S*.5;while(x<S){const w=S*(.35+r()*.5);const k=(r()-.5)*var_;
+    g.fillStyle=shade(base,k);g.fillRect(x,i*h,w,h);
+    for(let n=0;n<7;n++){g.fillStyle='rgba(0,0,0,'+(r()*.05)+')';g.fillRect(x,i*h+r()*h,w,1)}
+    g.fillStyle='rgba(0,0,0,.35)';g.fillRect(x,i*h,w,1);g.fillRect(x,i*h,1,h);x+=w}}},512)}
+function shade(hex,k){const n=parseInt(hex.slice(1),16);let r=(n>>16)&255,g=(n>>8)&255,b=n&255;
+  r=Math.max(0,Math.min(255,r+k));g=Math.max(0,Math.min(255,g+k));b=Math.max(0,Math.min(255,b+k));return 'rgb('+r+','+g+','+b+')'}
+function noiseTex(base,amp){return tex((g,S,r)=>{g.fillStyle=base;g.fillRect(0,0,S,S);
+  for(let i=0;i<9000;i++){g.fillStyle='rgba('+(r()>.5?'255,255,255':'0,0,0')+','+(r()*amp)+')';g.fillRect(r()*S,r()*S,2,2)}},256)}
+function tileTex(base,line,n){return tex((g,S,r)=>{g.fillStyle=base;g.fillRect(0,0,S,S);const h=S/n;
+  for(let i=0;i<n;i++)for(let j=0;j<n;j++){g.fillStyle='rgba(255,255,255,'+(r()*.12)+')';g.fillRect(i*h,j*h,h,h)}
+  g.fillStyle=line;for(let i=0;i<=n;i++){g.fillRect(i*h-1,0,2,S);g.fillRect(0,i*h-1,S,2)}},256)}
+const T={
+ hw1:{t:woodTex('#b08d62',22,8),ts:4},      /* HW 1 Zen Light, as drawn */
+ dark:{t:woodTex('#4b3425',16,6),ts:4},     /* LAM 2 smoked eucalyptus family */
+ conc:{t:noiseTex('#b9b6b0',.10),ts:5},
+ tile:{t:tileTex('#dcd8d0','#a7a299',2),ts:4},
+ rub:{t:noiseTex('#33373a',.14),ts:3},
+ turf:{t:noiseTex('#6f7a72',.16),ts:3}
+};
+const MAT={};
+for(const k in T){T[k].t.repeat.set(1,1);MAT[k]=new THREE.MeshLambertMaterial({map:T[k].t})}
+const mWall=new THREE.MeshLambertMaterial({color:0xe6e1d8});
+const mBlock=new THREE.MeshLambertMaterial({color:0xcfc7ba});
+const mGlass=new THREE.MeshLambertMaterial({color:0x9fc4d4,transparent:true,opacity:.28,depthWrite:false});
+const mFrame=new THREE.MeshLambertMaterial({color:0x1b1d20});
+const mDoor=new THREE.MeshLambertMaterial({color:0x6b4a2f});
+const mStep=new THREE.MeshLambertMaterial({color:0xb99a72});
+const mEdge=new THREE.LineBasicMaterial({color:0x6b6358,transparent:true,opacity:.55});
+
+/* ---------- scene ---------- */
+const cv=document.getElementById('cv');
+const ren=new THREE.WebGLRenderer({canvas:cv,antialias:true});
+ren.setPixelRatio(Math.min(window.devicePixelRatio||1,2));
+const scene=new THREE.Scene();scene.background=new THREE.Color(0xf3efe8);
+const cam=new THREE.PerspectiveCamera(38,1,.5,600);
+scene.add(new THREE.HemisphereLight(0xffffff,0xb9b0a3,.62));
+const sun=new THREE.DirectionalLight(0xfff4e4,.5);sun.position.set(-30,60,35);scene.add(sun);
+const ground=new THREE.Mesh(new THREE.PlaneGeometry(400,400),new THREE.MeshLambertMaterial({color:0xe6e1d8}));
+ground.rotation.x=-Math.PI/2;ground.position.y=-2.2;scene.add(ground);
+
+function boxMesh(x1,y1,x2,y2,z0,z1,mat,edges){
+  const w=(x2-x1)*IN,d=(y2-y1)*IN,h=(z1-z0)*IN;
+  const m=new THREE.Mesh(new THREE.BoxGeometry(w,h,d),mat);
+  m.position.set(((x1+x2)/2-CX)*IN,((z0+z1)/2)*IN,-((y1+y2)/2-CY)*IN);
+  if(edges){const e=new THREE.LineSegments(new THREE.EdgesGeometry(m.geometry),mEdge);m.add(e)}
+  return m}
+
+/* floors */
+function floor(rects,key,z){
+  const t=T[key];
+  rects.forEach(r=>{const [x1,y1,x2,y2]=r;
+    const g=new THREE.PlaneGeometry((x2-x1)*IN,(y2-y1)*IN);g.rotateX(-Math.PI/2);
+    const cx=((x1+x2)/2-CX)*IN,cz=-((y1+y2)/2-CY)*IN;g.translate(cx,(z||0)*IN,cz);
+    const p=g.attributes.position,uv=g.attributes.uv;
+    for(let i=0;i<p.count;i++){uv.setXY(i,p.getX(i)/t.ts,-p.getZ(i)/t.ts)}
+    scene.add(new THREE.Mesh(g,MAT[key]))})}
+floor([[532,432,650,665],[650,432,848,960],[848,654,968,960],[582,352,744,432],[547,352,582,432],[371,205,645,346]],'hw1');
+floor([[406,742,626,945],[406,688,572,742],[367,812,406,945]],'turf',-18);
+floor([[371,372,526,665],[314,496,355,632],[864,440,1020,638]],'conc');
+floor([[732,200,862,346],[750,346,862,428]],'rub');
+floor([[868,200,950,428],[651,205,718,346]],'tile');
+floor([[556,606,614,665]],'dark');
+/* golf pit sides: show the 18" drop under the steps and along the wine wall */
+scene.add(boxMesh(608,690,626,737,-18,-6,mStep,true));scene.add(boxMesh(590,690,608,737,-18,-12,mStep,true));
+
+/* ---------- walls ---------- */
+const WALLS=[];
+function wall(r,gaps){
+  const [x1,y1,x2,y2]=r;const horiz=(x2-x1)>=(y2-y1);
+  const a0=horiz?x1:y1,a1=horiz?x2:y2,p0=horiz?y1:x1,p1=horiz?y2:x2;
+  const g=new THREE.Group();g.position.y=BASE*IN;
+  const add=(m)=>{m.position.y-=BASE*IN;g.add(m)};
+  const seg=(a,b,z0,z1,mat,edge)=>{if(b-a<0.1||z1-z0<0.1)return;
+    add(horiz?boxMesh(a,p0,b,p1,z0,z1,mat,edge):boxMesh(p0,a,p1,b,z0,z1,mat,edge))};
+  const gs=(gaps||[]).slice().sort((u,v)=>u[0]-v[0]);let cur=a0;
+  gs.forEach(q=>{const [a,b,sill,head,kind]=q;
+    seg(cur,a,BASE,H,mWall,true);
+    seg(a,b,BASE,sill>0?sill:0,mWall,false);
+    seg(a,b,head,H,mWall,true);
+    if(kind==='w'){add(horiz?boxMesh(a,(p0+p1)/2-.6,b,(p0+p1)/2+.6,sill,head,mGlass):boxMesh((p0+p1)/2-.6,a,(p0+p1)/2+.6,b,sill,head,mGlass));
+      seg(a,b,sill-1.5,sill,mFrame);seg(a,b,head,head+1.5,mFrame)}
+    if(kind==='g'){add(horiz?boxMesh(a,(p0+p1)/2-.6,b,(p0+p1)/2+.6,0,head,mGlass):boxMesh((p0+p1)/2-.6,a,(p0+p1)/2+.6,b,0,head,mGlass));
+      const n=Math.max(2,Math.round((b-a)/36));for(let i=0;i<=n;i++){const c=a+(b-a)*i/n;seg(c-.8,c+.8,0,head,mFrame)}
+      seg(a,b,head-1.5,head,mFrame)}
+    if(kind==='d'){const len=b-a;const piv=new THREE.Group();
+      const hp=horiz?W3(a,(p0+p1)/2,0):W3((p0+p1)/2,a,0);piv.position.set(hp.x,hp.y-BASE*IN,hp.z);
+      const lf=new THREE.Mesh(new THREE.BoxGeometry(len*IN,(head-1)*IN,1.75*IN),mDoor);lf.position.set(len*IN/2,(head-1)*IN/2,0);
+      piv.add(lf);piv.rotation.y=(horiz?0:Math.PI/2)-1.75;g.add(piv)}
+    cur=b});
+  seg(cur,a1,BASE,H,mWall,true);
+  scene.add(g);
+  const cx=(x1+x2)/2,cy=(y1+y2)/2;
+  WALLS.push({g,cx,cy,full:1,target:1,low:(36-BASE)/(H-BASE)});
+  return g}
+function block(r){const m=boxMesh(r[0],r[1],r[2],r[3],BASE,H,mBlock,true);m.position.y-=BASE*IN;const g=new THREE.Group();g.position.y=BASE*IN;g.add(m);scene.add(g);
+  WALLS.push({g,cx:(r[0]+r[2])/2,cy:(r[1]+r[3])/2,full:1,target:1,low:(36-BASE)/(H-BASE)})}
+
+/* Golf room and wine room */
+wall([349,943.5,650,961.5]);
+wall([349,812,367,945]);
+wall([367,793.25,406,811.25]);
+wall([388,688,406,795]);
+wall([355,664.2,650,688.5]);
+wall([625.25,736,648,945]);
+/* Mechanical and cold cellar */
+wall([355,184.5,371,665],[[565,600,0,84,'d']]);
+wall([306,632,355,640]);wall([306,489,355,494]);wall([306,488,314,640]);
+wall([526,372,532,665],[[528,600,0,84,'o']]);
+block([420,372,436,480]);
+/* Bedroom 5, walk-in, ensuite */
+wall([355,184.5,726,204.8]);
+wall([540,346,744,352],[[590,630,0,84,'d'],[660,700,0,84,'d']]);
+wall([645,205,651,346],[[305,340,0,84,'d']]);
+wall([717.75,205,724.25,346]);
+wall([651,248,718,251],[[651,718,0,84,'g']]);
+/* Gym, shower, toilet, sauna */
+wall([743.75,348,748,428]);wall([726,346.75,750,351.25]);
+wall([744,427,866,437.8],[[757,828,0,84,'o']]);
+wall([726,184.5,966.5,200.8],[[748,864,72,108,'w']]);
+wall([864.5,338,869,428]);wall([864.5,200,869,283]);
+wall([868,376,950,382],[[871,908,0,84,'d']]);
+wall([868,282,950,288],[[871,908,0,84,'d']]);
+wall([950.5,184.5,966.5,443]);wall([856,427,966.5,443]);
+/* Walk-out */
+wall([840,435,856,654.2],[[515,565,0,84,'o'],[575,626,36,84,'w'],[440,484,36,84,'w']]);
+wall([848,638.25,1030,654.25]);wall([1019.25,436,1029.25,654]);wall([856,427,1029.5,443]);
+/* Rec room */
+wall([648,960,1000.5,978],[[703,846,36,84,'w']]);
+wall([984,654,1000.5,960]);
+/* Elevator shaft */
+wall([553.8,606,560.5,665]);wall([612.2,606,619,665]);wall([553.8,603.2,619,611.5],[[570,600,0,84,'o']]);
+/* Display unit niche: walls on both sides (William, 22 Oct) */
+wall([619,600,648,606]);
+/* Stair */
+wall([541.5,430,546,526]);wall([667.5,430,674,526]);
+(function(){
+  /* As read from the plan arrow: starts at the north end (y 526), runs south, turns west at the landing. Rise 7 1/2", run 11". Approximate until a section is seen. */
+  const R=7.5,T=11;
+  for(let i=1;i<=7;i++)scene.add(boxMesh(623,526-T*i,667,526-T*(i-1),0,R*i,mStep,true));
+  scene.add(boxMesh(612,430,667,449,0,R*8,mStep,true));
+  for(let k=1;k<=6;k++)scene.add(boxMesh(612-10.8*k,430,612-10.8*(k-1),470,0,R*(8+k),mStep,true));
+  scene.add(boxMesh(541.5,430,547,470,0,R*15,mBlock));
+})();
+
+/* ---------- millwork (Phase 2): simple volumes at drawn size, specified finishes ---------- */
+function grainTex(base,amp,seed){return tex((g,S,r)=>{g.fillStyle=base;g.fillRect(0,0,S,S);
+  for(let i=0;i<260;i++){const x=r()*S,w=1+r()*5;g.fillStyle='rgba('+(r()>.5?'255,255,255':'0,0,0')+','+(r()*amp)+')';g.fillRect(x,0,w,S)}
+  for(let i=0;i<70;i++){g.fillStyle='rgba(0,0,0,'+(r()*amp*.9)+')';g.fillRect(r()*S,r()*S,1+r()*2,20+r()*90)}},256)}
+function marbleTex(){return tex((g,S,r)=>{g.fillStyle='#f0eee9';g.fillRect(0,0,S,S);
+  for(let i=0;i<16;i++){g.strokeStyle='rgba(95,95,100,'+(.18+r()*.4)+')';g.lineWidth=.6+r()*2.6;g.beginPath();
+    let x=r()*S,y=0;g.moveTo(x,y);for(let k=0;k<7;k++){x+=(r()-.5)*90;y+=S/7;g.lineTo(x,y)}g.stroke()}},256)}
+const BASEMAT={
+  lam1:{t:grainTex('#d9c3a0',.10)},      /* LAM 1 Tafisa Sheer Beauty, light wood */
+  lam2:{t:grainTex('#54453c',.12)},      /* LAM 2 Loasan Smoked Eucalyptus LM-112, dark wood */
+  st2:{t:marbleTex()},                   /* ST 2 Arabescato Corchia */
+  st5:{t:noiseTex('#8f8a84',.18)}        /* ST 5 CIOT Da Vinci, honed */
+};
+const FLAT={lam3:0x16171a,lam4:0x1f2023,paint:0xe9e5dc,tv:0x0b0b0d,app:0xeeeeee};   /* LAM 3 Black Noir, LAM 4 Elegant Black */
+const MC={};
+function M(key,w,h){
+  if(FLAT[key]!==undefined){return MC[key]||(MC[key]=new THREE.MeshLambertMaterial({color:FLAT[key]}))}
+  const kk=key+Math.round(w/12)+'x'+Math.round(h/12);if(MC[kk])return MC[kk];
+  const t=BASEMAT[key].t.clone();t.needsUpdate=true;t.repeat.set(Math.max(1,w/24),Math.max(1,h/24));
+  return MC[kk]=new THREE.MeshLambertMaterial({map:t})}
+const mReveal=new THREE.MeshLambertMaterial({color:0x14100c});
+const PICK=[];
+function mw(x1,y1,x2,y2,z0,z1,key,stop){
+  const m=boxMesh(x1,y1,x2,y2,z0,z1,M(key,Math.max(x2-x1,y2-y1),z1-z0),true);
+  m.userData.stop=stop;scene.add(m);PICK.push(m);return m}
+function front(face,x1,y1,x2,y2,z0,z1,cols,rows,kind,stop){
+  const horiz=(face==='N'||face==='S'),a0=horiz?x1:y1,a1=horiz?x2:y2;
+  const fp=face==='N'?y2:face==='S'?y1:face==='E'?x2:x1,dir=(face==='N'||face==='E')?1:-1;
+  const put=(a,b,q0,q1,mat)=>{const lo=Math.min(fp,fp+dir*.5),hi=Math.max(fp,fp+dir*.5);
+    const m=horiz?boxMesh(a,lo,b,hi,q0,q1,mat):boxMesh(lo,a,hi,b,q0,q1,mat);m.userData.stop=stop;scene.add(m);PICK.push(m)};
+  const cw=(a1-a0)/cols,rh=(z1-z0)/rows;
+  for(let i=0;i<cols;i++)for(let j=0;j<rows;j++){
+    const a=a0+i*cw,b=a+cw,q0=z0+j*rh,q1=q0+rh;
+    if(kind==='glass'){put(a+1,b-1,q0+1,q1-1,mGlass);put(a,a+1.2,q0,q1,mFrame);put(b-1.2,b,q0,q1,mFrame);put(a,b,q0,q0+1.2,mFrame);put(a,b,q1-1.2,q1,mFrame)}
+    else{put(a,b,q1-.35,q1,mReveal);put(a,a+.35,q0,q1,mReveal)}}}
+function shelving(x1,y1,x2,y2,z0,z1,n,face,key,stop){
+  const t=.75,mat=M(key,Math.max(x2-x1,y2-y1),z1-z0);
+  const add=(a,b,c,d,e,f)=>{const m=boxMesh(a,b,c,d,e,f,mat,true);m.userData.stop=stop;scene.add(m);PICK.push(m)};
+  if(face==='E'||face==='W'){
+    if(face==='E')add(x1,y1,x1+t,y2,z0,z1);else add(x2-t,y1,x2,y2,z0,z1);
+    add(x1,y1,x2,y1+t,z0,z1);add(x1,y2-t,x2,y2,z0,z1);
+    for(let i=0;i<=n;i++){const z=z0+(z1-z0-t)*i/n;add(x1,y1,x2,y2,z,z+t)}
+  }else{
+    if(face==='N')add(x1,y1,x2,y1+t,z0,z1);else add(x1,y2-t,x2,y2,z0,z1);
+    add(x1,y1,x1+t,y2,z0,z1);add(x2-t,y1,x2,y2,z0,z1);
+    for(let i=0;i<=n;i++){const z=z0+(z1-z0-t)*i/n;add(x1,y1,x2,y2,z,z+t)}}}
+const TAGS=[];
+function tag(n,x,y,z,a){TAGS.push({n,a,p:W3(x,y,z)})}
+
+/* 1 Display cabinet beside the elevator, 4'-10 5/8" along the shaft wall */
+shelving(620,606,648,664.6,0,96,5,'E','lam2',1);front('E',620,606,648,664.6,4,92,2,1,'glass',1);tag(1,634,636,102,'hall');
+/* 2 Projection wall 14'-7 1/2" x 9', curved marble slab, floating stone shelf */
+(function(){
+  const XB=984,Y0=722,Y1=897.5,YM=(Y0+Y1)/2,HF=(Y1-Y0)/2,DE=10,DM=14;
+  const d=y=>DE+(DM-DE)*(1-Math.pow((y-YM)/HF,2));            /* furred wall bows from 10" at the ends to 14" at the middle, plus 1 1/2" slab */
+  const N=28,ys=[];for(let i=0;i<=N;i++)ys.push(Y0+(Y1-Y0)*i/N);
+  const sx=x=>(x-CX)*IN,sy=y=>(y-CY)*IN;
+  function solid(shape,z0,z1,mat,edges){
+    const g=new THREE.ExtrudeGeometry(shape,{depth:(z1-z0)*IN,bevelEnabled:false});g.rotateX(-Math.PI/2);g.translate(0,z0*IN,0);
+    const m=new THREE.Mesh(g,mat);if(edges)m.add(new THREE.LineSegments(new THREE.EdgesGeometry(g,40),mEdge));
+    m.userData.stop=2;scene.add(m);PICK.push(m);return m}
+  function band(o0,o1,z0,z1,mat,edges){                    /* strip standing o0..o1 inches proud of the furred face */
+    const sh=new THREE.Shape();sh.moveTo(sx(XB-d(ys[0])-o1),sy(ys[0]));
+    for(let i=0;i<=N;i++)sh.lineTo(sx(XB-d(ys[i])-o1),sy(ys[i]));
+    for(let i=N;i>=0;i--)sh.lineTo(sx(XB-d(ys[i])-o0),sy(ys[i]));
+    return solid(sh,z0,z1,mat,edges)}
+  const t=BASEMAT.st2.t.clone();t.needsUpdate=true;t.repeat.set(.5,.5);const mSlab=new THREE.MeshLambertMaterial({map:t});
+  const mFur=new THREE.MeshLambertMaterial({color:0xe9e5dc});
+  const body=new THREE.Shape();body.moveTo(sx(XB),sy(Y0));
+  for(let i=0;i<=N;i++)body.lineTo(sx(XB-d(ys[i])),sy(ys[i]));body.lineTo(sx(XB),sy(Y1));
+  solid(body,4,108,mFur,false);                                   /* furred wall, floats 4" off the floor on a dark plinth */
+  band(0,1.5,4,104,mSlab,true);                                   /* curved marble slab on the face */
+  band(0,6,40,44,mSlab,true);                                     /* floating stone shelf, 4" thick, 6" proud of the face */
+  band(0,1.5,104,108,new THREE.MeshBasicMaterial({color:0xffe9b8}),false);   /* LED glow at the head */
+  scene.add(boxMesh(XB-d(YM)+3,Y0+3,XB,Y1-3,0,4,mReveal));        /* shadow gap under the wall */
+})();
+tag(2,972,810,114,'rec');
+/* 3 Built-ins either side of the projection wall, 4'-11" wide, 9'-3 1/2" high */
+[[899,957.9],[663.1,722]].forEach(q=>{mw(966.5,q[0],984,q[1],0,36,'lam3',3);front('W',966.5,q[0],984,q[1],2,34,2,2,'drawer',3);
+  shelving(968.5,q[0],984,q[1],36,111.5,5,'W','lam3',3)});
+tag(3,975,690,118,'rec');tag(3,975,929,118,'rec');
+/* 4 Wet bar: lowers 109 3/4" x 24", uppers to 8'-10 1/4" with 12 glass doors, stone panel behind */
+mw(648,791,672,900.7,0,34,'lam2',4);front('E',648,791,672,900.7,2,32,6,2,'drawer',4);mw(648,791,672.5,900.7,34,36,'st2',4);
+mw(648,791,650,900.7,36,106.25,'st2',4);shelving(650,791,662,900.7,54,106.25,3,'E','lam2',4);front('E',650,791,662,900.7,54,106.25,6,2,'glass',4);tag(4,660,846,112,'rec');
+/* 5 Glass towers either side of the wet bar, 2'-10" and 2'-8", uppers 18" deep, lowers 22" deep */
+[[912,946],[746,778]].forEach(q=>{mw(648,q[0],670,q[1],0,36,'lam1',5);front('E',648,q[0],670,q[1],2,34,1,1,'drawer',5);
+  shelving(648,q[0],666,q[1],38,106.25,4,'E','lam1',5);front('E',648,q[0],666,q[1],38,106.25,1,1,'glass',5)});
+tag(5,659,929,112,'rec');tag(5,659,762,112,'rec');
+/* 6 Island 111" x 36", stone top by others */
+mw(709.5,789.5,745.5,900.5,0,34,'lam2',6);front('E',709.5,789.5,745.5,900.5,2,32,4,2,'drawer',6);mw(708.5,788.5,746.5,901.5,34,36,'st2',6);tag(6,727.5,845,44,'rec');
+/* 7 Golf room, as drawn by Sensus: built-in TV and wine fridges on the west wall (about 8 lin ft) */
+mw(406,690,428,771.5,0,96,'lam2',7);mw(428,706,429,752,36,80,'tv',7);tag(7,417,730,102,'golf');
+/* 8 Golf room stone island, about 4' x 18" */
+mw(464,705,482,752,0,34,'lam2',8);mw(462.5,703.5,483.5,753.5,34,36,'st5',8);tag(8,473,728,42,'golf');
+/* 9 Wine room (cold cellar): not drawn in the set, marker only */
+tag(9,330,560,110,'wine');
+/* 10 Mechanical storage: not drawn, marker only */
+tag(10,470,450,110,'mech');
+/* 11 Shower room vanity 4'-6" x 27 1/2" and glass uppers 4'-6" x 4' */
+mw(926,296,950,350,10,37.5,'lam2',11);front('W',926,296,950,350,12,36,2,4,'drawer',11);
+shelving(938,296,950,350,54,102,2,'W','lam2',11);front('W',938,296,950,350,54,102,4,1,'glass',11);tag(11,938,323,110,'gym');
+/* 12 Bedroom closet wall 171 1/2" wide, 6 glass doors */
+mw(371,346.75,542.5,372.75,0,118,'lam2',12);front('S',371,346.75,542.5,372.75,4,112,6,1,'glass',12);tag(12,456,360,124,'bed');
+/* 13 Walk-in closet, lowers 30" deep, hanging above */
+mw(541.5,205,572.2,300,0,108,'lam2',13);front('E',541.5,205,572.2,300,2,106,3,2,'drawer',13);
+mw(620,205,644.25,300,0,108,'lam2',13);front('W',620,205,644.25,300,2,106,3,2,'drawer',13);
+mw(572.2,200.8,620,232.75,0,108,'lam2',13);front('N',572.2,200.8,620,232.75,2,106,3,2,'drawer',13);tag(13,592,225,114,'bed');
+/* 14 Wall behind the bed, headboard panelling 171 1/2" x 48" with shelf, floating nightstands */
+mw(371,205,542.5,211,20,68,'lam2',14);mw(371,205,542.5,217,68,70,'lam2',14);
+mw(394,205,422,225,24,38,'lam2',14);mw(496,205,524,225,24,38,'lam2',14);tag(14,456,208,76,'bed');
+/* 15 Ensuite vanity 71 3/4" x 27 1/2" with glass tower 28 1/4" x 75" */
+mw(694,262,717.75,333.75,10,37.5,'lam2',15);front('W',694,262,717.75,333.75,12,36,4,2,'drawer',15);mw(694,262,718,333.75,37.5,39,'st2',15);
+shelving(705.75,300,717.75,328.25,42,117,3,'W','lam2',15);front('W',705.75,300,717.75,328.25,42,117,2,1,'glass',15);tag(15,706,298,122,'bed');
+/* 16 Laundry: washer and dryer surround 75 1/2" x 108", 33" deep, plinth drawers */
+mw(547,352,580,427.5,0,5,'lam2',16);mw(547,352,580,356,5,108,'lam2',16);mw(547,423.5,580,427.5,5,108,'lam2',16);
+mw(550,358,578,388,5,38,'app',16);mw(550,392,578,421,5,38,'app',16);shelving(547,356,580,423.5,64,108,2,'E','lam2',16);
+front('E',547,352,580,427.5,0,5,2,1,'drawer',16);tag(16,560,372,114,'laundry');
+
+/* ---------- golf simulator screen and hitting mat, as drawn by Sensus (to confirm) ---------- */
+scene.add(boxMesh(367,942.4,571,943.6,12,106,mFrame,false));
+scene.add(boxMesh(370,941.9,568,942.5,15,103,new THREE.MeshLambertMaterial({color:0xf3f2ee,emissive:0x333330}),false));
+scene.add(boxMesh(447,858,507,894,-18,-17,new THREE.MeshLambertMaterial({color:0x3f7a4a}),false));
+
+/* ---------- furniture from the plan outlines, neutral grey, can be switched off ---------- */
+const FURN=new THREE.Group();scene.add(FURN);
+const mF=new THREE.MeshLambertMaterial({color:0xc2beb6}),mF2=new THREE.MeshLambertMaterial({color:0x8e8b86}),mRug=new THREE.MeshLambertMaterial({color:0xddd8ce});
+function fb(x1,y1,x2,y2,z0,z1,m){const b=boxMesh(x1,y1,x2,y2,z0,z1,m||mF,false);FURN.add(b);return b}
+function fc(x,y,r,z0,z1,m){const g=new THREE.Mesh(new THREE.CylinderGeometry(r*IN,r*IN,(z1-z0)*IN,20),m||mF);g.position.set((x-CX)*IN,((z0+z1)/2)*IN,-(y-CY)*IN);FURN.add(g)}
+/* rec room: L sectional facing the projection wall, rug, two ottomans, lounge sofa, four island stools */
+fb(793,744,841,900,0,18);fb(793,744,805,900,18,34);fb(793,900,918,947,0,18);fb(793,940,918,947,18,34);
+fb(851,742,950,898,0,.6,mRug);fb(864,827,912,872,0,16,mF2);fb(864,751,912,797,0,16,mF2);
+fb(855,661,938,700,0,18);fb(855,661,938,668,18,34);
+[893,867,840,812].forEach(y=>fc(746,y,7,0,26));
+/* golf room: stools at the stone island */
+fc(473,762,7,-18,8);fc(490,737,7,-18,8);fc(490,716,7,-18,8);
+/* bedroom 5: bed, two round chairs */
+fb(424,207,494,284,0,14,mF2);fb(426,209,492,282,14,24);fb(430,209,488,226,24,30,mRug);fc(412,215,11,0,18);fc(519,215,11,0,18);
+/* gym: treadmill, bench, dumbbell rack */
+fb(728,297,820,338,0,54,mF2);fb(731,200,810,272,0,42,mF2);fb(845,215,864,279,0,40,mF2);
+
+/* ---------- areas ---------- */
+const AREAS={
+ all:{name:'Whole basement',bb:[306,184,1030,974],cx:700,cy:580,th:-.25,ph:.5,r:118,cut:null},
+ hall:{name:'Stair hall and display',bb:[532,432,850,690],dir:[0,-1],th:0,ph:1.0,r:62,ex:[0,0]},
+ rec:{name:'Rec room',bb:[648,654,998,963],dir:[0,-1],th:0,ph:1.0,r:80},
+ golf:{name:'Golf room',bb:[367,688,626,945],dir:[0,-1],th:0,ph:1.0,r:62,golf:1},
+ wine:{name:'Wine room',bb:[306,488,355,640],dir:[1,0],th:Math.PI/2,ph:1.0,r:40},
+ mech:{name:'Mechanical',bb:[306,372,532,665],dir:[1,0],th:Math.PI/2,ph:1.0,r:58},
+ gym:{name:'Gym and shower',bb:[726,184,962,436],dir:[0,1],th:Math.PI,ph:1.0,r:58},
+ bed:{name:'Bedroom 5 with walk-in and ensuite',bb:[355,190,726,352],dir:[0,1],th:Math.PI,ph:1.0,r:64},
+ laundry:{name:'Laundry',bb:[547,346,640,432],dir:[0,1],th:Math.PI,ph:1.0,r:32}
+};
+const KEYS=['all','hall','rec','golf','wine','mech','gym','bed','laundry'];
+const BTN={all:'Whole basement',hall:'Stair hall and display',rec:'Rec room',golf:'Golf room',wine:'Wine room',mech:'Mechanical',gym:'Gym and shower',bed:'Bedroom 5, walk-in, ensuite',laundry:'Laundry'};
+const LINK={all:'all',hall:'hall',rec:'rec',golf:'golf',wine:'wine',mech:'mech',gym:'gym',bed:'bed',laundry:'laundry'};
+KEYS.forEach(k=>{const a=AREAS[k];if(k!=='all'){a.cx=(a.bb[0]+a.bb[2])/2;a.cy=(a.bb[1]+a.bb[3])/2}});
+
+/* labels */
+const LAB=[
+ {t:'Stair hall and display',x:690,y:560,a:'hall'},{t:'Rec room',x:830,y:830,a:'rec'},{t:'Golf room',x:480,y:820,a:'golf'},
+ {t:'Wine room',x:330,y:590,a:'wine'},{t:'Mechanical',x:445,y:560,a:'mech'},{t:'Gym',x:795,y:300,a:'gym'},
+ {t:'Shower, toilet, sauna',x:908,y:300,a:'gym'},{t:'Bedroom 5',x:455,y:300,a:'bed'},{t:'Walk-in',x:595,y:275,a:'bed'},{t:'Ensuite',x:672,y:240,a:'bed'},
+ {t:'Laundry',x:615,y:395,a:'laundry'},{t:'Screen, as drawn (to confirm)',x:469,y:930,minor:1,a:'golf'},{t:'Elevator',x:585,y:635,minor:1},{t:'Walk-out',x:940,y:545,minor:1},{t:'Stair up',x:640,y:480,minor:1}];
+const labDiv=document.getElementById('labels');
+LAB.forEach(l=>{const d=document.createElement('div');d.className='lb'+(l.minor?' minor':'');d.textContent=l.t;labDiv.appendChild(d);l.d=d;l.p=W3(l.x,l.y,(H+6))});
+
+const tagDiv=document.getElementById('tags');
+TAGS.forEach(t=>{const a=document.createElement('a');a.className='tag';a.textContent=t.n;a.href='BWD_ABL_WalkRound.html#s'+t.n;a.title='Stop '+t.n+' in the walk-round';tagDiv.appendChild(a);t.d=a});
+
+/* ---------- camera state and orbit ---------- */
+const S={tx:0,ty:0,tz:0,r:132,th:-.25,ph:.5};
+function applyCam(){const sp=Math.sin(S.ph);
+  cam.position.set(S.tx+S.r*sp*Math.sin(S.th),S.ty+S.r*Math.cos(S.ph),S.tz+S.r*sp*Math.cos(S.th));
+  cam.lookAt(S.tx,S.ty,S.tz)}
+/* ---------- UI, tour and single-area mode ---------- */
+const STOPN={1:'Display cabinet',2:'Projection wall',3:'Built-ins either side',4:'Wet bar',5:'Glass towers',6:'Island',7:'Golf room layout',8:'Stone island',9:'Wine storage',10:'Mechanical storage',11:'Shower vanity and glass uppers',12:'Closet wall',13:'Walk-in closet',14:'Wall behind the bed',15:'Ensuite vanity and tower',16:'Washer and dryer surround'};
+const AREA_STOPS={hall:[1],rec:[2,3,4,5,6],golf:[7,8],wine:[9],mech:[10],gym:[11],bed:[12,13,14,15],laundry:[16]};
+const ORDER=['all','hall','rec','golf','wine','mech','gym','bed','laundry'];
+const $=id=>document.getElementById(id);
+let cutOn=true;
+const bar=$('bar');
+function mkBtn(txt,fn,k){const b=document.createElement('button');b.textContent=txt;if(k)b.dataset.k=k;b.onclick=fn;bar.appendChild(b);return b}
+function updateExtra(k){const e=$('extra');let h='';
+  if(!ONLY&&k!=='all')h+='<a href="BWD_ABL_3D_'+k+'.html">Open this area on its own</a>';
+  if(k==='golf')h+='<a href="BWD_ABL_Golf_Room_3D_A.html">Golf option A</a><a href="BWD_ABL_Golf_Room_3D_B.html">Golf option B</a>';
+  e.innerHTML=h;e.style.display=h?'flex':'none'}
+function updateCard(k){const c=$('card');
+  if(k==='all'||!AREA_STOPS[k]){c.style.display='none';return}
+  c.innerHTML='<b>'+AREAS[k].name+'</b><div class="chips2">'+AREA_STOPS[k].map(n=>'<a href="BWD_ABL_WalkRound.html#s'+n+'"><span>'+n+'</span> '+STOPN[n]+'</a>').join('')+'</div>';
+  c.style.display='block'}
+function ease(t){return t<.5?4*t*t*t:1-Math.pow(-2*t+2,3)/2}
+function angDelta(a,b){let d=b-a;while(d>Math.PI)d-=2*Math.PI;while(d<-Math.PI)d+=2*Math.PI;return d}
+let fly=null,curArea='all',tour=null;
+function goto(k,instant,dur){
+  const a=AREAS[k];const p=W3(a.cx,a.cy,k==='all'?0:30);
+  const to={tx:p.x,ty:p.y,tz:p.z,r:a.r,th:a.th,ph:k==='all'?.42:.74};
+  if(instant){Object.assign(S,to);applyCam();fly=null}else{fly={from:Object.assign({},S),to,t:0,dur:dur||1.2}}
+  curArea=k;cut(k);updateExtra(k);updateCard(k);
+  [...bar.querySelectorAll('button')].forEach(b=>{if(b.dataset.k)b.classList.toggle('on',b.dataset.k===k)});
+  $('hint').style.opacity=k==='all'&&!ONLY?1:0}
+function cut(k){const a=AREAS[k];
+  WALLS.forEach(w=>{let low=false;
+    if(cutOn&&k!=='all'&&a.dir){const R=[a.cx,a.cy];const hx=(a.bb[2]-a.bb[0])/2,hy=(a.bb[3]-a.bb[1])/2;
+      const s=(w.cx-R[0])*a.dir[0]+(w.cy-R[1])*a.dir[1];const half=Math.abs(a.dir[0])*hx+Math.abs(a.dir[1])*hy;
+      const inside=w.cx>a.bb[0]-140&&w.cx<a.bb[2]+140&&w.cy>a.bb[1]-140&&w.cy<a.bb[3]+140;
+      low=inside&&s>0.45*half}
+    w.target=low?w.low:1})}
+function focusStop(n){const t=TAGS.find(q=>q.n===n);if(!t)return;
+  const to={tx:t.p.x,ty:Math.min(t.p.y,4.5),tz:t.p.z,r:ONLY?24:30,th:S.th,ph:.78};
+  fly={from:Object.assign({},S),to,t:0,dur:1.1};
+  const wr=$('wrlink');if(wr)wr.href='BWD_ABL_WalkRound.html#s'+n}
+
+/* tour: fly each area, then hand over to the walk-round */
+function tourBar(on){$('tourbar').style.display=on?'flex':'none'}
+function tourGo(){const k=ORDER[tour.i];tour.t=0;goto(k,false,2.2);$('tname').textContent=k==='all'?'The whole basement':AREAS[k].name}
+function tourStart(){if(ONLY)return;$('endcard').style.display='none';tour={i:0,t:0};tourBar(true);tourGo();
+  try{sessionStorage.setItem('abl_toured','1')}catch(e){}}
+function tourStop(){if(tour){tour=null;tourBar(false)}}
+function tourNext(){if(!tour)return;tour.i++;if(tour.i>=ORDER.length){tourStop();goto('all',false,2.2);$('endcard').style.display='block';return}tourGo()}
+$('tskip').onclick=tourNext;$('tstop').onclick=()=>{tourStop()};
+$('eexp').onclick=()=>{$('endcard').style.display='none'};
+
+/* pointer input: one finger turns, two fingers pinch and move */
+const ptr=new Map();let last=null,dn=null;
+function stop(){fly=null;tourStop();$('endcard').style.display='none'}
+cv.addEventListener('pointerdown',e=>{cv.setPointerCapture(e.pointerId);ptr.set(e.pointerId,{x:e.clientX,y:e.clientY});stop();last=null;dn=ptr.size===1?{x:e.clientX,y:e.clientY,t:performance.now()}:null});
+cv.addEventListener('pointerup',e=>{const was=ptr.size;ptr.delete(e.pointerId);last=null;
+  if(was===1&&dn&&Math.hypot(e.clientX-dn.x,e.clientY-dn.y)<7&&performance.now()-dn.t<450){
+    const rc=new THREE.Raycaster();rc.setFromCamera(new THREE.Vector2(e.clientX/window.innerWidth*2-1,-(e.clientY/window.innerHeight)*2+1),cam);
+    const h=rc.intersectObjects(PICK,false)[0];if(h&&h.object.userData.stop)focusStopOrOpen(h.object.userData.stop)}
+  dn=null});
+function focusStopOrOpen(n){location.href='BWD_ABL_WalkRound.html#s'+n}
+cv.addEventListener('pointercancel',e=>{ptr.delete(e.pointerId);last=null});
+function pan(dx,dy){const k=S.r*.0016;
+  const rx=Math.cos(S.th),rz=-Math.sin(S.th),fx=-Math.sin(S.th),fz=-Math.cos(S.th);
+  S.tx+=(-dx*rx+dy*fx)*k;S.tz+=(-dx*rz+dy*fz)*k}
+cv.addEventListener('pointermove',e=>{
+  if(!ptr.has(e.pointerId))return;const p=ptr.get(e.pointerId);const px=p.x,py=p.y;p.x=e.clientX;p.y=e.clientY;
+  if(ptr.size===1){
+    if(e.shiftKey||e.buttons===2){pan(e.clientX-px,e.clientY-py)}
+    else{S.th-=(e.clientX-px)*.007;S.ph=Math.max(.12,Math.min(1.5,S.ph-(e.clientY-py)*.006))}
+  }else if(ptr.size===2){
+    const [a,b]=[...ptr.values()];const d=Math.hypot(a.x-b.x,a.y-b.y);const m={x:(a.x+b.x)/2,y:(a.y+b.y)/2};
+    if(last){S.r=Math.max(8,Math.min(240,S.r*last.d/d));pan(m.x-last.m.x,m.y-last.m.y)}
+    last={d,m}}
+  applyCam()});
+cv.addEventListener('wheel',e=>{e.preventDefault();stop();S.r=Math.max(8,Math.min(240,S.r*(1+e.deltaY*.0012)));applyCam()},{passive:false});
+cv.addEventListener('contextmenu',e=>e.preventDefault());
+
+/* buttons */
+if(!ONLY){
+  mkBtn('Tour',()=>{location.hash='';tourStart()}).className='tourbtn';
+  ORDER.forEach(k=>mkBtn(BTN[k],()=>{tourStop();location.hash=k==='all'?'':LINK[k];goto(k)},k));
+}else{
+  const first=AREA_STOPS[ONLY][0];
+  const wr=document.createElement('a');wr.id='wrlink';wr.className='lnk';wr.href='BWD_ABL_WalkRound.html#s'+first;wr.textContent='Back to the walk-round';bar.appendChild(wr);
+  const wb=document.createElement('a');wb.className='lnk';wb.href='BWD_ABL_Basement_3D.html#'+ONLY;wb.textContent='Whole basement';bar.appendChild(wb);
+  AREA_STOPS[ONLY].forEach(n=>{const b=mkBtn(n+'  '+STOPN[n],()=>{focusStop(n)});b.classList.add('stopbtn')});
+}
+const bw=mkBtn('Walls: cut away',()=>{cutOn=!cutOn;bw.textContent=cutOn?'Walls: cut away':'Walls: full height';bw.classList.toggle('on',!cutOn);cut(curArea)});
+const bf=mkBtn('Furniture: on',()=>{FURN.visible=!FURN.visible;bf.textContent=FURN.visible?'Furniture: on':'Furniture: off';bf.classList.toggle('on',!FURN.visible)});
+
+/* single-area page: keep only this room and what touches it */
+if(ONLY){
+  const bb=AREAS[ONLY].bb;
+  const keepBox=(o,mg)=>{const b=new THREE.Box3().setFromObject(o);if(b.isEmpty())return true;
+    const x1=b.min.x*12+CX,x2=b.max.x*12+CX,y1=-b.max.z*12+CY,y2=-b.min.z*12+CY;
+    return !(x2<bb[0]-mg||x1>bb[2]+mg||y2<bb[1]-mg||y1>bb[3]+mg)};
+  const wallSet=new Map(WALLS.map(w=>[w.g,w]));
+  scene.children.slice().forEach(o=>{if(o===ground||o.isLight||o===FURN)return;
+    const w=wallSet.get(o);
+    if(w){o.visible=w.cx>bb[0]-100&&w.cx<bb[2]+100&&w.cy>bb[1]-100&&w.cy<bb[3]+100;if(!o.visible)w.target=w.full=1;return}
+    o.visible=keepBox(o,30)});
+  FURN.children.forEach(o=>{o.visible=keepBox(o,10)});
+  WALLS.forEach(w=>{if(!w.g.visible)w.hidden=true});
+  $('ttl').childNodes[0].nodeValue='12 Abilene Drive, '+AREAS[ONLY].name;document.title='12 Abilene Drive · '+AREAS[ONLY].name;
+  $('walk').style.display='none';
+}
+function fromHash(inst){const h=location.hash.replace('#','');
+  const m=/^s(\d+)$/.exec(h);
+  if(ONLY){goto(ONLY,inst);if(m)setTimeout(()=>focusStop(+m[1]),inst?50:400);return}
+  goto(AREAS[h]?h:'all',inst)}
+window.addEventListener('hashchange',()=>{tourStop();fromHash(false)});
+
+function resize(){const w=window.innerWidth,h=window.innerHeight;ren.setSize(w,h,false);cam.aspect=w/h;cam.setViewOffset(w,h,0,34,w,h);cam.updateProjectionMatrix()}
+window.addEventListener('resize',resize);resize();
+
+let prev=performance.now();
+function tick(now){
+  const dt=Math.min(.05,(now-prev)/1000);prev=now;
+  if(fly){fly.t=Math.min(1,fly.t+dt/(fly.dur||1.2));const e=ease(fly.t),f=fly.from,t=fly.to;
+    S.tx=f.tx+(t.tx-f.tx)*e;S.ty=f.ty+(t.ty-f.ty)*e;S.tz=f.tz+(t.tz-f.tz)*e;S.r=f.r+(t.r-f.r)*e;
+    S.ph=f.ph+(t.ph-f.ph)*e;S.th=f.th+angDelta(f.th,t.th)*e;if(fly.t>=1)fly=null}
+  else if(tour){S.th+=dt*.16}
+  if(tour){tour.t+=dt;if(tour.t>(ORDER[tour.i]==='all'?4.5:5.6))tourNext()}
+  WALLS.forEach(w=>{const d=w.target-w.full;if(Math.abs(d)>.002){w.full+=d*Math.min(1,dt*7);w.g.scale.y=w.full}else if(w.full!==w.target){w.full=w.target;w.g.scale.y=w.full}});
+  applyCam();ren.render(scene,cam);
+  const W=window.innerWidth,Hh=window.innerHeight;
+  TAGS.forEach(l=>{const v=l.p.clone().project(cam);const show=v.z<1&&(curArea==='all'||l.a===curArea)&&!tour;
+    l.d.style.opacity=show?1:0;l.d.style.pointerEvents=show?'auto':'none';if(show){l.d.style.left=((v.x+1)/2*W)+'px';l.d.style.top=((1-v.y)/2*Hh)+'px'}});
+  LAB.forEach(l=>{const v=l.p.clone().project(cam);const show=v.z<1&&(curArea==='all'||l.a===curArea);
+    l.d.style.opacity=show?1:0;if(show){l.d.style.left=((v.x+1)/2*W)+'px';l.d.style.top=((1-v.y)/2*Hh)+'px'}});
+  requestAnimationFrame(tick)}
+fromHash(true);requestAnimationFrame(tick);
+if(!ONLY&&!location.hash){let seen=false;try{seen=sessionStorage.getItem('abl_toured')==='1'}catch(e){}
+  if(!seen)setTimeout(tourStart,900)}
+})();
+</script>
+</body>
+</html>
