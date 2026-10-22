@@ -18,6 +18,19 @@ figure{margin:0 0 14px;break-inside:avoid;cursor:zoom-in;background:#fff;border:
 figure img{display:block;width:100%;height:auto}
 figcaption{padding:9px 12px 11px;font-size:14px;color:var(--mut)}
 figcaption b{display:block;color:var(--ink);font-weight:600;font-size:12px;letter-spacing:.08em;text-transform:uppercase;margin-bottom:1px}
+.cmpgrid{max-width:1280px;margin:0 auto;padding:0 24px;display:grid;grid-template-columns:repeat(auto-fit,minmax(340px,1fr));gap:14px}
+.cmpwrap{background:#fff;border:1px solid var(--line)}
+.cmp{position:relative;overflow:hidden;touch-action:pan-y;--p:50%;user-select:none}
+.cmp img{display:block;width:100%;height:auto}
+.cmp .d{position:absolute;inset:0;height:100%;object-fit:cover;clip-path:inset(0 calc(100% - var(--p)) 0 0)}
+.cmp .ln{position:absolute;top:0;bottom:0;left:var(--p);width:2px;margin-left:-1px;background:#fff;box-shadow:0 0 0 1px rgba(0,0,0,.25);pointer-events:none}
+.cmp .kn{position:absolute;top:50%;left:var(--p);width:42px;height:42px;margin:-21px 0 0 -21px;border-radius:50%;background:#fff;box-shadow:0 1px 6px rgba(0,0,0,.35);pointer-events:none;display:flex;align-items:center;justify-content:center;color:var(--acc);font-size:18px}
+.cmp input{position:absolute;inset:0;width:100%;height:100%;opacity:0;cursor:ew-resize;margin:0}
+.cmp .t{position:absolute;top:10px;padding:3px 10px;border-radius:12px;background:rgba(42,37,32,.78);color:#fff;font-size:12px;letter-spacing:.08em;text-transform:uppercase;pointer-events:none}
+.cmp .t.l{left:10px}.cmp .t.r{right:10px}
+.ex{max-width:1280px;margin:30px auto 0;padding:0 24px}
+.ex a{display:block;padding:18px 20px;background:#fff;border:1px solid var(--line);color:var(--ink);text-decoration:none}
+.ex a b{display:block;color:var(--acc);font-size:13px;letter-spacing:.12em;text-transform:uppercase;margin-bottom:3px}
 footer{max-width:1280px;margin:50px auto 0;padding:26px 24px 48px;border-top:1px solid var(--line);color:var(--mut);font-size:15px;display:flex;justify-content:space-between;gap:12px;flex-wrap:wrap}
 footer a{color:var(--acc);text-decoration:none;font-weight:600}
 #lb{position:fixed;inset:0;background:rgba(20,16,12,.94);display:none;align-items:center;justify-content:center;flex-direction:column;z-index:9;padding:16px}
@@ -44,6 +57,11 @@ footer a{color:var(--acc);text-decoration:none;font-weight:600}
 <figure data-i="11"><img src="portfolio/wall-unit.jpg" width="1800" height="1350" alt="Wall unit, Media wall with TV recess, side shelving and base cabinets" loading="lazy"><figcaption><b>Wall unit</b>Media wall with TV recess, side shelving and base cabinets</figcaption></figure>
 <figure data-i="12"><img src="portfolio/murrie-entry.jpg" width="1800" height="1350" alt="Murrie Street, Entry wall of full-height cabinets" loading="lazy"><figcaption><b>Murrie Street</b>Entry wall of full-height cabinets</figcaption></figure>
 </div>
+<h2>Drawing to built<span>Slide to compare the shop drawing with the finished work</span></h2>
+<div class="cmpgrid">
+<div class="cmpwrap"><div class="cmp" style="aspect-ratio:1800/1159"><img src="portfolio/fridge-wall.jpg" width="1800" height="1159" alt="Fridge wall, as built"><img class="d" src="portfolio/draw-fridge-wall.jpg" alt="Fridge wall, shop drawing"><span class="ln"></span><span class="kn">&#8596;</span><span class="t l">Drawing</span><span class="t r">Built</span><input type="range" min="0" max="100" value="50" aria-label="Slide between the drawing and the finished work"></div><figcaption style="padding:9px 12px 11px;font-size:14px;color:var(--mut)"><b style="display:block;color:var(--ink);font-weight:600;font-size:12px;letter-spacing:.08em;text-transform:uppercase">Fridge wall</b>Pocket-door appliance cabinets either side of a full-height fridge pair</figcaption></div>
+<div class="cmpwrap"><div class="cmp" style="aspect-ratio:1800/1138"><img src="portfolio/kitchen-island.jpg" width="1800" height="1138" alt="Kitchen island, as built"><img class="d" src="portfolio/draw-island.jpg" alt="Kitchen island, shop drawing"><span class="ln"></span><span class="kn">&#8596;</span><span class="t l">Drawing</span><span class="t r">Built</span><input type="range" min="0" max="100" value="50" aria-label="Slide between the drawing and the finished work"></div><figcaption style="padding:9px 12px 11px;font-size:14px;color:var(--mut)"><b style="display:block;color:var(--ink);font-weight:600;font-size:12px;letter-spacing:.08em;text-transform:uppercase">Kitchen island</b>Inset panels on the island front, drawn and built</figcaption></div>
+</div>
 <h2>Detail<span>Vanities, hardware, the small things</span></h2>
 <div class="grid">
 <figure data-i="13"><img src="portfolio/dov-vanity.jpg" width="1800" height="1016" alt="Dovercourt, Six-drawer vanity, figured wood fronts" loading="lazy"><figcaption><b>Dovercourt</b>Six-drawer vanity, figured wood fronts</figcaption></figure>
@@ -58,9 +76,11 @@ footer a{color:var(--acc);text-decoration:none;font-weight:600}
 <figure data-i="22"><img src="portfolio/murrie-bath.jpg" width="1800" height="1350" alt="Murrie Street, Double vanity" loading="lazy"><figcaption><b>Murrie Street</b>Double vanity</figcaption></figure>
 <figure data-i="23"><img src="portfolio/vanity-9972.jpg" width="768" height="1024" alt="Vanity, Glass pulls" loading="lazy"><figcaption><b>Vanity</b>Glass pulls</figcaption></figure>
 </div>
+<div class="ex"><a href="BWD_Example_Bathroom_3D.html"><b>Interactive example</b>A client 3D page: choose finishes, open the pocket door and the pull-out tower, turn the model and save the view.</a></div>
 <footer><span>by William Design, Etobicoke, Ontario</span><span><a href="tel:6472274825">647 227 4825</a> &nbsp;/&nbsp; <a href="https://bywilliam.ca">bywilliam.ca</a></span></footer>
 <div id="lb"><button id="x" aria-label="Close">&times;</button><button id="pv" aria-label="Previous">&#8249;</button><button id="nx" aria-label="Next">&#8250;</button><img alt=""><p></p></div>
 <script>
+(function(){document.querySelectorAll('.cmp').forEach(function(c){var r=c.querySelector('input');function s(){c.style.setProperty('--p',r.value+'%')}r.addEventListener('input',s);s()})})();
 (function(){var F=[].slice.call(document.querySelectorAll('figure')),L=document.getElementById('lb'),I=L.querySelector('img'),P=L.querySelector('p'),k=0;
 function show(n){k=(n+F.length)%F.length;var im=F[k].querySelector('img');I.src=im.src;I.alt=im.alt;P.textContent=F[k].querySelector('figcaption').textContent}
 F.forEach(function(f,i){f.addEventListener('click',function(){show(i);L.classList.add('on')})});
