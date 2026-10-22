@@ -23,6 +23,8 @@ html,body{margin:0;height:100%;background:var(--bg);color:var(--ink);font-family
 #bar button.on{background:var(--wal);color:#fff}
 #extra{position:fixed;right:12px;bottom:68px;z-index:5;display:none;gap:8px}
 #extra a{background:var(--wal);color:#fff;font-size:14px;font-weight:600;padding:9px 13px;border-radius:5px;text-decoration:none;box-shadow:0 2px 6px rgba(0,0,0,.25)}
+#tags{position:fixed;inset:0;pointer-events:none;z-index:3;overflow:hidden}
+.tag{position:absolute;transform:translate(-50%,-50%);width:30px;height:30px;border-radius:50%;background:#8A5A2E;color:#fff;font:700 15px Calibri,Carlito,Arial,sans-serif;display:flex;align-items:center;justify-content:center;border:2px solid #fff;box-shadow:0 1px 5px rgba(0,0,0,.4);text-decoration:none;pointer-events:auto;transition:opacity .25s}
 #hint{position:fixed;left:12px;bottom:68px;z-index:4;font-size:12.5px;color:var(--grey);background:rgba(255,255,255,.8);padding:4px 8px;border-radius:4px}
 #err{position:fixed;inset:80px 20px auto 20px;z-index:9;display:none;background:#fff;border:1px solid var(--wal);padding:14px;font-size:15px}
 @media(max-width:720px){#ttl small{display:none}#note{display:none}}
@@ -37,6 +39,7 @@ html,body{margin:0;height:100%;background:var(--bg);color:var(--ink);font-family
 </div>
 <canvas id="cv"></canvas>
 <div id="labels"></div>
+<div id="tags"></div>
 <div id="hint">Drag to turn &middot; pinch to zoom &middot; two fingers to move</div>
 <div id="extra"><a href="BWD_ABL_Golf_Room_3D_A.html">Golf option A</a><a href="BWD_ABL_Golf_Room_3D_B.html">Golf option B</a></div>
 <div id="bar"></div>
@@ -111,14 +114,13 @@ function floor(rects,key,z){
     for(let i=0;i<p.count;i++){uv.setXY(i,p.getX(i)/t.ts,-p.getZ(i)/t.ts)}
     scene.add(new THREE.Mesh(g,MAT[key]))})}
 floor([[532,432,650,665],[650,432,848,960],[848,654,968,960],[582,352,744,432],[547,352,582,432],[371,205,645,346]],'hw1');
-floor([[406,688,572,945],[367,812,406,945]],'turf',-18);
-floor([[585,740,626,945]],'dark');
+floor([[406,742,626,945],[406,688,572,742],[367,812,406,945]],'turf',-18);
 floor([[371,372,526,665],[314,496,355,632],[864,440,1020,638]],'conc');
 floor([[732,200,862,346],[750,346,862,428]],'rub');
 floor([[868,200,950,428],[651,205,718,346]],'tile');
 floor([[556,606,614,665]],'dark');
 /* golf pit sides: show the 18" drop under the steps and along the wine wall */
-scene.add(boxMesh(572,688,626,737,-18,-12,mStep));
+scene.add(boxMesh(608,690,626,737,-18,-6,mStep,true));scene.add(boxMesh(590,690,608,737,-18,-12,mStep,true));
 
 /* ---------- walls ---------- */
 const WALLS=[];
@@ -153,49 +155,141 @@ function block(r){const m=boxMesh(r[0],r[1],r[2],r[3],BASE,H,mBlock,true);m.posi
   WALLS.push({g,cx:(r[0]+r[2])/2,cy:(r[1]+r[3])/2,full:1,target:1,low:(36-BASE)/(H-BASE)})}
 
 /* Golf room and wine room */
-wall([349,945,648,963]);
+wall([349,943.5,650,961.5]);
 wall([349,812,367,945]);
-wall([367,795,406,812]);
+wall([367,793.25,406,811.25]);
 wall([388,688,406,795]);
-wall([377,665,650,688]);
-wall([626,736,648,945],[[750,935,0,100,'g']]);
-wall([572,736,585,945]);
-wall([572,736,626,742]);
+wall([355,664.2,650,688.5]);
+wall([625.25,736,648,945]);
 /* Mechanical and cold cellar */
-wall([355,190,371,640],[[565,600,0,84,'d']]);
-wall([306,632,355,640]);wall([306,488,355,496]);wall([306,488,314,640]);
+wall([355,184.5,371,665],[[565,600,0,84,'d']]);
+wall([306,632,355,640]);wall([306,489,355,494]);wall([306,488,314,640]);
 wall([526,372,532,665],[[528,600,0,84,'o']]);
-block([420,372,440,480]);
+block([420,372,436,480]);
 /* Bedroom 5, walk-in, ensuite */
-wall([355,190,726,205]);
-block([371,346,540,372]);
+wall([355,184.5,726,204.8]);
 wall([540,346,744,352],[[590,630,0,84,'d'],[660,700,0,84,'d']]);
-block([541,205,570,300]);block([620,205,645,300]);block([570,205,620,235]);
 wall([645,205,651,346],[[305,340,0,84,'d']]);
-wall([718,205,726,346]);
+wall([717.75,205,724.25,346]);
 wall([651,248,718,251],[[651,718,0,84,'g']]);
 /* Gym, shower, toilet, sauna */
-wall([744,348,750,428]);wall([726,346,750,352]);
-wall([744,425,866,432],[[757,828,0,84,'o']]);
-wall([726,184,962,200],[[748,864,72,108,'w']]);
-wall([862,338,868,428]);wall([862,200,868,283]);
+wall([743.75,348,748,428]);wall([726,346.75,750,351.25]);
+wall([744,427,866,437.8],[[757,828,0,84,'o']]);
+wall([726,184.5,966.5,200.8],[[748,864,72,108,'w']]);
+wall([864.5,338,869,428]);wall([864.5,200,869,283]);
 wall([868,376,950,382],[[871,908,0,84,'d']]);
 wall([868,282,950,288],[[871,908,0,84,'d']]);
-wall([950,200,962,436]);wall([862,428,962,436]);
+wall([950.5,184.5,966.5,443]);wall([856,427,966.5,443]);
 /* Walk-out */
-wall([848,435,864,654],[[515,565,0,84,'o'],[575,626,36,84,'w'],[440,484,36,84,'w']]);
-wall([848,638,1030,654]);wall([1020,436,1030,654]);wall([864,430,1030,438]);
+wall([840,435,856,654.2],[[515,565,0,84,'o'],[575,626,36,84,'w'],[440,484,36,84,'w']]);
+wall([848,638.25,1030,654.25]);wall([1019.25,436,1029.25,654]);wall([856,427,1029.5,443]);
 /* Rec room */
-wall([648,960,1000,974],[[703,846,36,84,'w']]);
-wall([968,654,998,960]);
+wall([648,960,1000.5,978],[[703,846,36,84,'w']]);
+wall([984,654,1000.5,960]);
 /* Elevator shaft */
-wall([550,606,556,665]);wall([614,606,620,665]);wall([556,600,614,606],[[570,600,0,84,'o']]);
+wall([553.8,606,560.5,665]);wall([612.2,606,619,665]);wall([553.8,603.2,619,611.5],[[570,600,0,84,'o']]);
+/* Display unit niche: walls on both sides (William, 22 Oct) */
+wall([648,606,654,665]);
 /* Stair */
-wall([541,430,547,526]);wall([668,430,674,526]);
+wall([541.5,430,546,526]);wall([667.5,430,674,526]);
 (function(){const n=10,run=9.4,rise=7.5,x1=612,x2=668;
   for(let i=0;i<n;i++){scene.add(boxMesh(x1,432+i*run,x2,432+(i+1)*run,0,rise*(i+1),mStep,true))}
   scene.add(boxMesh(547,526-0,668,532,0,rise*n,mBlock));
 })();
+
+/* ---------- millwork (Phase 2): simple volumes at drawn size, specified finishes ---------- */
+function grainTex(base,amp,seed){return tex((g,S,r)=>{g.fillStyle=base;g.fillRect(0,0,S,S);
+  for(let i=0;i<260;i++){const x=r()*S,w=1+r()*5;g.fillStyle='rgba('+(r()>.5?'255,255,255':'0,0,0')+','+(r()*amp)+')';g.fillRect(x,0,w,S)}
+  for(let i=0;i<70;i++){g.fillStyle='rgba(0,0,0,'+(r()*amp*.9)+')';g.fillRect(r()*S,r()*S,1+r()*2,20+r()*90)}},256)}
+function marbleTex(){return tex((g,S,r)=>{g.fillStyle='#f0eee9';g.fillRect(0,0,S,S);
+  for(let i=0;i<16;i++){g.strokeStyle='rgba(95,95,100,'+(.18+r()*.4)+')';g.lineWidth=.6+r()*2.6;g.beginPath();
+    let x=r()*S,y=0;g.moveTo(x,y);for(let k=0;k<7;k++){x+=(r()-.5)*90;y+=S/7;g.lineTo(x,y)}g.stroke()}},256)}
+const BASEMAT={
+  lam1:{t:grainTex('#d9c3a0',.10)},      /* LAM 1 Tafisa Sheer Beauty, light wood */
+  lam2:{t:grainTex('#54453c',.12)},      /* LAM 2 Loasan Smoked Eucalyptus LM-112, dark wood */
+  st2:{t:marbleTex()},                   /* ST 2 Arabescato Corchia */
+  st5:{t:noiseTex('#8f8a84',.18)}        /* ST 5 CIOT Da Vinci, honed */
+};
+const FLAT={lam3:0x16171a,lam4:0x1f2023,paint:0xe9e5dc,tv:0x0b0b0d,app:0xeeeeee};   /* LAM 3 Black Noir, LAM 4 Elegant Black */
+const MC={};
+function M(key,w,h){
+  if(FLAT[key]!==undefined){return MC[key]||(MC[key]=new THREE.MeshLambertMaterial({color:FLAT[key]}))}
+  const kk=key+Math.round(w/12)+'x'+Math.round(h/12);if(MC[kk])return MC[kk];
+  const t=BASEMAT[key].t.clone();t.needsUpdate=true;t.repeat.set(Math.max(1,w/24),Math.max(1,h/24));
+  return MC[kk]=new THREE.MeshLambertMaterial({map:t})}
+const mReveal=new THREE.MeshLambertMaterial({color:0x14100c});
+const PICK=[];
+function mw(x1,y1,x2,y2,z0,z1,key,stop){
+  const m=boxMesh(x1,y1,x2,y2,z0,z1,M(key,Math.max(x2-x1,y2-y1),z1-z0),true);
+  m.userData.stop=stop;scene.add(m);PICK.push(m);return m}
+function front(face,x1,y1,x2,y2,z0,z1,cols,rows,kind,stop){
+  const horiz=(face==='N'||face==='S'),a0=horiz?x1:y1,a1=horiz?x2:y2;
+  const fp=face==='N'?y2:face==='S'?y1:face==='E'?x2:x1,dir=(face==='N'||face==='E')?1:-1;
+  const put=(a,b,q0,q1,mat)=>{const lo=Math.min(fp,fp+dir*.5),hi=Math.max(fp,fp+dir*.5);
+    const m=horiz?boxMesh(a,lo,b,hi,q0,q1,mat):boxMesh(lo,a,hi,b,q0,q1,mat);m.userData.stop=stop;scene.add(m);PICK.push(m)};
+  const cw=(a1-a0)/cols,rh=(z1-z0)/rows;
+  for(let i=0;i<cols;i++)for(let j=0;j<rows;j++){
+    const a=a0+i*cw,b=a+cw,q0=z0+j*rh,q1=q0+rh;
+    if(kind==='glass'){put(a+1,b-1,q0+1,q1-1,mGlass);put(a,a+1.2,q0,q1,mFrame);put(b-1.2,b,q0,q1,mFrame);put(a,b,q0,q0+1.2,mFrame);put(a,b,q1-1.2,q1,mFrame)}
+    else{put(a,b,q1-.35,q1,mReveal);put(a,a+.35,q0,q1,mReveal)}}}
+function shelving(x1,y1,x2,y2,z0,z1,n,face,key,stop){
+  const t=.75,mat=M(key,Math.max(x2-x1,y2-y1),z1-z0);
+  const add=(a,b,c,d,e,f)=>{const m=boxMesh(a,b,c,d,e,f,mat,true);m.userData.stop=stop;scene.add(m);PICK.push(m)};
+  if(face==='E'||face==='W'){
+    if(face==='E')add(x1,y1,x1+t,y2,z0,z1);else add(x2-t,y1,x2,y2,z0,z1);
+    add(x1,y1,x2,y1+t,z0,z1);add(x1,y2-t,x2,y2,z0,z1);
+    for(let i=0;i<=n;i++){const z=z0+(z1-z0-t)*i/n;add(x1,y1,x2,y2,z,z+t)}
+  }else{
+    if(face==='N')add(x1,y1,x2,y1+t,z0,z1);else add(x1,y2-t,x2,y2,z0,z1);
+    add(x1,y1,x1+t,y2,z0,z1);add(x2-t,y1,x2,y2,z0,z1);
+    for(let i=0;i<=n;i++){const z=z0+(z1-z0-t)*i/n;add(x1,y1,x2,y2,z,z+t)}}}
+const TAGS=[];
+function tag(n,x,y,z,a){TAGS.push({n,a,p:W3(x,y,z)})}
+
+/* 1 Display cabinet beside the elevator, 4'-10 5/8" along the shaft wall */
+mw(620,606,648,664.6,0,96,'lam2',1);front('S',620,606,648,664.6,5,91,1,1,'glass',1);tag(1,634,636,102,'hall');
+/* 2 Projection wall 14'-7 1/2" x 9', curved marble slab, floating stone shelf */
+mw(966.5,722,984,897.5,0,108,'paint',2);mw(964.5,722,966.5,897.5,0,108,'st2',2);mw(961,722,966.5,897.5,40,44,'st2',2);tag(2,972,810,114,'rec');
+/* 3 Built-ins either side of the projection wall, 4'-11" wide, 9'-3 1/2" high */
+[[899,957.9],[663.1,722]].forEach(q=>{mw(966.5,q[0],984,q[1],0,36,'lam3',3);front('W',966.5,q[0],984,q[1],2,34,2,2,'drawer',3);
+  shelving(968.5,q[0],984,q[1],36,111.5,5,'W','lam3',3)});
+tag(3,975,690,118,'rec');tag(3,975,929,118,'rec');
+/* 4 Wet bar: lowers 109 3/4" x 24", uppers to 8'-10 1/4" with 12 glass doors, stone panel behind */
+mw(648,791,672,900.7,0,34,'lam2',4);front('E',648,791,672,900.7,2,32,6,2,'drawer',4);mw(648,791,672.5,900.7,34,36,'st2',4);
+mw(648,791,650,900.7,36,106.25,'st2',4);shelving(650,791,662,900.7,54,106.25,3,'E','lam2',4);front('E',650,791,662,900.7,54,106.25,6,2,'glass',4);tag(4,660,846,112,'rec');
+/* 5 Glass towers either side of the wet bar, 2'-10" and 2'-8", uppers 18" deep, lowers 22" deep */
+[[912,946],[746,778]].forEach(q=>{mw(648,q[0],670,q[1],0,36,'lam1',5);front('E',648,q[0],670,q[1],2,34,1,1,'drawer',5);
+  shelving(648,q[0],666,q[1],38,106.25,4,'E','lam1',5);front('E',648,q[0],666,q[1],38,106.25,1,1,'glass',5)});
+tag(5,659,929,112,'rec');tag(5,659,762,112,'rec');
+/* 6 Island 111" x 36", stone top by others */
+mw(709.5,789.5,745.5,900.5,0,34,'lam2',6);front('E',709.5,789.5,745.5,900.5,2,32,4,2,'drawer',6);mw(708.5,788.5,746.5,901.5,34,36,'st2',6);tag(6,727.5,845,44,'rec');
+/* 7 Golf room, as drawn by Sensus: built-in TV and wine fridges on the west wall (about 8 lin ft) */
+mw(406,690,428,771.5,0,96,'lam2',7);mw(428,706,429,752,36,80,'tv',7);tag(7,417,730,102,'golf');
+/* 8 Golf room stone island, about 4' x 18" */
+mw(464,705,482,752,0,34,'lam2',8);mw(462.5,703.5,483.5,753.5,34,36,'st5',8);tag(8,473,728,42,'golf');
+/* 9 Wine room (cold cellar): not drawn in the set, marker only */
+tag(9,330,560,110,'wine');
+/* 10 Mechanical storage: not drawn, marker only */
+tag(10,470,450,110,'mech');
+/* 11 Shower room vanity 4'-6" x 27 1/2" and glass uppers 4'-6" x 4' */
+mw(926,296,950,350,10,37.5,'lam2',11);front('W',926,296,950,350,12,36,2,4,'drawer',11);
+shelving(938,296,950,350,54,102,2,'W','lam2',11);front('W',938,296,950,350,54,102,4,1,'glass',11);tag(11,938,323,110,'gym');
+/* 12 Bedroom closet wall 171 1/2" wide, 6 glass doors */
+mw(371,346.75,542.5,372.75,0,118,'lam2',12);front('S',371,346.75,542.5,372.75,4,112,6,1,'glass',12);tag(12,456,360,124,'bed');
+/* 13 Walk-in closet, lowers 30" deep, hanging above */
+mw(541.5,205,572.2,300,0,108,'lam2',13);front('E',541.5,205,572.2,300,2,106,3,2,'drawer',13);
+mw(620,205,644.25,300,0,108,'lam2',13);front('W',620,205,644.25,300,2,106,3,2,'drawer',13);
+mw(572.2,200.8,620,232.75,0,108,'lam2',13);front('N',572.2,200.8,620,232.75,2,106,3,2,'drawer',13);tag(13,592,225,114,'bed');
+/* 14 Wall behind the bed, headboard panelling 171 1/2" x 48" with shelf, floating nightstands */
+mw(371,205,542.5,211,20,68,'lam2',14);mw(371,205,542.5,217,68,70,'lam2',14);
+mw(394,205,422,225,24,38,'lam2',14);mw(496,205,524,225,24,38,'lam2',14);tag(14,456,208,76,'bed');
+/* 15 Ensuite vanity 71 3/4" x 27 1/2" with glass tower 28 1/4" x 75" */
+mw(694,262,717.75,333.75,10,37.5,'lam2',15);front('W',694,262,717.75,333.75,12,36,4,2,'drawer',15);mw(694,262,718,333.75,37.5,39,'st2',15);
+shelving(705.75,300,717.75,328.25,42,117,3,'W','lam2',15);front('W',705.75,300,717.75,328.25,42,117,2,1,'glass',15);tag(15,706,298,122,'bed');
+/* 16 Laundry: washer and dryer surround 75 1/2" x 108", 33" deep, plinth drawers */
+mw(547,352,580,427.5,0,5,'lam2',16);mw(547,352,580,356,5,108,'lam2',16);mw(547,423.5,580,427.5,5,108,'lam2',16);
+mw(550,358,578,388,5,38,'app',16);mw(550,392,578,421,5,38,'app',16);shelving(547,356,580,423.5,64,108,2,'E','lam2',16);
+front('E',547,352,580,427.5,0,5,2,1,'drawer',16);tag(16,560,372,114,'laundry');
 
 /* ---------- areas ---------- */
 const AREAS={
@@ -203,7 +297,7 @@ const AREAS={
  hall:{name:'Stair hall and display',bb:[532,432,850,690],dir:[0,-1],th:0,ph:1.0,r:62,ex:[0,0]},
  rec:{name:'Rec room',bb:[648,654,998,963],dir:[0,-1],th:0,ph:1.0,r:80},
  golf:{name:'Golf room',bb:[367,688,626,945],dir:[0,-1],th:0,ph:1.0,r:62,golf:1},
- wine:{name:'Wine room',bb:[572,736,648,945],dir:[1,0],th:Math.PI/2,ph:1.0,r:48},
+ wine:{name:'Wine room',bb:[306,488,355,640],dir:[1,0],th:Math.PI/2,ph:1.0,r:40},
  mech:{name:'Mechanical',bb:[306,372,532,665],dir:[1,0],th:Math.PI/2,ph:1.0,r:58},
  gym:{name:'Gym and shower',bb:[726,184,962,436],dir:[0,1],th:Math.PI,ph:1.0,r:58},
  bed:{name:'Bedroom 5 with walk-in and ensuite',bb:[355,190,726,352],dir:[0,1],th:Math.PI,ph:1.0,r:64},
@@ -217,11 +311,14 @@ KEYS.forEach(k=>{const a=AREAS[k];if(k!=='all'){a.cx=(a.bb[0]+a.bb[2])/2;a.cy=(a
 /* labels */
 const LAB=[
  {t:'Stair hall and display',x:690,y:560,a:'hall'},{t:'Rec room',x:830,y:830,a:'rec'},{t:'Golf room',x:480,y:820,a:'golf'},
- {t:'Wine room',x:606,y:850,a:'wine'},{t:'Mechanical',x:445,y:520,a:'mech'},{t:'Gym',x:795,y:300,a:'gym'},
- {t:'Shower, toilet, sauna',x:908,y:300,a:'gym'},{t:'Bedroom 5',x:455,y:275,a:'bed'},{t:'Walk-in',x:595,y:268,a:'bed'},{t:'Ensuite',x:685,y:290,a:'bed'},
- {t:'Laundry',x:593,y:392,a:'laundry'},{t:'Elevator',x:585,y:635,minor:1},{t:'Cold cellar',x:330,y:560,minor:1},{t:'Walk-out',x:940,y:545,minor:1},{t:'Stair up',x:640,y:480,minor:1}];
+ {t:'Wine room',x:330,y:590,a:'wine'},{t:'Mechanical',x:445,y:560,a:'mech'},{t:'Gym',x:795,y:300,a:'gym'},
+ {t:'Shower, toilet, sauna',x:908,y:300,a:'gym'},{t:'Bedroom 5',x:455,y:300,a:'bed'},{t:'Walk-in',x:595,y:275,a:'bed'},{t:'Ensuite',x:672,y:240,a:'bed'},
+ {t:'Laundry',x:615,y:395,a:'laundry'},{t:'Elevator',x:585,y:635,minor:1},{t:'Walk-out',x:940,y:545,minor:1},{t:'Stair up',x:640,y:480,minor:1}];
 const labDiv=document.getElementById('labels');
 LAB.forEach(l=>{const d=document.createElement('div');d.className='lb'+(l.minor?' minor':'');d.textContent=l.t;labDiv.appendChild(d);l.d=d;l.p=W3(l.x,l.y,(H+6))});
+
+const tagDiv=document.getElementById('tags');
+TAGS.forEach(t=>{const a=document.createElement('a');a.className='tag';a.textContent=t.n;a.href='BWD_ABL_WalkRound.html#s'+t.n;a.title='Stop '+t.n+' in the walk-round';tagDiv.appendChild(a);t.d=a});
 
 /* ---------- camera state and orbit ---------- */
 const S={tx:0,ty:0,tz:0,r:132,th:-.25,ph:.5};
@@ -253,8 +350,13 @@ function angDelta(a,b){let d=b-a;while(d>Math.PI)d-=2*Math.PI;while(d<-Math.PI)d
 /* pointer input: one finger turns, two fingers pinch and move */
 const ptr=new Map();let last=null;
 function stop(){fly=null}
-cv.addEventListener('pointerdown',e=>{cv.setPointerCapture(e.pointerId);ptr.set(e.pointerId,{x:e.clientX,y:e.clientY});stop();last=null});
-cv.addEventListener('pointerup',e=>{ptr.delete(e.pointerId);last=null});
+cv.addEventListener('pointerdown',e=>{cv.setPointerCapture(e.pointerId);ptr.set(e.pointerId,{x:e.clientX,y:e.clientY});stop();last=null;dn=ptr.size===1?{x:e.clientX,y:e.clientY,t:performance.now()}:null});
+let dn=null;
+cv.addEventListener('pointerup',e=>{const was=ptr.size;ptr.delete(e.pointerId);last=null;
+  if(was===1&&dn&&Math.hypot(e.clientX-dn.x,e.clientY-dn.y)<7&&performance.now()-dn.t<450){
+    const rc=new THREE.Raycaster();rc.setFromCamera(new THREE.Vector2(e.clientX/window.innerWidth*2-1,-(e.clientY/window.innerHeight)*2+1),cam);
+    const h=rc.intersectObjects(PICK,false)[0];if(h&&h.object.userData.stop)location.href='BWD_ABL_WalkRound.html#s'+h.object.userData.stop}
+  dn=null});
 cv.addEventListener('pointercancel',e=>{ptr.delete(e.pointerId);last=null});
 function pan(dx,dy){const k=S.r*.0016;
   const rx=Math.cos(S.th),rz=-Math.sin(S.th);          /* screen right in world */
@@ -292,6 +394,8 @@ function tick(now){
   WALLS.forEach(w=>{const d=w.target-w.full;if(Math.abs(d)>.002){w.full+=d*Math.min(1,dt*7);w.g.scale.y=w.full}else if(w.full!==w.target){w.full=w.target;w.g.scale.y=w.full}});
   applyCam();ren.render(scene,cam);
   const W=window.innerWidth,Hh=window.innerHeight;
+  TAGS.forEach(l=>{const v=l.p.clone().project(cam);const show=v.z<1&&(curArea==='all'||l.a===curArea);
+    l.d.style.opacity=show?1:0;l.d.style.pointerEvents=show?'auto':'none';if(show){l.d.style.left=((v.x+1)/2*W)+'px';l.d.style.top=((1-v.y)/2*Hh)+'px'}});
   LAB.forEach(l=>{const v=l.p.clone().project(cam);const show=v.z<1&&(curArea==='all'||l.a===curArea);
     l.d.style.opacity=show?1:0;if(show){l.d.style.left=((v.x+1)/2*W)+'px';l.d.style.top=((1-v.y)/2*Hh)+'px'}});
   requestAnimationFrame(tick)}
