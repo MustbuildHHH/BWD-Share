@@ -290,11 +290,11 @@ function bottles(x0,x1,z,y){for(let x=x0+.25;x<x1-.2;x+=.35){const b=new THREE.M
 
 const LAYOUTS={
  open:{desc:'L bar with stone counter and backsplash. The sink and wine fridges are on the west leg, and no south leg, so the swing stays clear; the island sits south of the bay. Glass front uppers run the full west wall from the couch corner to the south wall. Stats TV on a full height wood panel on the east wall. Built-in couch on the west wall, flag wall beside it.',
-   lf:{base:"10'-3\" west leg, island 5'-0\"",upper:"8'-10\" glass uppers"}},
+   lf:{base:"10'-3\" west leg, island 5'-0\"",upper:"10'-0\" glass uppers"}},
  tall:{desc:'Same L bar, with glass front uppers to the ceiling on both legs, including over the sink. More storage and display, closer to the look in their render.',
-   lf:{base:"10'-3\" west leg, island 5'-0\"",upper:"8'-10\" uppers and talls"}},
+   lf:{base:"10'-3\" west leg, island 5'-0\"",upper:"10'-0\" uppers and talls"}},
  wrap:{desc:'Full height bar plus towers with a bridge cabinet framing the built-in couch. The most millwork, and the room reads as one fitted space.',
-   lf:{base:"10'-3\" west leg, island 5'-0\"",upper:"19'-10\" uppers and talls"}}
+   lf:{base:"10'-3\" west leg, island 5'-0\"",upper:"21'-0\" uppers and talls"}}
 };
 
 function build(layout){
@@ -356,11 +356,11 @@ function build(layout){
     box(x0+t,x1-t,y1-t-.03,y1-t,zb-.2,zb-.1,M.led,mill,false); box(x0+.2,x1-.2,y0-.02,y0,za+.15,za+.3,M.led,mill,false);
   }
   if(layout==='open'){
-    upperRunZ(11.2,D-1.25,4.6,8.0);
+    upperRunZ(11.2,D-.1,4.6,8.0);
     for(let i=0;i<2;i++)for(let j=0;j<2;j++){const x=10.2+i*1.5,y=4.8+j*1.8;box(x,x+1.45,y,y+1.45,D-.12,D,M.frame,mill);box(x+.12,x+1.33,y+.12,y+1.33,D-.14,D-.11,M.art,mill,false);}
   } else {
     const y0=BASE+CT+1.6;
-    upperRunZ(11.2,D-1.25,y0,H);
+    upperRunZ(11.2,D-.1,y0,H);
   }
   // island 5' x 1'-7" waterfall stone, east-west, stools on the south side
   box(8.6,13.4,TOE,BASE,16.6,18.0,M.wood,mill); box(8.65,13.35,0,TOE,16.65,17.95,M.black,mill);
