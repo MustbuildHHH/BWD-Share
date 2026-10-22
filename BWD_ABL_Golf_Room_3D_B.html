@@ -319,12 +319,12 @@ function build(layout){
    const dr=new THREE.Mesh(new THREE.CylinderGeometry(.09,.09,.02,20),M.metal);dr.position.set(4.45,y1-d+.04,15.6);mill.add(dr);}
   {const fx=3.7,fz=15.6,fb=ct1;
    const base=new THREE.Mesh(new THREE.CylinderGeometry(.11,.13,.12,24),M.brass);base.position.set(fx,fb+.06,fz);mill.add(base);
-   const curve=new THREE.CatmullRomCurve3([new THREE.Vector3(fx,fb+.1,fz),new THREE.Vector3(fx,fb+1.0,fz),new THREE.Vector3(fx,fb+1.45,fz),
-     new THREE.Vector3(fx+.18,fb+1.62,fz),new THREE.Vector3(fx+.5,fb+1.55,fz),new THREE.Vector3(fx+.68,fb+1.25,fz),new THREE.Vector3(fx+.7,fb+1.05,fz)]);
+   const curve=new THREE.CatmullRomCurve3([new THREE.Vector3(fx,fb+.1,fz),new THREE.Vector3(fx,fb+.62,fz),new THREE.Vector3(fx,fb+.9,fz),
+     new THREE.Vector3(fx+.14,fb+1.02,fz),new THREE.Vector3(fx+.4,fb+.98,fz),new THREE.Vector3(fx+.56,fb+.8,fz),new THREE.Vector3(fx+.58,fb+.66,fz)]);
    mill.add(new THREE.Mesh(new THREE.TubeGeometry(curve,64,.055,16,false),M.brass));
-   const tip=new THREE.Mesh(new THREE.CylinderGeometry(.065,.06,.14,20),M.brass);tip.position.set(fx+.7,fb+1.0,fz);mill.add(tip);
-   box(fx-.03,fx+.03,fb+.62,fb+.68,fz+.06,fz+.45,M.brass,mill);
-   const hub=new THREE.Mesh(new THREE.CylinderGeometry(.07,.07,.14,20),M.brass);hub.rotation.x=Math.PI/2;hub.position.set(fx,fb+.65,fz+.08);mill.add(hub);}
+   const tip=new THREE.Mesh(new THREE.CylinderGeometry(.06,.055,.12,20),M.brass);tip.position.set(fx+.58,fb+.62,fz);mill.add(tip);
+   box(fx-.03,fx+.03,fb+.4,fb+.46,fz+.06,fz+.4,M.brass,mill);
+   const hub=new THREE.Mesh(new THREE.CylinderGeometry(.07,.07,.14,20),M.brass);hub.rotation.x=Math.PI/2;hub.position.set(fx,fb+.43,fz+.08);mill.add(hub);}
   box(3.33,3.42,ct1,layout==='open'?4.6:BASE+CT+1.6,11.0,D,M.stone,mill,false);
 
   const STONE=stoneOn;
