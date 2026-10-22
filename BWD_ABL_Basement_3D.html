@@ -249,7 +249,31 @@ function tag(n,x,y,z,a){TAGS.push({n,a,p:W3(x,y,z)})}
 /* 1 Display cabinet beside the elevator, 4'-10 5/8" along the shaft wall */
 mw(620,606,648,664.6,0,96,'lam2',1);front('S',620,606,648,664.6,5,91,1,1,'glass',1);tag(1,634,636,102,'hall');
 /* 2 Projection wall 14'-7 1/2" x 9', curved marble slab, floating stone shelf */
-mw(966.5,722,984,897.5,0,108,'paint',2);mw(964.5,722,966.5,897.5,0,108,'st2',2);mw(961,722,966.5,897.5,40,44,'st2',2);tag(2,972,810,114,'rec');
+(function(){
+  const XB=984,Y0=722,Y1=897.5,YM=(Y0+Y1)/2,HF=(Y1-Y0)/2,DE=10,DM=14;
+  const d=y=>DE+(DM-DE)*(1-Math.pow((y-YM)/HF,2));            /* furred wall bows from 10" at the ends to 14" at the middle, plus 1 1/2" slab */
+  const N=28,ys=[];for(let i=0;i<=N;i++)ys.push(Y0+(Y1-Y0)*i/N);
+  const sx=x=>(x-CX)*IN,sy=y=>(y-CY)*IN;
+  function solid(shape,z0,z1,mat,edges){
+    const g=new THREE.ExtrudeGeometry(shape,{depth:(z1-z0)*IN,bevelEnabled:false});g.rotateX(-Math.PI/2);g.translate(0,z0*IN,0);
+    const m=new THREE.Mesh(g,mat);if(edges)m.add(new THREE.LineSegments(new THREE.EdgesGeometry(g,40),mEdge));
+    m.userData.stop=2;scene.add(m);PICK.push(m);return m}
+  function band(o0,o1,z0,z1,mat,edges){                    /* strip standing o0..o1 inches proud of the furred face */
+    const sh=new THREE.Shape();sh.moveTo(sx(XB-d(ys[0])-o1),sy(ys[0]));
+    for(let i=0;i<=N;i++)sh.lineTo(sx(XB-d(ys[i])-o1),sy(ys[i]));
+    for(let i=N;i>=0;i--)sh.lineTo(sx(XB-d(ys[i])-o0),sy(ys[i]));
+    return solid(sh,z0,z1,mat,edges)}
+  const t=BASEMAT.st2.t.clone();t.needsUpdate=true;t.repeat.set(.5,.5);const mSlab=new THREE.MeshLambertMaterial({map:t});
+  const mFur=new THREE.MeshLambertMaterial({color:0xe9e5dc});
+  const body=new THREE.Shape();body.moveTo(sx(XB),sy(Y0));
+  for(let i=0;i<=N;i++)body.lineTo(sx(XB-d(ys[i])),sy(ys[i]));body.lineTo(sx(XB),sy(Y1));
+  solid(body,4,108,mFur,false);                                   /* furred wall, floats 4" off the floor on a dark plinth */
+  band(0,1.5,4,104,mSlab,true);                                   /* curved marble slab on the face */
+  band(0,6,40,44,mSlab,true);                                     /* floating stone shelf, 4" thick, 6" proud of the face */
+  band(0,1.5,104,108,new THREE.MeshBasicMaterial({color:0xffe9b8}),false);   /* LED glow at the head */
+  scene.add(boxMesh(XB-d(YM)+3,Y0+3,XB,Y1-3,0,4,mReveal));        /* shadow gap under the wall */
+})();
+tag(2,972,810,114,'rec');
 /* 3 Built-ins either side of the projection wall, 4'-11" wide, 9'-3 1/2" high */
 [[899,957.9],[663.1,722]].forEach(q=>{mw(966.5,q[0],984,q[1],0,36,'lam3',3);front('W',966.5,q[0],984,q[1],2,34,2,2,'drawer',3);
   shelving(968.5,q[0],984,q[1],36,111.5,5,'W','lam3',3)});
