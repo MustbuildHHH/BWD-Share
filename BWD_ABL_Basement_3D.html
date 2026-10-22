@@ -269,8 +269,8 @@ function tag(n,x,y,z,a){TAGS.push({n,a,p:W3(x,y,z)})}
 shelving(620,606,648,664.6,0,96,5,'E','lam2',1);front('E',620,606,648,664.6,4,92,2,1,'glass',1);tag(1,634,636,102,'hall');
 /* 2 Projection wall 14'-7 1/2" x 9', curved marble slab, floating stone shelf */
 (function(){
-  const XB=984,Y0=722,Y1=897.5,YM=(Y0+Y1)/2,HF=(Y1-Y0)/2,DE=10,DM=14;
-  const d=y=>DE+(DM-DE)*(1-Math.pow((y-YM)/HF,2));            /* furred wall bows from 10" at the ends to 14" at the middle, plus 1 1/2" slab */
+  const XB=984,Y0=722,Y1=897.5,YM=(Y0+Y1)/2,HF=(Y1-Y0)/2,DE=3,DM=10;
+  const d=y=>DE+(DM-DE)*(1-Math.pow((y-YM)/HF,2));            /* thin furred wall bows from 3" at the ends to 10" at the middle so the curve reads */
   const N=28,ys=[];for(let i=0;i<=N;i++)ys.push(Y0+(Y1-Y0)*i/N);
   const sx=x=>(x-CX)*IN,sy=y=>(y-CY)*IN;
   function solid(shape,z0,z1,mat,edges){
@@ -282,15 +282,13 @@ shelving(620,606,648,664.6,0,96,5,'E','lam2',1);front('E',620,606,648,664.6,4,92
     for(let i=0;i<=N;i++)sh.lineTo(sx(XB-d(ys[i])-o1),sy(ys[i]));
     for(let i=N;i>=0;i--)sh.lineTo(sx(XB-d(ys[i])-o0),sy(ys[i]));
     return solid(sh,z0,z1,mat,edges)}
-  const t=BASEMAT.st2.t.clone();t.needsUpdate=true;t.repeat.set(.5,.5);const mSlab=new THREE.MeshLambertMaterial({map:t});
-  const mFur=new THREE.MeshLambertMaterial({color:0xe9e5dc});
+  const t=BASEMAT.st2.t.clone();t.needsUpdate=true;t.repeat.set(1.5,.6);const mSlab=new THREE.MeshLambertMaterial({map:t});
+  const mFur=new THREE.MeshLambertMaterial({color:0xf4f2ed});
   const body=new THREE.Shape();body.moveTo(sx(XB),sy(Y0));
   for(let i=0;i<=N;i++)body.lineTo(sx(XB-d(ys[i])),sy(ys[i]));body.lineTo(sx(XB),sy(Y1));
-  solid(body,4,108,mFur,false);                                   /* furred wall, floats 4" off the floor on a dark plinth */
-  band(0,1.5,4,104,mSlab,true);                                   /* curved marble slab on the face */
-  band(0,6,40,44,mSlab,true);                                     /* floating stone shelf, 4" thick, 6" proud of the face */
-  band(0,1.5,104,108,new THREE.MeshBasicMaterial({color:0xffe9b8}),false);   /* LED glow at the head */
-  scene.add(boxMesh(XB-d(YM)+3,Y0+3,XB,Y1-3,0,4,mReveal));        /* shadow gap under the wall */
+  solid(body,0,108,mFur,false);                                   /* smooth matte projector wall, full height, no slab */
+    band(0,12,0,15,mSlab,true);                                     /* marble hearth only, 15" high, 12" proud of the face */
+  band(0,1,104.5,107,new THREE.MeshBasicMaterial({color:0xfff4e2}),false);   /* soft LED line at the head */
 })();
 tag(2,972,810,114,'rec');
 /* 3 Built-ins either side of the projection wall, 4'-11" wide, 9'-3 1/2" high */
