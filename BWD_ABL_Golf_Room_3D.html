@@ -28,8 +28,8 @@ iframe{border:0;width:100%;height:calc(100vh - 78px);display:block;background:va
 </div>
 <iframe id="f" src="BWD_ABL_Golf_Room_3D_A.html" allow="fullscreen"></iframe>
 <script>
-const D={A:'Option A, first idea: screen on the east wall, golfer hits east. Bar on the south and west walls, island, TV panel at the front edge of the grass, couch in the west recess.',
-         B:'Option B: screen on the north wall, golfer hits north. Glass guard along the stair with a return at the landing, stats TV on the east wall, flag wall between the couch and the bay, bar shortened for the stair exit.'};
+const D={A:'Option A, first idea: screen on the east wall, golfer hits east. Bar on the south and west walls, island, TV panel at the front edge of the grass, couch in the west recess. Both options: three steps down into the room at the south-east corner with a glass guard.',
+         B:'Option B: screen on the north wall, golfer hits north. Stats TV on the east wall, flag wall between the couch and the bay, no south bar leg so the swing stays clear.'};
 const f=document.getElementById('f'),desc=document.getElementById('desc');
 function go(o){document.querySelectorAll('#bar button').forEach(b=>b.classList.toggle('on',b.dataset.o===o));desc.textContent=D[o];f.src='BWD_ABL_Golf_Room_3D_'+o+'.html';}
 document.querySelectorAll('#bar button').forEach(b=>b.onclick=()=>go(b.dataset.o));
