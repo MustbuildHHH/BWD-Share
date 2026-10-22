@@ -269,8 +269,8 @@ function tag(n,x,y,z,a){TAGS.push({n,a,p:W3(x,y,z)})}
 shelving(620,606,648,664.6,0,96,5,'E','lam2',1);front('E',620,606,648,664.6,4,92,2,1,'glass',1);tag(1,634,636,102,'hall');
 /* 2 Projection wall 14'-7 1/2" x 9', curved marble slab, floating stone shelf */
 (function(){
-  const XB=984,Y0=722,Y1=897.5,YM=(Y0+Y1)/2,HF=(Y1-Y0)/2,DE=3,DM=10;
-  const d=y=>DE+(DM-DE)*(1-Math.pow((y-YM)/HF,2));            /* thin furred wall bows from 3" at the ends to 10" at the middle so the curve reads */
+  const XB=984,Y0=722,Y1=897.5,YM=(Y0+Y1)/2,HF=(Y1-Y0)/2,DE=17.5,DM=4;
+  const d=y=>DM+(DE-DM)*Math.pow(Math.abs((y-YM)/HF),3.2);            /* thin flat wall (4") across the middle, flaring out at both ends to meet the flanking cabinet fronts (17 1/2") */
   const N=28,ys=[];for(let i=0;i<=N;i++)ys.push(Y0+(Y1-Y0)*i/N);
   const sx=x=>(x-CX)*IN,sy=y=>(y-CY)*IN;
   function solid(shape,z0,z1,mat,edges){
@@ -287,7 +287,7 @@ shelving(620,606,648,664.6,0,96,5,'E','lam2',1);front('E',620,606,648,664.6,4,92
   const body=new THREE.Shape();body.moveTo(sx(XB),sy(Y0));
   for(let i=0;i<=N;i++)body.lineTo(sx(XB-d(ys[i])),sy(ys[i]));body.lineTo(sx(XB),sy(Y1));
   solid(body,0,108,mFur,false);                                   /* smooth matte projector wall, full height, no slab */
-    band(0,12,0,15,mSlab,true);                                     /* marble hearth only, 15" high, 12" proud of the face */
+    band(0,10,0,15,mSlab,true);                                     /* marble hearth only, 15" high, 10" proud of the face */
   band(0,1,104.5,107,new THREE.MeshBasicMaterial({color:0xfff4e2}),false);   /* soft LED line at the head */
 })();
 tag(2,972,810,114,'rec');
