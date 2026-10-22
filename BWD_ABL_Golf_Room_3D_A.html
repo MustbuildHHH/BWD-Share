@@ -261,30 +261,30 @@ function bottles(x0,x1,z,y){for(let x=x0+.25;x<x1-.2;x+=.35){const b=new THREE.M
 
 const LAYOUTS={
  open:{desc:'L bar with stone counter and backsplash. The sink and wine fridges are on the west leg, and a longer, shallower south leg runs to the art wall. Uppers over the sink with black metal framed glass, floating shelves beyond. A wood panel at the front edge of the grass carries the big TV on a long reach arm. Built-in couch on the west wall.',
-   lf:{base:"34'-0\"",upper:"11'-2\" floating shelves"}},
+   lf:{base:"34'-2\"",upper:"11'-2\" floating shelves"}},
  tall:{desc:'Same L bar, with glass front uppers to the ceiling on both legs, including over the sink. More storage and display, closer to the look in their render.',
-   lf:{base:"34'-0\"",upper:"15'-8\" uppers and talls"}},
+   lf:{base:"34'-2\"",upper:"16'-2\" uppers and talls"}},
  wrap:{desc:'Full height bar plus towers with a bridge cabinet framing the built-in couch. The most millwork, and the room reads as one fitted space.',
-   lf:{base:"34'-0\"",upper:"26'-8\" uppers and talls"}}
+   lf:{base:"34'-2\"",upper:"27'-2\" uppers and talls"}}
 };
 
 function build(layout){
   scene.remove(mill);mill=new THREE.Group();scene.add(mill);
   // L bar: west leg x 3.33-5.33 (24" deep, sink on rough-in, wine fridges); south leg x 5.33-15.5, 20" deep
   const SF=D-1.67;
-  baseRun(3.33,5.33,14.4,14.85,'z'); baseRun(3.33,5.33,16.35,D,'z'); baseRun(5.33,15.5,SF,D,'x');
+  baseRun(3.33,5.33,11.0,14.85,'z'); baseRun(3.33,5.33,16.35,D,'z'); baseRun(5.33,13.4,SF,D,'x');
   // sink base: carcass dropped below the bowl, full height door face
   box(3.38,5.28,0,TOE,14.85,16.35,M.black,mill); box(3.33,5.33,TOE,BASE-.68,14.85,16.35,M.wood,mill); box(5.23,5.33,TOE,BASE,14.85,16.35,M.wood,mill);
-  doorLinesZ(14.4,17.4,5.33,TOE,BASE,1.5,1); doorLines(5.33,15.5,SF,TOE,BASE,1.7,-1);
+  doorLinesZ(11.0,17.4,5.33,TOE,BASE,1.6,1); doorLines(5.33,13.4,SF,TOE,BASE,1.6,-1);
   // wine fridges (2 x 15") in west leg, glass fronts facing east
   box(5.3,5.36,TOE,BASE-.05,17.45,19.9,M.glass,mill,false);
   for(const y of [1.0,1.95]){for(let z=17.7;z<19.8;z+=.35){const b=new THREE.Mesh(new THREE.CylinderGeometry(.11,.11,.9,10),M.bottle);b.rotation.z=Math.PI/2;b.position.set(4.9,y+.3,z);mill.add(b);}}
   box(5.3,5.36,TOE,BASE,18.65,18.7,M.metal,mill,false);
   // stone counter L with undermount sink opening (sink x 3.95-4.95, z 14.85-16.35)
   const ct0=BASE,ct1=BASE+CT;
-  box(3.33,3.95,ct0,ct1,14.3,D,M.stone,mill); box(4.95,5.45,ct0,ct1,14.3,D,M.stone,mill);
-  box(3.95,4.95,ct0,ct1,14.3,14.85,M.stone,mill); box(3.95,4.95,ct0,ct1,16.35,D,M.stone,mill);
-  box(5.45,15.6,ct0,ct1,SF-.12,D,M.stone,mill);
+  box(3.33,3.95,ct0,ct1,11.0,D,M.stone,mill); box(4.95,5.45,ct0,ct1,11.0,D,M.stone,mill);
+  box(3.95,4.95,ct0,ct1,11.0,14.85,M.stone,mill); box(3.95,4.95,ct0,ct1,16.35,D,M.stone,mill);
+  box(5.45,13.5,ct0,ct1,SF-.12,D,M.stone,mill);
   {const d=.62,y1=ct0-.005;box(3.97,4.93,y1-d,y1-d+.03,14.87,16.33,M.steel,mill,false);
    box(3.97,4.0,y1-d,y1,14.87,16.33,M.steel,mill,false);box(4.9,4.93,y1-d,y1,14.87,16.33,M.steel,mill,false);
    box(3.97,4.93,y1-d,y1,14.87,14.9,M.steel,mill,false);box(3.97,4.93,y1-d,y1,16.3,16.33,M.steel,mill,false);
@@ -297,8 +297,8 @@ function build(layout){
    const tip=new THREE.Mesh(new THREE.CylinderGeometry(.065,.06,.14,20),M.brass);tip.position.set(fx+.7,fb+1.0,fz);mill.add(tip);
    box(fx-.03,fx+.03,fb+.62,fb+.68,fz+.06,fz+.45,M.brass,mill);
    const hub=new THREE.Mesh(new THREE.CylinderGeometry(.07,.07,.14,20),M.brass);hub.rotation.x=Math.PI/2;hub.position.set(fx,fb+.65,fz+.08);mill.add(hub);}
-  box(3.33,3.42,ct1,layout==='open'?4.6:BASE+CT+1.6,14.4,D,M.stone,mill,false);
-  box(5.33,15.5,ct1,layout==='open'?4.6:BASE+CT+1.6,D-.09,D,M.stone,mill,false);
+  box(3.33,3.42,ct1,layout==='open'?4.6:BASE+CT+1.6,11.0,D,M.stone,mill,false);
+  box(5.33,13.4,ct1,layout==='open'?4.6:BASE+CT+1.6,D-.09,D,M.stone,mill,false);
 
   const STONE=stoneOn;
   function upperRunZ(z0,z1,y0,y1){
@@ -325,14 +325,14 @@ function build(layout){
     box(x0+t,x1-t,y1-t-.03,y1-t,zb-.2,zb-.1,M.led,mill,false); box(x0+.2,x1-.2,y0-.02,y0,za+.15,za+.3,M.led,mill,false);
   }
   if(layout==='open'){
-    upperRunZ(14.4,17.6,4.6,8.0);
+    upperRunZ(11.2,17.6,4.6,8.0);
     [4.6,5.9,7.2].forEach(y=>shelfLED(3.33,4.4,17.7,D,y));
     [4.4,5.8].forEach(y=>shelfLED(5.4,11.2,D-1.05,D,y));
     bottles(3.6,4.3,19.0,4.72);
     for(let i=0;i<2;i++)for(let j=0;j<2;j++){const x=11.8+i*1.8,y=4.8+j*1.8;box(x,x+1.45,y,y+1.45,D-.12,D,M.frame,mill);box(x+.12,x+1.33,y+.12,y+1.33,D-.14,D-.11,M.art,mill,false);}
   } else {
     const y0=BASE+CT+1.6;
-    upperRunZ(14.4,D-1.25,y0,H); upperRunX(3.33,15.5,y0,H);
+    upperRunZ(11.2,D-1.25,y0,H); upperRunX(3.33,13.4,y0,H);
   }
   // island 5' x 1'-7" waterfall stone, east-west, stools on south side
   box(8.6,13.4,TOE,BASE,13.6,15.0,M.wood,mill); box(8.65,13.35,0,TOE,13.65,14.95,M.black,mill);
