@@ -183,7 +183,6 @@ const fixed=new THREE.Group();scene.add(fixed);
 const BX0=7.5, BZ0=0, BZ1=13.3, SCRW=12.5, SCRC=6.75;
 {const e1=box(W-.35,W,0,H,0,17.6,M.black,fixed,false);walls.push({m:e1,p:new THREE.Vector3(W,0,0),n:new THREE.Vector3(-1,0,0)});
  const n1=box(BX0,W,0,H,0,.2,M.black,fixed,false);walls.push({m:n1,p:new THREE.Vector3(0,0,0),n:new THREE.Vector3(0,0,1)});
- box(16.5,W,0,H,BZ1,BZ1+.3,M.black,fixed,false);
  const cg=new THREE.Group();box(BX0,W,H-.3,H,BZ0,BZ1+.3,M.black,cg,false);
  box(BX0,BX0+.35,H-1.3,H,BZ0,BZ1+.3,M.black,cg,false);
  box(BX0,W,H-1.3,H,BZ1,BZ1+.3,M.black,cg,false);
