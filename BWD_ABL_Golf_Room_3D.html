@@ -1,0 +1,39 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Golf Room 3D · Options A and B</title>
+<style>
+:root{--wal:#8A5A2E;--ink:#1B2A32;--grey:#6B7280;--bg:#faf8f5;--line:#d9d4cc}
+*{box-sizing:border-box}
+html,body{margin:0;height:100%;background:var(--bg);color:var(--ink);font-family:Calibri,Carlito,"Segoe UI",Arial,sans-serif}
+#bar{display:flex;align-items:center;gap:10px;padding:8px 14px;border-bottom:1px solid var(--line);background:#fff;flex-wrap:wrap}
+.brand{font-size:20px;font-weight:700;color:var(--wal);margin-right:6px}
+.sub{font-size:13px;color:var(--grey);margin-right:auto}
+button{border:1px solid var(--wal);background:#fff;color:var(--wal);padding:7px 14px;font:inherit;font-size:14px;cursor:pointer;border-radius:3px}
+button.on{background:var(--wal);color:#fff}
+#desc{font-size:13px;color:var(--grey);width:100%}
+iframe{border:0;width:100%;height:calc(100vh - 78px);display:block;background:var(--bg)}
+@media(max-width:800px){iframe{height:calc(100vh - 112px)}}
+</style>
+</head>
+<body>
+<div id="bar">
+  <span class="brand">byWilliam</span>
+  <span class="sub">Golf simulator room · 12 Abilene Drive</span>
+  <button data-o="A" class="on">Option A</button>
+  <button data-o="B">Option B</button>
+  <div id="desc"></div>
+</div>
+<iframe id="f" src="BWD_ABL_Golf_Room_3D_A.html" allow="fullscreen"></iframe>
+<script>
+const D={A:'Option A, first idea: screen on the east wall, golfer hits east. Bar on the south and west walls, island, TV panel at the front edge of the grass, couch in the west recess.',
+         B:'Option B: screen on the north wall, golfer hits north. Glass guard along the stair with a return at the landing, stats TV on the east wall, flag wall between the couch and the bay, bar shortened for the stair exit.'};
+const f=document.getElementById('f'),desc=document.getElementById('desc');
+function go(o){document.querySelectorAll('#bar button').forEach(b=>b.classList.toggle('on',b.dataset.o===o));desc.textContent=D[o];f.src='BWD_ABL_Golf_Room_3D_'+o+'.html';}
+document.querySelectorAll('#bar button').forEach(b=>b.onclick=()=>go(b.dataset.o));
+desc.textContent=D.A;
+</script>
+</body>
+</html>
