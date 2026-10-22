@@ -47,6 +47,12 @@ canvas{display:block;width:100%;height:100%}
     <button data-f="char">Charcoal</button>
   </div>
 
+  <div class="label">Floor</div>
+  <div class="btns" id="floors">
+    <button data-fl="wood" class="on">Wood</button>
+    <button data-fl="grey">Grey</button>
+  </div>
+
   <div class="label">View</div>
   <div class="btns" id="views">
     <button data-v="entry" class="on">From the entry</button>
@@ -123,6 +129,11 @@ const tvTex=canvasTex(512,288,(g,w,h)=>{g.fillStyle='#10161b';g.fillRect(0,0,w,h
   g.font='20px Arial';['Driver   avg 246 yd','7 iron    avg 158 yd','Club path  +1.8','Face to path  -0.6'].forEach((t,i)=>g.fillText(t,24,92+i*42));
   g.fillStyle='#6fa645';[150,110,180,135,160].forEach((v,i)=>g.fillRect(330+i*30,250-v*.8,20,v*.8));});
 
+const greyTex=canvasTex(1024,1024,(g,w,h)=>{const r=rnd(9);const tw=w/2,th=h/2;
+  for(let i=0;i<2;i++)for(let j=0;j<2;j++){const c=168+r()*14|0;g.fillStyle=`rgb(${c},${c},${c-2})`;g.fillRect(i*tw,j*th,tw,th);
+    for(let k=0;k<900;k++){const a=r();g.fillStyle=a<.5?'rgba(255,255,255,.06)':'rgba(0,0,0,.05)';g.fillRect(i*tw+r()*tw,j*th+r()*th,1+r()*3,1+r()*3);}
+    g.fillStyle='rgba(60,60,60,.35)';g.fillRect(i*tw,j*th,tw,3);g.fillRect(i*tw,j*th,3,th);}},[5.4,5.4]);
+function setFloor(f){M.floor.map=f==='grey'?greyTex:floorTex;M.floor.needsUpdate=true;}
 // ---------- materials ----------
 const M={
   wall:new THREE.MeshStandardMaterial({color:'#efeae2',roughness:.95}),
@@ -278,30 +289,30 @@ function shelfLED(x0,x1,z0,z1,y){box(x0,x1,y,y+.12,z0,z1,M.wood,mill);box(x0+.1,
 function bottles(x0,x1,z,y){for(let x=x0+.25;x<x1-.2;x+=.35){const b=new THREE.Mesh(new THREE.CylinderGeometry(.11,.11,.9,10),M.bottle);b.position.set(x,y+.45,z);mill.add(b);}}
 
 const LAYOUTS={
- open:{desc:'L bar with stone counter and backsplash. The sink and wine fridges are on the west leg, and no south leg, so the swing stays clear; the island sits south of the bay. Uppers over the sink with black metal framed glass, floating shelves beyond. Stats TV on a full height wood panel on the east wall. Built-in couch on the west wall, flag wall beside it.',
-   lf:{base:"6'-9\" west leg, island 5'-0\"",upper:"5'-6\" floating shelves"}},
+ open:{desc:'L bar with stone counter and backsplash. The sink and wine fridges are on the west leg, and no south leg, so the swing stays clear; the island sits south of the bay. Glass front uppers run the full west wall from the couch corner to the south wall. Stats TV on a full height wood panel on the east wall. Built-in couch on the west wall, flag wall beside it.',
+   lf:{base:"10'-3\" west leg, island 5'-0\"",upper:"8'-10\" glass uppers"}},
  tall:{desc:'Same L bar, with glass front uppers to the ceiling on both legs, including over the sink. More storage and display, closer to the look in their render.',
-   lf:{base:"6'-9\" west leg, island 5'-0\"",upper:"6'-9\" uppers and talls"}},
+   lf:{base:"10'-3\" west leg, island 5'-0\"",upper:"8'-10\" uppers and talls"}},
  wrap:{desc:'Full height bar plus towers with a bridge cabinet framing the built-in couch. The most millwork, and the room reads as one fitted space.',
-   lf:{base:"6'-9\" west leg, island 5'-0\"",upper:"17'-9\" uppers and talls"}}
+   lf:{base:"10'-3\" west leg, island 5'-0\"",upper:"19'-10\" uppers and talls"}}
 };
 
 function build(layout){
   scene.remove(mill);mill=new THREE.Group();scene.add(mill);
   // L bar: west leg x 3.33-5.33 (24" deep, sink on rough-in, wine fridges); south leg x 5.33-15.5, 20" deep
   const SF=D-1.67;
-  baseRun(3.33,5.33,14.4,14.85,'z'); baseRun(3.33,5.33,16.35,D,'z');
+  baseRun(3.33,5.33,11.0,14.85,'z'); baseRun(3.33,5.33,16.35,D,'z');
   // sink base: carcass dropped below the bowl, full height door face
   box(3.38,5.28,0,TOE,14.85,16.35,M.black,mill); box(3.33,5.33,TOE,BASE-.68,14.85,16.35,M.wood,mill); box(5.23,5.33,TOE,BASE,14.85,16.35,M.wood,mill);
-  doorLinesZ(14.4,17.4,5.33,TOE,BASE,1.5,1);
+  doorLinesZ(11.0,17.4,5.33,TOE,BASE,1.6,1);
   // wine fridges (2 x 15") in west leg, glass fronts facing east
   box(5.3,5.36,TOE,BASE-.05,17.45,19.9,M.glass,mill,false);
   for(const y of [1.0,1.95]){for(let z=17.7;z<19.8;z+=.35){const b=new THREE.Mesh(new THREE.CylinderGeometry(.11,.11,.9,10),M.bottle);b.rotation.z=Math.PI/2;b.position.set(4.9,y+.3,z);mill.add(b);}}
   box(5.3,5.36,TOE,BASE,18.65,18.7,M.metal,mill,false);
   // stone counter L with undermount sink opening (sink x 3.95-4.95, z 14.85-16.35)
   const ct0=BASE,ct1=BASE+CT;
-  box(3.33,3.95,ct0,ct1,14.3,D,M.stone,mill); box(4.95,5.45,ct0,ct1,14.3,D,M.stone,mill);
-  box(3.95,4.95,ct0,ct1,14.3,14.85,M.stone,mill); box(3.95,4.95,ct0,ct1,16.35,D,M.stone,mill);
+  box(3.33,3.95,ct0,ct1,11.0,D,M.stone,mill); box(4.95,5.45,ct0,ct1,11.0,D,M.stone,mill);
+  box(3.95,4.95,ct0,ct1,11.0,14.85,M.stone,mill); box(3.95,4.95,ct0,ct1,16.35,D,M.stone,mill);
   {const d=.62,y1=ct0-.005;box(3.97,4.93,y1-d,y1-d+.03,14.87,16.33,M.steel,mill,false);
    box(3.97,4.0,y1-d,y1,14.87,16.33,M.steel,mill,false);box(4.9,4.93,y1-d,y1,14.87,16.33,M.steel,mill,false);
    box(3.97,4.93,y1-d,y1,14.87,14.9,M.steel,mill,false);box(3.97,4.93,y1-d,y1,16.3,16.33,M.steel,mill,false);
@@ -314,7 +325,7 @@ function build(layout){
    const tip=new THREE.Mesh(new THREE.CylinderGeometry(.065,.06,.14,20),M.brass);tip.position.set(fx+.7,fb+1.0,fz);mill.add(tip);
    box(fx-.03,fx+.03,fb+.62,fb+.68,fz+.06,fz+.45,M.brass,mill);
    const hub=new THREE.Mesh(new THREE.CylinderGeometry(.07,.07,.14,20),M.brass);hub.rotation.x=Math.PI/2;hub.position.set(fx,fb+.65,fz+.08);mill.add(hub);}
-  box(3.33,3.42,ct1,layout==='open'?4.6:BASE+CT+1.6,14.4,D,M.stone,mill,false);
+  box(3.33,3.42,ct1,layout==='open'?4.6:BASE+CT+1.6,11.0,D,M.stone,mill,false);
 
   const STONE=stoneOn;
   function upperRunZ(z0,z1,y0,y1){
@@ -341,13 +352,11 @@ function build(layout){
     box(x0+t,x1-t,y1-t-.03,y1-t,zb-.2,zb-.1,M.led,mill,false); box(x0+.2,x1-.2,y0-.02,y0,za+.15,za+.3,M.led,mill,false);
   }
   if(layout==='open'){
-    upperRunZ(14.4,17.6,4.6,8.0);
-    [4.6,5.9,7.2].forEach(y=>shelfLED(3.33,4.4,17.7,D,y));
-    bottles(3.6,4.3,19.0,4.72);
+    upperRunZ(11.2,D-1.25,4.6,8.0);
     for(let i=0;i<2;i++)for(let j=0;j<2;j++){const x=10.2+i*1.5,y=4.8+j*1.8;box(x,x+1.45,y,y+1.45,D-.12,D,M.frame,mill);box(x+.12,x+1.33,y+.12,y+1.33,D-.14,D-.11,M.art,mill,false);}
   } else {
     const y0=BASE+CT+1.6;
-    upperRunZ(14.4,D-1.25,y0,H);
+    upperRunZ(11.2,D-1.25,y0,H);
   }
   // island 5' x 1'-7" waterfall stone, east-west, stools on the south side
   box(8.6,13.4,TOE,BASE,16.6,18.0,M.wood,mill); box(8.65,13.35,0,TOE,16.65,17.95,M.black,mill);
@@ -403,9 +412,9 @@ const VIEWS={
 function setView(v,instant){const [p,t]=VIEWS[v];camera.position.set(...p);controls.target.set(...t);controls.update();}
 
 // ---------- UI ----------
-let cur={l:'open',f:'walnut',v:'entry'};
+let cur={l:'open',f:'walnut',v:'entry',fl:'wood'};
 function group(id,key,fn){document.querySelectorAll(`#${id} button`).forEach(b=>b.onclick=()=>{document.querySelectorAll(`#${id} button`).forEach(x=>x.classList.remove('on'));b.classList.add('on');cur[key]=b.dataset[key];fn(cur[key]);});}
-group('layouts','l',build);group('finishes','f',setFinish);group('views','v',setView);
+group('layouts','l',build);group('finishes','f',setFinish);group('views','v',setView);group('floors','fl',setFloor);
 document.getElementById('tStone').onclick=e=>{stoneOn=!stoneOn;e.target.classList.toggle('on',stoneOn);build(cur.l);};
 document.getElementById('tGolfer').onclick=e=>{golfer.visible=!golfer.visible;e.target.classList.toggle('on',golfer.visible);};
 document.getElementById('save').onclick=()=>{renderer.render(scene,camera);const src=renderer.domElement,band=Math.round(src.height*.07);
