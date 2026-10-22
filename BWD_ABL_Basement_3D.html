@@ -189,12 +189,16 @@ wall([984,654,1000.5,960]);
 /* Elevator shaft */
 wall([553.8,606,560.5,665]);wall([612.2,606,619,665]);wall([553.8,603.2,619,611.5],[[570,600,0,84,'o']]);
 /* Display unit niche: walls on both sides (William, 22 Oct) */
-wall([648,606,654,665]);
+wall([619,600,648,606]);
 /* Stair */
 wall([541.5,430,546,526]);wall([667.5,430,674,526]);
-(function(){const n=10,run=9.4,rise=7.5,x1=612,x2=668;
-  for(let i=0;i<n;i++){scene.add(boxMesh(x1,432+i*run,x2,432+(i+1)*run,0,rise*(i+1),mStep,true))}
-  scene.add(boxMesh(547,526-0,668,532,0,rise*n,mBlock));
+(function(){
+  /* As read from the plan arrow: starts at the north end (y 526), runs south, turns west at the landing. Rise 7 1/2", run 11". Approximate until a section is seen. */
+  const R=7.5,T=11;
+  for(let i=1;i<=7;i++)scene.add(boxMesh(623,526-T*i,667,526-T*(i-1),0,R*i,mStep,true));
+  scene.add(boxMesh(612,430,667,449,0,R*8,mStep,true));
+  for(let k=1;k<=6;k++)scene.add(boxMesh(612-10.8*k,430,612-10.8*(k-1),470,0,R*(8+k),mStep,true));
+  scene.add(boxMesh(541.5,430,547,470,0,R*15,mBlock));
 })();
 
 /* ---------- millwork (Phase 2): simple volumes at drawn size, specified finishes ---------- */
@@ -247,7 +251,7 @@ const TAGS=[];
 function tag(n,x,y,z,a){TAGS.push({n,a,p:W3(x,y,z)})}
 
 /* 1 Display cabinet beside the elevator, 4'-10 5/8" along the shaft wall */
-mw(620,606,648,664.6,0,96,'lam2',1);front('S',620,606,648,664.6,5,91,1,1,'glass',1);tag(1,634,636,102,'hall');
+shelving(620,606,648,664.6,0,96,5,'E','lam2',1);front('E',620,606,648,664.6,4,92,2,1,'glass',1);tag(1,634,636,102,'hall');
 /* 2 Projection wall 14'-7 1/2" x 9', curved marble slab, floating stone shelf */
 (function(){
   const XB=984,Y0=722,Y1=897.5,YM=(Y0+Y1)/2,HF=(Y1-Y0)/2,DE=10,DM=14;
