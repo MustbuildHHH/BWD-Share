@@ -279,7 +279,7 @@ function bottles(x0,x1,z,y){for(let x=x0+.25;x<x1-.2;x+=.35){const b=new THREE.M
 
 const LAYOUTS={
  open:{desc:'L bar with stone counter and backsplash. The sink and wine fridges are on the west leg, and a longer, shallower south leg runs to the art wall. Glass front uppers run the full west leg to the corner; floating shelves on the south wall only. A wood panel at the front edge of the grass carries the big TV on a long reach arm. Built-in couch on the west wall.',
-   lf:{base:"34'-2\"",upper:"8'-10\" glass uppers, 5'-10\" floating shelves"}},
+   lf:{base:"34'-2\"",upper:"10'-0\" glass uppers, 5'-10\" floating shelves"}},
  tall:{desc:'Same L bar, with glass front uppers to the ceiling on both legs, including over the sink. More storage and display, closer to the look in their render.',
    lf:{base:"34'-2\"",upper:"16'-2\" uppers and talls"}},
  wrap:{desc:'Full height bar plus towers with a bridge cabinet framing the built-in couch. The most millwork, and the room reads as one fitted space.',
@@ -347,12 +347,12 @@ function build(layout){
     box(x0+t,x1-t,y1-t-.03,y1-t,zb-.2,zb-.1,M.led,mill,false); box(x0+.2,x1-.2,y0-.02,y0,za+.15,za+.3,M.led,mill,false);
   }
   if(layout==='open'){
-    upperRunZ(11.2,D-1.25,4.6,8.0);
+    upperRunZ(11.2,D-.1,4.6,8.0);
     [4.6,6.0].forEach(y=>shelfLED(5.4,11.2,D-1.05,D,y));
     for(let i=0;i<5;i++)for(let j=0;j<2;j++){const x=11.8+i*1.7,y=4.6+j*1.75;box(x,x+1.45,y,y+1.45,D-.12,D,M.frame,mill);box(x+.12,x+1.33,y+.12,y+1.33,D-.14,D-.11,M.art,mill,false);}
   } else {
     const y0=BASE+CT+1.6;
-    upperRunZ(11.2,D-1.25,y0,H); upperRunX(3.33,13.4,y0,H);
+    upperRunZ(11.2,D-.1,y0,H); upperRunX(4.55,13.4,y0,H);
   }
   // island 5' x 1'-7" waterfall stone, east-west, stools on south side
   box(8.6,13.4,TOE,BASE,13.6,15.0,M.wood,mill); box(8.65,13.35,0,TOE,13.65,14.95,M.black,mill);
