@@ -4308,7 +4308,7 @@ const INFO={
  theatre:{scope:[15],mw:'Media wall: credenza with stone top and five shaker fronts, a hinged panel that swings clear of the TV housing, floating lit shelves.',notes:['Column in wood, smooth or fluted: switch below.','Options sent 7 Oct. Three CAD fixes still open: the Option D sheet number, the door swing, the panel height.','Ceiling 9\'-0" flat with a 6" border light.'],draw:['media','lighting']},
  gym:{scope:[],mw:'No millwork. Full-width mirror on the east wall, opposite the mechanical room. Equipment: squat rack, Smith machine and bench press, no cardio (positions illustrative). Yoga mat in front of the gym storage.',notes:['Mirror about 14\'-9" wide (the full gym wall). Height shown 6" to 7\'-6" above the floor, to confirm.','Hardwood herringbone to match the basement, heavy mats under equipment (11 Sep).','Wall-wash pots 24" off the mirror wall. Coffer and raised area 9\'-0".'],draw:['lighting']},
  gstore:{scope:['GS'],mw:'New. 10\'-3" bench, 18" deep and 18" high, from the gym corner to 6" short of the pocket door. Four bays with slab doors and a routed finger groove. Kettlebells inside on a rubber mat and two shelves. 3/8" rubber top over three bays with a 1" oak border, no cushion. Dumbbell cradle on the fourth. Solid white oak peg wall above, 123" x 68", 1" thick on a French cleat, with 1 1/4" oak pegs on an 8" grid for rollers, rings, bands, rope and two loose shelves.',notes:['Krys asked about one section higher: switch below to raise the end bay (dumbbell bay, by the pocket door) to 30".','On the gym wall that backs onto the office. The east part sits over the pocket door wall: fix the peg wall cleats only into the pocket frame studs or framing outside the pocket, with screws that cannot reach the door.','Starter design to develop in 2D. The DXF starter is in Design\\DXF.','Not in the current scope. To price.'],draw:[]},
- sauna:{scope:[],mw:'New. HUUM Drop 9 kW heater, cedar lining and floor, two-tier benches, hidden door, pre-sauna for towels and robes.',notes:['Heater 15.4" x 13.2" x 23.2", set 5.9" (150 mm) off the side walls. HUUM Table 1 for the Drop 9: A 150, B 690, C 485, D 220, E 310 mm. Check each letter against the manual figure before framing.','Ceiling 7\'-6" maximum. Upper bench top 38" so the bench to ceiling distance sits in HUUM\'s 1100 to 1300 mm range.','Cedar floor: the Revit room is 53.51 SF. The 57.18 SF on the earlier note matches the washroom.','Bench layout to confirm. Kit or site-built and supplier to confirm.'],draw:[]},
+ sauna:{scope:[],mw:'New. HUUM Drop 9 kW heater, cedar lining and floor, two-tier benches, pre-sauna for towels and robes. The outside face of the sauna is clad in cedar, with the hidden door clad to match.',notes:['Heater 15.4" x 13.2" x 23.2", set 5.9" (150 mm) off the side walls. HUUM Table 1 for the Drop 9: A 150, B 690, C 485, D 220, E 310 mm. Check each letter against the manual figure before framing.','Ceiling 7\'-6" maximum. Upper bench top 38" so the bench to ceiling distance sits in HUUM\'s 1100 to 1300 mm range.','Cedar floor: the Revit room is 53.51 SF. The 57.18 SF on the earlier note matches the washroom.','Bench layout to confirm. Kit or site-built and supplier to confirm.'],draw:[]},
  office:{scope:[11],mw:'Window wall of display cabinets with open shelving above and deep drawers below, full-width counter. Built-in armoire in the column recess with pocket doors, printer pull-out and filing drawers. 22" display niche beside the linen closet.',notes:['Submitted to Prestige.','Picture light over the 22" display cabinet. Three 1" gimbal pin lights in the tray over the jersey gallery behind the desk.','Desk, chair and jersey frames are furniture, not millwork.','Ceiling: crown and tray with a NISA-KRA cove, as in the bedroom.'],draw:['office','lighting']},
  bath:{scope:[12],mw:'3\'-6" vanity with three U-shaped drawers and a fluted integrated marble sink, 11" tower with pull-out and upper cabinet, full-height linen cabinet with interior LED.',notes:['Submitted to Prestige.','Floor 12" x 24" grey marble-look, locked 14 Sep. Wall tile Equipe Tribeca, locked.','Ceiling 8\'-0" (sprinkler).'],draw:['bath','lighting']},
  bed:{scope:[13],mw:'Closet built-in in lacquered graphite with slim shaker fronts and brushed brass pulls, oak counter, lit open shelves. Headboard wall with the oval night tables either side.',notes:['Crown and cove per T 1.03 (approved by Krys 29 Sep) are in this room, as on the lighting plan.','Bedside pendants dropped so the bottom of the fixture sits at the top of the headboard (48"). Switch below to the double capsule option (4.7" dia x 27.6" high).'],draw:['bed','crown','lighting']},
@@ -4417,6 +4417,7 @@ function buildShell(root){
       const c2=new THREE.Vector3(-3.8365,1.37,-(6.29+3.688)/2);o.material=MAT.wall;CUTW.push({o,c:[c2.x,c2.z],ifc:1,full:1,target:1,low:0.95/2.743,len:2.6});return}
     if(t==='W'){o.material=MAT.wall;CUTW.push({o,c:[c.x,c.z],ifc:1,full:1,target:1,low:0.95/2.743,len:Math.max(bb.max.x-bb.min.x,bb.max.z-bb.min.z)});return}
     if(t==='D'&&/Bxxwb$/.test(n.split('~')[2]||'')){o.visible=false;o.userData.removed=1;return}
+    if(t==='D'&&/PrlEyM$/.test(n.split('~')[1]||'')){o.visible=false;o.userData.removed=1;return}   // sauna door: replaced by the cedar hidden door
     if(t==='D'){o.material=MAT.door;const host=n.split('~')[2];o.userData.host=host;DOORS.push(o);return}
     if(t==='G'){o.material=MAT.glass;o.castShadow=false;WINDOWS.push(o);return}
     if(t==='L'){ // floor slabs: herringbone, concrete in the services strip; a hair low so room model floors win
@@ -4437,7 +4438,7 @@ function floorPatch(x0,z0,x1,z1){ // herringbone infill where walls were removed
   const g=new THREE.PlaneGeometry(x1-x0,z1-z0);g.rotateX(-Math.PI/2);g.translate((x0+x1)/2,-0.0055,(z0+z1)/2);
   const p=g.attributes.position,uv=g.attributes.uv;for(let i=0;i<p.count;i++)uv.setXY(i,p.getX(i)/1.22,p.getZ(i)/1.22);
   const m=new THREE.Mesh(g,MAT.herring);m.receiveShadow=true;m.name='L~patch';SHELL.add(m);return m}
-const DOORS=[],WINDOWS=[];const OPTM={};const OPT={col:'A',pend:'P',bench:'S1'};
+const DOORS=[],WINDOWS=[];const CEDARF=[];const OPTM={};const OPT={col:'A',pend:'P',bench:'S1'};
 function applyOpts(){['A','B'].forEach(k=>(OPTM[k]||[]).forEach(o=>o.visible=OPT.col===k));(OPTM.P||[]).forEach(o=>o.visible=OPT.pend==='P');(OPTM.Q||[]).forEach(o=>o.visible=OPT.pend==='Q');(OPTM.S1||[]).forEach(o=>o.visible=OPT.bench==='S1');(OPTM.S2||[]).forEach(o=>o.visible=OPT.bench==='S2');ren.shadowMap.needsUpdate=true}
 function inRect(x,z,r,m){m=m||0;return x>r[0]-m&&x<r[2]+m&&z>r[1]-m&&z<r[3]+m}
 
@@ -4485,9 +4486,14 @@ function buildSauna(){
   bx(X1-t-0.004,X1-t,CH-0.35,CH-0.23,Z0+0.3,Z0+0.54,STD(0x333333),S,false);       // exhaust high, opposite side
   // hidden door: flush panel, painted on the pre-sauna side, cedar inside, 1/8" shadow reveal, no casing
   const dg=new THREE.Group();S.add(dg);
-  bx(DX0+0.004,DX1-0.004,0.01,2.025,Z1-0.002,Z1+0.042,MAT.wall,dg);
-  bx(DX0,DX1,0.005,2.03,Z1+0.040,Z1+0.044,STD(0x1d1a17,{roughness:1}),dg,false);
-  bx(DX0+0.004,DX1-0.004,0.01,2.025,Z1+0.044,Z1+0.05,MAT.wall,dg);
+  // exterior facade in cedar on the pre-sauna side (wall face at Z -3.686), the hidden door clad to match, flush, 1/8" shadow reveal
+  const ZF=-3.686,ct=0.019,cedarF=STD(0xffffff,{map:tex(TX.cedar,1.6,2.2),roughness:.7,envMapIntensity:.4});cedarF.map.rotation=0;
+  const fac=[bx(X0,DX0-0.003,0,2.743,ZF,ZF+ct,cedarF,S),bx(DX1+0.003,X1,0,2.743,ZF,ZF+ct,cedarF,S),bx(DX0-0.003,DX1+0.003,2.033,2.743,ZF,ZF+ct,cedarF,S)];
+  fac.forEach(o=>{o.userData.room='sauna';CEDARF.push(o)});
+  bx(DX0+0.004,DX1-0.004,0.01,2.025,Z1-0.002,ZF,MAT.wall,dg);
+  bx(DX0-0.003,DX1+0.003,0.005,2.033,ZF-0.004,ZF+0.004,STD(0x1d1a17,{roughness:1}),dg,false);
+  bx(DX0+0.001,DX1-0.001,0.008,2.03,ZF,ZF+ct,cedarF,dg);
+  bx(DX1-0.09,DX1-0.06,0.95,1.15,ZF+ct,ZF+ct+0.004,STD(0x2a2622,{roughness:.4,metalness:.6}),dg,false);   // touch latch plate
   addLabel('Hidden door',(DX0+DX1)/2,2.35,Z1+0.1,'sauna',1);
   addLabel('HUUM Drop 9 kW',hx,1.0,hz,'sauna',1);
   addLabel('Benches, to confirm',(X0+X1)/2,1.25,Z0+0.5,'sauna',1);
