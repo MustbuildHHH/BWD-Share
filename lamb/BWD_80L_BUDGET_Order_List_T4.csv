@@ -1,0 +1,162 @@
+﻿Phase,Section,Group,Line,Product,Qty,Unit,Unit price,Price source,Extended (before HST),Status
+Phase 1,1st floor walls,Lumber,1,"1x3 x 8' SPF furring @ 16"" (drainage holes drilled)",58,pcs,2.49,est.,144.42,
+Phase 1,1st floor walls,Lumber,2,"2x4 x 92 5/8"" precut",14,pcs,3.99,est.,55.86,
+Phase 1,1st floor walls,Lumber,3,2x4 x 8',3,pcs,4.49,est.,13.47,
+Phase 1,1st floor walls,Lumber,4,"2x4 x 104 5/8"" precut",45,pcs,4.49,quote,202.05,
+Phase 1,1st floor walls,Lumber,5,2x4 x 10',5,pcs,5.99,est.,29.95,
+Phase 1,1st floor walls,Lumber,6,2x4 x 12',6,pcs,7.49,est.,44.94,
+Phase 1,1st floor walls,Lumber,7,2x4 x 16',11,pcs,8.99,quote,98.89,
+Phase 1,1st floor walls,Lumber,8,2x6 x 8',9,pcs,7.49,est.,67.41,
+Phase 1,1st floor walls,Lumber,9,"2x6 x 104 5/8"" precut",29,pcs,6.25,quote,181.25,
+Phase 1,1st floor walls,Lumber,10,2x6 x 10',5,pcs,9.49,est.,47.45,
+Phase 1,1st floor walls,Lumber,11,2x6 x 12',59,pcs,11.49,est.,677.91,
+Phase 1,1st floor walls,Lumber,12,2x6 x 16',24,pcs,14.99,est.,359.76,
+Phase 1,1st floor walls,Lumber,13,2x8 x 8',3,pcs,15.49,est.,46.47,
+Phase 1,1st floor walls,Lumber,14,2x8 x 10',2,pcs,18.98,quote,37.96,
+Phase 1,1st floor walls,Lumber,15,2x12 PT x 16',2,pcs,54.99,est.,109.98,
+Phase 1,1st floor walls,Lumber,16,LSL 1 1/2 x 5 1/2 x 10',2,pcs,49.5,est.,99.0,confirm
+Phase 1,1st floor walls,Lumber,17,LSL 1 1/2 x 5 1/2 x 12',2,pcs,59.4,est.,118.8,confirm
+Phase 1,1st floor walls,Plywood and sheet goods,18,"1/2"" plywood 4x8",30,sheets,31.99,quote,959.7,
+Phase 1,1st floor walls,Plywood and sheet goods,19,"DensGlass 5/8"" gypsum sheathing 4x8",21,sheets,44.0,est.,924.0,
+Phase 1,1st floor walls,Insulation,20,"Mineral wool board 3"" (75 mm) semi-rigid, 2'x4', R12ci",61,pcs,24.0,est.,1464.0,confirm
+Phase 1,1st floor walls,Insulation,21,"Mineral wool board 5"" (125 mm) semi-rigid, 2'x4' (W1a west wall)",6,pcs,40.0,est.,240.0,
+Phase 1,1st floor walls,Insulation,22,"R19 mineral fibre batts 5 1/2"" for 2x6 at 16"" o.c.",500,sq ft,1.3,est.,650.0,
+Phase 1,1st floor walls,Hardware and fasteners,23,"Plate washers 3"" x 3"" x 1/4""",26,pcs,1.4,est.,36.4,
+Phase 1,1st floor walls,Hardware and fasteners,24,"1/2"" through-bolts with nut and washer (LSL and 2x10 nailers to the steel)",34,bolts,2.75,est.,93.5,
+Phase 1,1st floor walls,Accessories,25,"Blueskin SA 12"" x 75' self-adhered membrane over the curb top, lapped down the outside",2,rolls,135.0,est.,270.0,
+Phase 1,1st floor walls,Accessories,26,"Blueskin primer (Blue Prep or Aquatac), 3.78 L",2,pails,78.0,est.,156.0,
+Phase 1,1st floor walls,Accessories,27,"Gasket between the LSL nailer and the steel column flange, full height both columns (foam sill gasket 5 1/2"" x 82' or a Blueskin SA strip)",1,roll,19.99,quote,19.99,
+Phase 1,1st floor walls,Accessories,28,"Sill gasket 5 1/2"" x 82' foam",2,rolls,19.99,quote,39.98,
+Phase 1,1st floor walls,Subtotal,,,,,,,7189.14,
+Phase 1,2nd floor deck,Lumber,29,"1x3 x 8' SPF furring @ 16"" (drainage holes drilled)",8,pcs,2.49,est.,19.92,
+Phase 1,2nd floor deck,Lumber,30,2x6 x 8',4,pcs,7.49,est.,29.96,
+Phase 1,2nd floor deck,Lumber,31,2x6 x 12',3,pcs,11.49,est.,34.47,
+Phase 1,2nd floor deck,Lumber,32,2x10 x 16',4,pcs,37.99,est.,151.96,
+Phase 1,2nd floor deck,Lumber,33,LSL 1 1/4 x 9 1/2 x 12',12,pcs,79.08,est.,948.96,
+Phase 1,2nd floor deck,Lumber,34,LVL 1 3/4 x 9 1/2 x 12',3,pcs,79.08,quote,237.24,
+Phase 1,2nd floor deck,Lumber,35,LVL 1 3/4 x 9 1/2 x 16',6,pcs,105.44,quote,632.64,
+Phase 1,2nd floor deck,Lumber,36,"TJI 360 9 1/2"" x 16'",27,pcs,55.2,est.,1490.4,
+Phase 1,2nd floor deck,Plywood and sheet goods,37,"3/4"" T&G plywood subfloor 4x8",19,sheets,49.99,quote,949.81,
+Phase 1,2nd floor deck,Plywood and sheet goods,38,"7/8"" roof sheathing board 4x8 (A004: 22 mm)",1,sheets,58.0,est.,58.0,
+Phase 1,2nd floor deck,Plywood and sheet goods,39,"DensGlass 5/8"" gypsum sheathing 4x8",3,sheets,44.0,est.,132.0,
+Phase 1,2nd floor deck,Insulation,40,"Mineral wool board 3"" (75 mm) semi-rigid, 2'x4', R12ci",9,pcs,24.0,est.,216.0,confirm
+Phase 1,2nd floor deck,Insulation,41,"Mineral wool board 5"" (125 mm) semi-rigid, 2'x4' (W1a west wall)",1,pcs,40.0,est.,40.0,
+Phase 1,2nd floor deck,Hardware and fasteners,42,Simpson H2.5A hurricane ties,8,pcs,1.25,est.,10.0,confirm
+Phase 1,2nd floor deck,Hardware and fasteners,43,Simpson HGUS5.50/10 hangers,2,pcs,27.99,quote,55.98,
+Phase 1,2nd floor deck,Hardware and fasteners,44,Simpson IUS2.37/9.5 hangers,14,pcs,6.25,est.,87.5,
+Phase 1,2nd floor deck,Hardware and fasteners,45,"1/2"" through-bolts with nut and washer (LSL and 2x10 nailers to the steel)",50,bolts,2.75,est.,137.5,
+Phase 1,2nd floor deck,Hardware and fasteners,46,"TEK #12 x 2 3/4"" self-drilling screws, 100/box, 2x10 nailer to the W200x36 beam and outriggers",2,boxes,34.0,est.,68.0,confirm
+Phase 1,2nd floor deck,Accessories,47,PL400 subfloor adhesive 828 mL,14,tubes,13.99,est.,195.86,
+Phase 1,2nd floor deck,Subtotal,,,,,,,5496.2,
+Phase 1,Balcony deck,Lumber,48,5/4 x 6 cedar decking x 8',29,pcs,21.0,est.,609.0,
+Phase 1,Balcony deck,Lumber,49,2x4 PT x 12',7,pcs,9.99,est.,69.93,
+Phase 1,Balcony deck,Lumber,50,2x6 x 12',8,pcs,11.49,est.,91.92,
+Phase 1,Balcony deck,Lumber,51,2x6 x 16',2,pcs,14.99,est.,29.98,
+Phase 1,Balcony deck,Lumber,52,LVL 1 3/4 x 9 1/2 x 18',3,pcs,118.62,quote,355.86,
+Phase 1,Balcony deck,Plywood and sheet goods,53,"1/2"" plywood 4x8",4,sheets,31.99,quote,127.96,
+Phase 1,Balcony deck,Hardware and fasteners,54,Simpson LUS26 hangers,22,pcs,1.95,est.,42.9,
+Phase 1,Balcony deck,Hardware and fasteners,55,"Stainless deck screws #8 x 2 1/2"", 350/box",2,boxes,42.0,est.,84.0,
+Phase 1,Balcony deck,Subtotal,,,,,,,1411.55,
+Phase 1,"Site, connectors and fasteners (whole job)",Lumber,56,1x4 x 12' (let-in diagonal braces and string-line stakes),30,pcs,4.99,est.,149.7,
+Phase 1,"Site, connectors and fasteners (whole job)",Lumber,57,2x4 x 16',24,pcs,8.99,quote,215.76,
+Phase 1,"Site, connectors and fasteners (whole job)",Plywood and sheet goods,58,"1/2"" plywood 4x8",4,sheets,31.99,quote,127.96,
+Phase 1,"Site, connectors and fasteners (whole job)",Insulation,59,"Insulation pins with 2"" washers (temporary hold until the furring is on), 100/box",8,boxes,55.0,est.,440.0,
+Phase 1,"Site, connectors and fasteners (whole job)",Hardware and fasteners,60,"Simpson SDW22338 Strong-Drive SDW EWP-PLY screws (2-ply 1 3/4"" LVL), 50/box",1,boxes,38.0,est.,38.0,
+Phase 1,"Site, connectors and fasteners (whole job)",Hardware and fasteners,61,"Simpson SDW22500 Strong-Drive SDW EWP-PLY screws (3-ply 1 3/4"" LVL), 50/box",3,boxes,48.0,est.,144.0,
+Phase 1,"Site, connectors and fasteners (whole job)",Hardware and fasteners,62,"Simpson SDW22638 Strong-Drive SDW EWP-PLY screws (4-ply 1 3/4"" LVL), 50/box",1,boxes,58.0,est.,58.0,
+Phase 1,"Site, connectors and fasteners (whole job)",Hardware and fasteners,63,"#10 x 6"" exterior coated (ACQ-rated) wood screws, 100/box, furring through the 3"" mineral wool",13,boxes,42.0,est.,546.0,
+Phase 1,"Site, connectors and fasteners (whole job)",Hardware and fasteners,64,"#14 x 8"" exterior coated (ACQ-rated) wood screws, 50/box, furring through the 5"" mineral wool (west wall)",2,boxes,38.0,est.,76.0,
+Phase 1,"Site, connectors and fasteners (whole job)",Hardware and fasteners,65,"1 1/2"" x 0.148 joist hanger nails (10d), 5 lb box",6,boxes,28.0,est.,168.0,
+Phase 1,"Site, connectors and fasteners (whole job)",Hardware and fasteners,66,"16d common nails 0.162"" x 3 1/2"" galvanized, 5 lb box (about 245)",2,boxes,22.0,est.,44.0,
+Phase 1,"Site, connectors and fasteners (whole job)",Hardware and fasteners,67,"2 3/8"" x 0.113 ring-shank strip nails, 5000/box",2,boxes,68.0,est.,136.0,
+Phase 1,"Site, connectors and fasteners (whole job)",Hardware and fasteners,68,"3 1/4"" x 0.131 strip framing nails (30 deg paper tape), 4000/box",5,boxes,72.0,est.,360.0,
+Phase 1,"Site, connectors and fasteners (whole job)",Hardware and fasteners,69,"DensGlass screws #8 x 1 5/8"" corrosion-resistant, 1000/box",5,boxes,58.0,est.,290.0,
+Phase 1,"Site, connectors and fasteners (whole job)",Hardware and fasteners,70,"Subfloor screws #8 x 2"" (square drive), 2000/pail",2,pails,75.0,est.,150.0,
+Phase 1,"Site, connectors and fasteners (whole job)",Hardware and fasteners,71,"Tapcon 1/4"" x 3 1/4"" concrete screws, 50/box",2,boxes,38.0,est.,76.0,
+Phase 1,"Site, connectors and fasteners (whole job)",Accessories,72,"6 mil poly 12' x 300' (slab vapour barrier is Stego 15 mil, separate)",1,roll,34.99,quote,34.99,
+Phase 1,"Site, connectors and fasteners (whole job)",Accessories,73,"Blueskin SA 6"" x 75' (window sills, jambs, heads, skylight curb)",1,rolls,72.0,est.,72.0,
+Phase 1,"Site, connectors and fasteners (whole job)",Accessories,74,Tuck Tape (red sheathing tape) 60 mm x 66 m,8,rolls,17.99,est.,143.92,
+Phase 1,"Site, connectors and fasteners (whole job)",Accessories,75,"Weather-resistant air barrier: Adhero 3000 self-adhered 4' x 100' (as specified, A004 W1)",6,rolls,420.0,est.,2520.0,
+Phase 1,"Site, connectors and fasteners (whole job)",Accessories,76,"7 1/4"" 24T framing blades",6,pcs,18.0,est.,108.0,
+Phase 1,"Site, connectors and fasteners (whole job)",Accessories,77,"7 1/4"" PCD fibre-cement/gypsum blade (DensGlass cutting) and utility knife blades 100-pack (score and snap)",1,each,65.0,est.,65.0,
+Phase 1,"Site, connectors and fasteners (whole job)",Accessories,78,"Reciprocating saw blades, wood with nails, 10-pack",2,packs,29.0,est.,58.0,
+Phase 1,"Site, connectors and fasteners (whole job)",Accessories,79,"Utility knife blades, 100-pack",2,packs,24.0,est.,48.0,
+Phase 1,"Site, connectors and fasteners (whole job)",Subtotal,,,,,,,6069.33,
+Phase 2,2nd floor walls,Lumber,1,"1x3 x 8' SPF furring @ 16"" (drainage holes drilled)",78,pcs,2.49,est.,194.22,
+Phase 2,2nd floor walls,Lumber,2,"2x4 x 92 5/8"" precut",52,pcs,3.99,est.,207.48,
+Phase 2,2nd floor walls,Lumber,3,2x4 x 8',1,pcs,4.49,est.,4.49,
+Phase 2,2nd floor walls,Lumber,4,2x4 x 10',1,pcs,5.99,est.,5.99,
+Phase 2,2nd floor walls,Lumber,5,2x4 x 12',5,pcs,7.49,est.,37.45,
+Phase 2,2nd floor walls,Lumber,6,2x4 x 16',7,pcs,8.99,quote,62.93,
+Phase 2,2nd floor walls,Lumber,7,2x4 PT x 8',1,pcs,6.49,est.,6.49,
+Phase 2,2nd floor walls,Lumber,8,"2x6 x 92 5/8"" precut",54,pcs,6.49,quote,350.46,
+Phase 2,2nd floor walls,Lumber,9,2x6 x 8',3,pcs,7.49,est.,22.47,
+Phase 2,2nd floor walls,Lumber,10,"2x6 x 104 5/8"" precut",2,pcs,6.25,quote,12.5,
+Phase 2,2nd floor walls,Lumber,11,2x6 x 10',6,pcs,9.49,est.,56.94,
+Phase 2,2nd floor walls,Lumber,12,2x6 x 12',74,pcs,11.49,est.,850.26,
+Phase 2,2nd floor walls,Lumber,13,2x6 x 14',7,pcs,9.89,quote,69.23,
+Phase 2,2nd floor walls,Lumber,14,2x6 x 16',24,pcs,14.99,est.,359.76,
+Phase 2,2nd floor walls,Lumber,15,2x8 x 8',4,pcs,15.49,est.,61.96,
+Phase 2,2nd floor walls,Lumber,16,2x8 x 10',1,pcs,18.98,quote,18.98,
+Phase 2,2nd floor walls,Lumber,17,2x10 x 10',4,pcs,24.49,quote,97.96,
+Phase 2,2nd floor walls,Lumber,18,LVL 1 3/4 x 11 1/4 x 14',3,pcs,111.3,est.,333.9,
+Phase 2,2nd floor walls,Plywood and sheet goods,19,"1/2"" plywood 4x8",15,sheets,31.99,quote,479.85,
+Phase 2,2nd floor walls,Plywood and sheet goods,20,"5/8"" plywood sub-treads and risers 4x8",3,sheets,42.0,est.,126.0,
+Phase 2,2nd floor walls,Plywood and sheet goods,21,"DensGlass 5/8"" gypsum sheathing 4x8",29,sheets,44.0,est.,1276.0,
+Phase 2,2nd floor walls,Insulation,22,"Mineral wool board 3"" (75 mm) semi-rigid, 2'x4', R12ci",91,pcs,24.0,est.,2184.0,confirm
+Phase 2,2nd floor walls,Insulation,23,"Mineral wool board 5"" (125 mm) semi-rigid, 2'x4' (W1a west wall)",7,pcs,40.0,est.,280.0,
+Phase 2,2nd floor walls,Insulation,24,"R19 mineral fibre batts 5 1/2"" for 2x6 at 16"" o.c.",715,sq ft,1.3,est.,929.5,
+Phase 2,2nd floor walls,Subtotal,,,,,,,8028.82,
+Phase 2,"Roofs, parapets and stair enclosure",Lumber,25,"1x3 x 8' SPF furring @ 16"" (drainage holes drilled)",71,pcs,2.49,est.,176.79,
+Phase 2,"Roofs, parapets and stair enclosure",Lumber,26,2x4 x 16',9,pcs,8.99,quote,80.91,confirm
+Phase 2,"Roofs, parapets and stair enclosure",Lumber,27,"2x6 x 92 5/8"" precut",34,pcs,6.49,quote,220.66,
+Phase 2,"Roofs, parapets and stair enclosure",Lumber,28,2x6 x 8',30,pcs,7.49,est.,224.7,
+Phase 2,"Roofs, parapets and stair enclosure",Lumber,29,2x6 x 10',8,pcs,9.49,est.,75.92,confirm
+Phase 2,"Roofs, parapets and stair enclosure",Lumber,30,2x6 x 12',18,pcs,11.49,est.,206.82,
+Phase 2,"Roofs, parapets and stair enclosure",Lumber,31,2x6 x 14',6,pcs,9.89,quote,59.34,confirm
+Phase 2,"Roofs, parapets and stair enclosure",Lumber,32,2x6 x 16',31,pcs,14.99,est.,464.69,
+Phase 2,"Roofs, parapets and stair enclosure",Lumber,33,2x8 x 10',13,pcs,18.98,quote,246.74,confirm
+Phase 2,"Roofs, parapets and stair enclosure",Lumber,34,2x8 x 12',2,pcs,22.99,quote,45.98,
+Phase 2,"Roofs, parapets and stair enclosure",Lumber,35,2x10 x 8',11,pcs,18.99,est.,208.89,confirm
+Phase 2,"Roofs, parapets and stair enclosure",Lumber,36,2x10 x 10',16,pcs,24.49,quote,391.84,confirm
+Phase 2,"Roofs, parapets and stair enclosure",Lumber,37,2x10 x 12',3,pcs,27.98,quote,83.94,
+Phase 2,"Roofs, parapets and stair enclosure",Lumber,38,2x10 x 14',4,pcs,32.99,est.,131.96,confirm
+Phase 2,"Roofs, parapets and stair enclosure",Lumber,39,2x10 x 16',2,pcs,37.99,est.,75.98,confirm
+Phase 2,"Roofs, parapets and stair enclosure",Lumber,40,LVL 1 3/4 x 7 1/4 x 20',4,pcs,100.6,est.,402.4,confirm
+Phase 2,"Roofs, parapets and stair enclosure",Lumber,41,LVL 1 3/4 x 9 1/2 x 12',2,pcs,79.08,quote,158.16,
+Phase 2,"Roofs, parapets and stair enclosure",Lumber,42,LVL 1 3/4 x 9 1/2 x 16',7,pcs,105.44,quote,738.08,
+Phase 2,"Roofs, parapets and stair enclosure",Lumber,43,LVL 1 3/4 x 9 1/2 x 18',7,pcs,118.62,quote,830.34,
+Phase 2,"Roofs, parapets and stair enclosure",Lumber,44,LVL 1 3/4 x 11 1/4 x 8',2,pcs,63.6,est.,127.2,confirm
+Phase 2,"Roofs, parapets and stair enclosure",Lumber,45,"TJI 360 9 1/2"" x 16'",13,pcs,55.2,est.,717.6,confirm
+Phase 2,"Roofs, parapets and stair enclosure",Lumber,46,"TJI 360 9 1/2"" x 18'",4,pcs,62.1,est.,248.4,confirm
+Phase 2,"Roofs, parapets and stair enclosure",Lumber,47,"TJI 360 9 1/2"" x 20'",1,pcs,69.0,est.,69.0,confirm
+Phase 2,"Roofs, parapets and stair enclosure",Plywood and sheet goods,48,"1/2"" plywood 4x8",7,sheets,31.99,quote,223.93,
+Phase 2,"Roofs, parapets and stair enclosure",Plywood and sheet goods,49,"3/4"" T&G plywood subfloor 4x8",4,sheets,49.99,quote,199.96,
+Phase 2,"Roofs, parapets and stair enclosure",Plywood and sheet goods,50,"3/4"" exterior-grade plywood 4x8",11,sheets,52.99,est.,582.89,
+Phase 2,"Roofs, parapets and stair enclosure",Plywood and sheet goods,51,"5/8"" plywood sub-treads and risers 4x8",2,sheets,42.0,est.,84.0,
+Phase 2,"Roofs, parapets and stair enclosure",Plywood and sheet goods,52,"5/8"" roof sheathing board 4x8 on the rafters",7,sheets,42.0,est.,294.0,
+Phase 2,"Roofs, parapets and stair enclosure",Plywood and sheet goods,53,"7/8"" roof sheathing board 4x8 (A004: 22 mm)",14,sheets,58.0,est.,812.0,
+Phase 2,"Roofs, parapets and stair enclosure",Plywood and sheet goods,54,"DensGlass 5/8"" gypsum sheathing 4x8",22,sheets,44.0,est.,968.0,
+Phase 2,"Roofs, parapets and stair enclosure",Insulation,55,"Mineral wool board 3"" (75 mm) semi-rigid, 2'x4', R12ci",71,pcs,24.0,est.,1704.0,confirm
+Phase 2,"Roofs, parapets and stair enclosure",Insulation,56,"Mineral wool board 5"" (125 mm) semi-rigid, 2'x4' (W1a west wall)",6,pcs,40.0,est.,240.0,
+Phase 2,"Roofs, parapets and stair enclosure",Insulation,57,"R19 mineral fibre batts 5 1/2"" for 2x6 at 16"" o.c.",315,sq ft,1.3,est.,409.5,
+Phase 2,"Roofs, parapets and stair enclosure",Hardware and fasteners,58,Simpson A35 framing angles,48,pcs,1.35,est.,64.8,confirm
+Phase 2,"Roofs, parapets and stair enclosure",Hardware and fasteners,59,Simpson H2.5A hurricane ties,70,pcs,1.25,est.,87.5,confirm
+Phase 2,"Roofs, parapets and stair enclosure",Hardware and fasteners,60,Simpson HUS210-2 hangers,9,pcs,14.5,est.,130.5,confirm
+Phase 2,"Roofs, parapets and stair enclosure",Hardware and fasteners,61,Simpson HUS410 hangers,1,pcs,24.99,est.,24.99,
+Phase 2,"Roofs, parapets and stair enclosure",Hardware and fasteners,62,Simpson ITS2.37/9.5 hangers,13,pcs,7.95,est.,103.35,confirm
+Phase 2,"Roofs, parapets and stair enclosure",Hardware and fasteners,63,Simpson IUS2.37/9.5 hangers,12,pcs,6.25,est.,75.0,confirm
+Phase 2,"Roofs, parapets and stair enclosure",Hardware and fasteners,64,Simpson LSSR210-2Z hangers,4,pcs,17.5,est.,70.0,confirm
+Phase 2,"Roofs, parapets and stair enclosure",Hardware and fasteners,65,Simpson LSSR210Z hangers,4,pcs,9.95,est.,39.8,confirm
+Phase 2,"Roofs, parapets and stair enclosure",Hardware and fasteners,66,Simpson LSTA24 straps,12,pcs,4.5,est.,54.0,confirm
+Phase 2,"Roofs, parapets and stair enclosure",Hardware and fasteners,67,Simpson LUS210 hangers,16,pcs,2.1,est.,33.6,confirm
+Phase 2,"Roofs, parapets and stair enclosure",Accessories,68,"Blueskin SA 6"" x 75' (window sills, jambs, heads, skylight curb)",1,rolls,72.0,est.,72.0,
+Phase 2,"Roofs, parapets and stair enclosure",Accessories,69,PL400 subfloor adhesive 828 mL,3,tubes,13.99,est.,41.97,
+Phase 2,"Roofs, parapets and stair enclosure",Subtotal,,,,,,,12302.13,
+Phase 1,Total,,,,,,,,20166.22,
+Phase 2,Total,,,,,,,,20330.95,
+,All phases before HST,,,,,,,,40497.17,
+,HST 13%,,,,,,,,5264.63,
+,All phases including HST,,,,,,,,45761.8,
+
+,"Waste included: studs 5%, plates and strapping 10%, sheet goods 8 to 12% with openings not deducted; mineral wool 10% and batts 5% with openings deducted. Joists, rafters, beams and TJI are counted piece by piece with no waste added."
