@@ -4316,7 +4316,7 @@ const INFO={
  store:{scope:[],mw:'No millwork. Shelving shown is by owner and only illustrative.',notes:['Mechanical and laundry share room 209. Pre-sauna (210) is shown with the sauna.'],draw:['lighting']},
  upper:{scope:[14],mw:'Option B, picked by Krys: wall-to-wall desk with drawers in the counter, three equal 30" oak shelves over the computer (first one 24" above the desk so it clears the monitor, then 14" apart), lit from behind, capsule mirror balanced by the computer, reading nook by the window.',notes:['Krys picked Option B. Its drawing is next for item 14. A and C stay here for reference only.','It is upstairs in the house. Here it sits beside the lower level as its own small building so it is easy to see.'],draw:[]}
 };
-const INFO_CLIENT={gstore:{scope:[],mw:'A 10\'-3" white oak bench along the gym wall, 18" high and 18" deep, with four doors and round finger-hole pulls. Kettlebells store inside, dumbbells sit in a cradle on the end, and the rest of the top is finished in rubber.',notes:['Above it, a solid white oak peg wall with 1 1/4" oak pegs on an 8" grid. Move the pegs to hang foam rollers, rings, bands, rope, mats and two loose shelves wherever you like.','Try the switches: end section raised to counter height, a pair of doors per bay, and the peg wall run up to the 9\'-0" ceiling.','The door pulls are round finger holes, the same size as the peg holes.','Doors: off shows what is stored inside.'],draw:[]}};
+const INFO_CLIENT={gstore:{scope:[],mw:'A 10\'-3" white oak bench along the gym wall, 18" high and 18" deep, with four doors and round finger-hole pulls. Kettlebells store inside, dumbbells sit in a cradle on the end, and the rest of the top is finished in rubber.',notes:['Above it, a solid white oak peg wall with 1 1/4" oak pegs on an 8" grid. Move the pegs to hang foam rollers, rings, bands, rope, mats and two loose shelves wherever you like.','Try the switches: end section raised to counter height, a pair of doors per bay, and the peg wall run up to the 9\'-0" ceiling.','The door pulls are round finger holes, the same size as the peg holes.','Doors: off shows what is stored inside. Accessories: off hides the rollers, rings, weights and the rest.'],draw:[]}};
 const EXTRA={bed:[['Night table 3D','Canmore_Nightstand_3D_Viewer.html'],['Cove detail','Fabi_Custom_Cove_Detail.html']]};
 
 /* ---------------- model loading ---------------- */
@@ -4593,6 +4593,11 @@ function buildGymStore(){
   const R=new THREE.Group();LOWER.add(R);addRoomObj('gstore',R);
   const X0=GS.X0,ZW=GS.ZW,W=GS.W,NB=4,BW=W/NB;
   const OAK=oakTex();
+  const SLAB=canvasTex(512,1024,(g)=>{const r=rnd(29);g.fillStyle='rgb(212,182,140)';g.fillRect(0,0,512,1024);
+    g.globalAlpha=.10;for(let k=0;k<160;k++){g.fillStyle=r()>.5?'#8a6440':'#fff2dc';g.fillRect(r()*512,0,1+r()*2,1024)}g.globalAlpha=1});   // continuous grain, no stave seams (doors)
+  const slab=STD(0xffffff,{map:SLAB,roughness:.55,envMapIntensity:.5});
+  const STAVE=canvasTex(512,1024,(g)=>{const r=rnd(31);const w=128;for(let i=0;i<4;i++){const t=r();g.fillStyle=`rgb(${206+t*16|0},${176+t*14|0},${134+t*12|0})`;g.fillRect(i*w,0,w,1024);
+    g.globalAlpha=.10;for(let k=0;k<40;k++){g.fillStyle=r()>.5?'#8a6440':'#fff2dc';g.fillRect(i*w+r()*w,0,1+r()*2,1024)}g.globalAlpha=1;g.fillStyle='rgba(90,60,35,.35)';g.fillRect(i*w,0,1.5,1024)}});
   const oak=STD(0xffffff,{map:OAK,roughness:.55,envMapIntensity:.5}),oakH=STD(0xffffff,{map:tex(OAK,1,1),roughness:.5,envMapIntensity:.5});oakH.map.rotation=Math.PI/2;
   const kick=STD(0x3b3329,{roughness:.8}),dark=STD(0x1a1714,{roughness:1}),rub=STD(0x2a2b2c,{roughness:1}),hole=new THREE.MeshBasicMaterial({color:0x2a1f16});
   const leather=STD(0x8a5a3a,{roughness:.6}),iron=STD(0x232425,{roughness:.55,metalness:.6}),chrome=STD(0xc8cbce,{roughness:.2,metalness:1});
@@ -4611,9 +4616,11 @@ function buildGymStore(){
   const holeM=new THREE.MeshBasicMaterial({color:0x1d150e});const hpG=new THREE.CircleGeometry(0.625*IN,24),hrG=new THREE.RingGeometry(0.625*IN,0.75*IN,24);
   const hp=(par,u,v)=>{const h=new THREE.Mesh(hpG,holeM);h.position.copy(P(u,v,17.255));h.rotation.y=Math.PI;par.add(h);FRONTS.push(h);
     const r=new THREE.Mesh(hrG,STD(0xb08d62,{roughness:.6}));r.position.copy(P(u,v,17.254));r.rotation.y=Math.PI;par.add(r);FRONTS.push(r)};
+  // single doors: board joints shifted an eighth so the centre pull misses them; pair doors: joints fall 3.8" in, clear of the pulls 2" from the meeting edge
+  const oakDoor1=(()=>{const t=OAK.clone();t.needsUpdate=true;t.offset.set(0.125,0);return STD(0xffffff,{map:t,roughness:.55,envMapIntensity:.5})})();
   const doorsIn=(parent,u0,u1,top)=>{const g1=new THREE.Group(),g2=new THREE.Group();parent.add(g1,g2);(OPTM.D1=OPTM.D1||[]).push(g1);(OPTM.D2=OPTM.D2||[]).push(g2);
-    const PP=PAR;PAR=g1;const a=u0+0.0625,b=u1-0.0625;B2(a,b,4,top-0.125,16.5,17.25,oak,'F');hp(g1,(a+b)/2,top-2.2);
-    PAR=g2;const m=(u0+u1)/2;B2(a,m-0.0625,4,top-0.125,16.5,17.25,oak,'F');B2(m+0.0625,b,4,top-0.125,16.5,17.25,oak,'F');hp(g2,m-2,top-2.2);hp(g2,m+2,top-2.2);PAR=PP};
+    const PP=PAR;PAR=g1;const a=u0+0.0625,b=u1-0.0625;B2(a,b,4,top-0.125,16.5,17.25,oakDoor1,'F');hp(g1,(a+b)/2,top-2.2);
+    PAR=g2;const m=(u0+u1)/2;B2(a,m-0.0625,4,top-0.125,16.5,17.25,slab,'F');B2(m+0.0625,b,4,top-0.125,16.5,17.25,slab,'F');hp(g2,m-2,top-2.2);hp(g2,m+2,top-2.2);PAR=PP};
   for(let i=0;i<3;i++)doorsIn(R,i*BW,(i+1)*BW,16.5);
   const bell=(u,w,r,vb,par)=>{const b=new THREE.Mesh(new THREE.SphereGeometry(r*IN,24,16),iron);b.scale.y=0.92;b.position.copy(P(u,vb+r*0.92,w));(par||R).add(b);b.castShadow=true;FURN.push(b);
     const h=new THREE.Mesh(new THREE.TorusGeometry(r*0.62*IN,0.55*IN,10,24,Math.PI),iron);h.position.copy(P(u,vb+r*1.62,w));h.rotation.y=Math.PI/2;(par||R).add(h);FURN.push(h)};
@@ -4636,13 +4643,22 @@ function buildGymStore(){
   const gOne=new THREE.Group(),gSplit=new THREE.Group();R.add(gOne,gSplit);bay4(gOne,18);bay4(gSplit,30);
   OPTM.S1=[gOne];OPTM.S2=[gSplit];
   // solid white oak peg wall, full width x 68", 1" thick on French cleats 1" off the wall, 1 1/4" pegs on an 8" grid
+  // board seams on the peg panel set at 8" centres, half way between the peg hole columns, so no hole lands on a joint
+  const pegOak=(Hh)=>{const t=OAK.clone();t.needsUpdate=true;t.repeat.set(W/32,Hh/64);t.offset.set(-1.5/32,0);return STD(0xffffff,{map:t,roughness:.55,envMapIntensity:.5})};
   const pA=new THREE.Group(),pB=new THREE.Group();R.add(pA,pB);OPTM.P90=[pA];OPTM.P108=[pB];
-  PAR=pA;B2(0,W,22,90,1,2,oak);B2(2,W-2,80,83,0,1,kick);B2(2,W-2,30,32,0,1,kick);
-  PAR=pB;B2(0,W,22,108,1,2,oak);B2(2,W-2,98,101,0,1,kick);B2(2,W-2,30,32,0,1,kick);PAR=R;
+  PAR=pA;B2(0,W,22,90,1,2,pegOak(68));B2(2,W-2,80,83,0,1,kick);B2(2,W-2,30,32,0,1,kick);
+  PAR=pB;B2(0,W,22,108,1,2,pegOak(86));B2(2,W-2,98,101,0,1,kick);B2(2,W-2,30,32,0,1,kick);PAR=R;
+  const staveFace=(par,vTop)=>{const m0b=(W-Math.floor((W-8)/8)*8)/2,off=m0b+4;   // seams at the peg column midpoints
+    const g=new THREE.BufferGeometry();const A=P(0,22,2.002),B3=P(W,22,2.002),C=P(W,vTop,2.002),D=P(0,vTop,2.002);
+    g.setAttribute('position',new THREE.Float32BufferAttribute([A.x,A.y,A.z,B3.x,B3.y,B3.z,C.x,C.y,C.z,D.x,D.y,D.z],3));
+    const ux=u=>(u-off)/32;g.setAttribute('uv',new THREE.Float32BufferAttribute([ux(0),22/96,ux(W),22/96,ux(W),vTop/96,ux(0),vTop/96],2));
+    g.setIndex([0,2,1,0,3,2]);g.computeVertexNormals();const mt=STD(0xffffff,{map:STAVE,roughness:.55,envMapIntensity:.5});
+    const f=new THREE.Mesh(g,mt);f.receiveShadow=true;par.add(f)};
+  staveFace(pA,90);staveFace(pB,108);
   const HU=[],HV=[],HV2=[];const m0=(W-Math.floor((W-8)/8)*8)/2;for(let u=m0;u<=W-m0+0.01;u+=8)HU.push(u);for(let v=28;v<=84;v+=8)HV.push(v);for(let v=92;v<=100;v+=8)HV2.push(v);GS.HU=HU;GS.HV=HV;
   const hg=new THREE.CircleGeometry(0.65*IN,16);
-  HU.forEach(u=>HV.forEach(v=>{const h=new THREE.Mesh(hg,hole);h.position.copy(P(u,v,2.003));h.rotation.y=Math.PI;R.add(h)}));
-  HU.forEach(u=>HV2.forEach(v=>{const h=new THREE.Mesh(hg,hole);h.position.copy(P(u,v,2.003));h.rotation.y=Math.PI;pB.add(h)}));
+  HU.forEach(u=>HV.forEach(v=>{const h=new THREE.Mesh(hg,hole);h.position.copy(P(u,v,2.004));h.rotation.y=Math.PI;R.add(h)}));
+  HU.forEach(u=>HV2.forEach(v=>{const h=new THREE.Mesh(hg,hole);h.position.copy(P(u,v,2.004));h.rotation.y=Math.PI;pB.add(h)}));
   const peg=(u,v,len)=>{const m=new THREE.Mesh(new THREE.CylinderGeometry(0.625*IN,0.625*IN,(len||6)*IN,16),oakH);m.rotation.x=Math.PI/2-0.06;
     m.position.copy(P(u,v+0.1,2+(len||6)/2));R.add(m);m.castShadow=true;PICK.push(m);m.userData.room='gstore'};
   const H=i=>HU[Math.min(HU.length-1,i)];
@@ -4882,8 +4898,10 @@ function buildBar(){
   const sep=document.createElement('span');sep.className='sep';bar.appendChild(sep);}
   else{$('lv').style.display='none';mk('Front view',()=>openRoom(ONLY),'tourbtn')}
   window.bDoors=mk('Doors: on',()=>{const on=!FRONTS[0]||!FRONTS[0].visible?true:false;FRONTS.forEach(o=>o.visible=on);bDoors.textContent=on?'Doors: on':'Doors: off';bDoors.classList.toggle('on',!on);ren.shadowMap.needsUpdate=true});
-  window.bFurn=mk('Furniture: on',()=>{const on=!(FURN[0]&&FURN[0].visible);FURN.forEach(o=>o.visible=on);bFurn.textContent=on?'Furniture: on':'Furniture: off';bFurn.classList.toggle('on',!on);ren.shadowMap.needsUpdate=true});
-  window.bWalls=mk('Walls: full height',()=>{cutUser=!cutUser;bWalls.textContent=cutUser?'Walls: cut away':'Walls: full height';bWalls.classList.toggle('on',cutUser)});
+  const FL=ONLY?'Accessories':'Furniture';
+  window.bFurn=mk(FL+': on',()=>{const on=!(FURN[0]&&FURN[0].visible);FURN.forEach(o=>o.visible=on);bFurn.textContent=FL+(on?': on':': off');bFurn.classList.toggle('on',!on);ren.shadowMap.needsUpdate=true});
+  if(ONLY){window.bPeg=mk('Peg wall: to 7\'-6"',()=>{OPT.peg=OPT.peg==='P90'?'P108':'P90';applyOpts();bPeg.textContent=OPT.peg==='P90'?'Peg wall: to 7\'-6"':'Peg wall: to the 9\'-0" ceiling';bPeg.classList.toggle('on',OPT.peg==='P108');updateUi()})}
+  if(!ONLY)window.bWalls=mk('Walls: full height',()=>{cutUser=!cutUser;bWalls.textContent=cutUser?'Walls: cut away':'Walls: full height';bWalls.classList.toggle('on',cutUser)});
   if(!ONLY)window.bLights=mk('Light fixtures: off',()=>{LIGHTS.visible=!LIGHTS.visible;bLights.textContent=LIGHTS.visible?'Light fixtures: on':'Light fixtures: off';bLights.classList.toggle('on',LIGHTS.visible)});
   if(!ONLY)$('lvL').onclick=()=>{tourStop();setHash('lower')};if(!ONLY)$('lvU').onclick=()=>{tourStop();setHash('upper')};
 }
@@ -4913,7 +4931,7 @@ function updateUi(){
   const o=$('cOpen');if(o)o.onclick=()=>setHash(cur,true);
   const bk=$('cBack');if(bk)bk.onclick=()=>setHash(cur);
   const rs=$('cResume');if(rs)rs.onclick=()=>{tourResume()};
-  c.querySelectorAll('.opts[data-g] button').forEach(b=>b.onclick=()=>{OPT[b.parentNode.dataset.g]=b.dataset.v;applyOpts();updateUi()});
+  c.querySelectorAll('.opts[data-g] button').forEach(b=>b.onclick=()=>{OPT[b.parentNode.dataset.g]=b.dataset.v;applyOpts();updateUi();if(window.bPeg){bPeg.textContent=OPT.peg==='P90'?'Peg wall: to 7\'-6"':'Peg wall: to the 9\'-0" ceiling';bPeg.classList.toggle('on',OPT.peg==='P108')}});
   c.querySelectorAll('.opts:not([data-g]) button').forEach(b=>b.onclick=()=>{PBOPT=b.dataset.o;['A','B','C'].forEach(q=>window.__PB[q].visible=q===PBOPT);updateUi();ren.shadowMap.needsUpdate=true});
   checkDrawings(c);
   if(ONLY){$('ttl').querySelector('small').textContent='Gym storage wall, design in progress. Drag to turn, scroll or pinch to zoom.';return}
