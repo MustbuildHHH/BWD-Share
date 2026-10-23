@@ -4501,7 +4501,7 @@ function buildSauna(){
   // pre-sauna (210): towels and robes, against the sauna's south wall and the west side
   const P=new THREE.Group();LOWER.add(P);addRoomObj('sauna',P);
   const oak=STD(0xc9a274,{roughness:.6}),hook=STD(0x2a2622,{roughness:.4,metalness:.7}),towel=STD(0xf2ede4,{roughness:1}),robe=STD(0xe8e0d2,{roughness:1});
-  const PX0=-7.93,PZ0=-3.69;
+  const PX0=-8.556,PZ0=-3.686;   // against the exterior wall of the pre-sauna (the plan's west line at -7.93 has no wall in the model)
   // robe hook rail on the sauna wall, west of the door
   bx(PX0+0.1,DX0-0.12,1.62,1.71,PZ0,PZ0+0.02,oak,P);
   [0,1,2].forEach(i=>{const x=PX0+0.25+i*0.28;bx(x-0.012,x+0.012,1.55,1.66,PZ0+0.02,PZ0+0.09,hook,P);
@@ -4513,7 +4513,7 @@ function buildSauna(){
   [1.15,1.42,1.62].forEach(y=>{bx(PX0+0.02,PX0+0.34,y,y+0.02,PZ0+0.37,PZ0+0.93,STD(0xb08d62),P);
     const tw=bx(PX0+0.05,PX0+0.32,y+0.02,y+0.13,PZ0+0.42,PZ0+0.88,towel,P);FURN.push(tw)});
   const sc=bx(PX0+0.01,PX0+0.04,1.7,1.9,PZ0+1.3,PZ0+1.4,MAT.led,P,false); // sauna foyer sconce (J)
-  addLabel('Pre-sauna, towels and robes (to confirm)',-7.25,2.2,-2.6,'sauna',1);
+  addLabel('Pre-sauna, towels and robes (to confirm)',-7.6,2.2,-2.6,'sauna',1);
 }
 function buildGym(){
   const G=new THREE.Group();LOWER.add(G);addRoomObj('gym',G);
