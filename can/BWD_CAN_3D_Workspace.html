@@ -4314,7 +4314,7 @@ const INFO={
  bath:{scope:[12],mw:'3\'-6" vanity with three U-shaped drawers and a fluted integrated marble sink, 11" tower with pull-out and upper cabinet, full-height linen cabinet with interior LED.',notes:['Submitted to Prestige.','Floor 12" x 24" grey marble-look, locked 14 Sep. Wall tile Equipe Tribeca, locked.','Ceiling 8\'-0" (sprinkler).'],draw:['bath','lighting']},
  bed:{scope:[13],mw:'Closet built-in in cream lacquer (changed from graphite 23 Oct, switch below) with slim shaker fronts and brushed brass pulls, oak counter, lit open shelves. Headboard wall with the oval night tables either side.',notes:['Crown and cove per T 1.03 (approved by Krys 29 Sep) are in this room, as on the lighting plan.','Bedside pendants dropped so the bottom of the fixture sits at the top of the headboard (48"). Switch below to the double capsule option (4.7" dia x 27.6" high).'],draw:['bed','crown','lighting']},
  store:{scope:[],mw:'No millwork. Shelving shown is by owner and only illustrative.',notes:['Mechanical and laundry share room 209. Pre-sauna (210) is shown with the sauna.'],draw:['lighting']},
- upper:{scope:[14],mw:'Option B, picked by Krys: wall-to-wall desk with drawers in the counter, oak shelves lit from behind, capsule mirror balanced by the computer, reading nook by the window.',notes:['Krys picked Option B. Its drawing is next for item 14. A and C stay here for reference only.','It is upstairs in the house. Here it sits beside the lower level as its own small building so it is easy to see.'],draw:[]}
+ upper:{scope:[14],mw:'Option B, picked by Krys: wall-to-wall desk with drawers in the counter, three equal 30" oak shelves over the computer (first one 24" above the desk so it clears the monitor, then 14" apart), lit from behind, capsule mirror balanced by the computer, reading nook by the window.',notes:['Krys picked Option B. Its drawing is next for item 14. A and C stay here for reference only.','It is upstairs in the house. Here it sits beside the lower level as its own small building so it is easy to see.'],draw:[]}
 };
 const INFO_CLIENT={gstore:{scope:[],mw:'A 10\'-3" white oak bench along the gym wall, 18" high and 18" deep, with four doors. Kettlebells store inside, dumbbells sit in a cradle on the end, and the rest of the top is finished in rubber.',notes:['Above it, a solid white oak peg wall with 1 1/4" oak pegs on an 8" grid. Move the pegs to hang foam rollers, rings, bands, rope, mats and two loose shelves wherever you like.','Try the Bench switch to see the end section raised to counter height.','Doors: off shows what is stored inside.'],draw:[]}};
 const EXTRA={bed:[['Night table 3D','Canmore_Nightstand_3D_Viewer.html'],['Cove detail','Fabi_Custom_Cove_Detail.html']]};
@@ -4744,6 +4744,18 @@ async function build(){
   // primary bedroom, three options (Blender exports, metres)
   {const PB={};for(const o of['A','B','C']){const root=await parse('pb'+o);
       root.traverse(m=>{if(!m.isMesh)return;const nm=m.material.name;m.name=blenderKind(m,true)+'~'+m.name;m.material=MAPB[nm]||G('#e9e3d8');if(nm==='white_oak')retileFloor(m,98)});
+      if(o==='B'){ // Krys, 23 Oct: no random shelves. Three equal oak shelves over the computer, first shelf 24" above the desk top (her minimum was 20"; 24" clears the monitor by 5"), 14" apart
+        root.traverse(m=>{if(m.isMesh&&/~shelf_(wood|obj)/.test(m.name)){m.visible=false;m.name='X~'+m.name}});
+        const IN2=0.0254,x0=2.077-0.381,x1=2.077+0.381,z0=-3.962,z1=-3.734,t=1.25*IN2,top=0.813;
+        const led=new THREE.MeshBasicMaterial({color:0xffe2b8,toneMapped:false});
+        const books=[0xb9aa93,0x7d8f86,0xd8cdb8,0x8c6a4f,0xe9e2d4];
+        [24,38,52].forEach((h,k)=>{const y=top+h*IN2;
+          const sh=new THREE.Mesh(new THREE.BoxGeometry(x1-x0,t,z1-z0),MAPB.wood_oak);sh.position.set((x0+x1)/2,y+t/2,(z0+z1)/2);sh.name='M~shelf3_'+k;sh.castShadow=sh.receiveShadow=true;root.add(sh);
+          const st=new THREE.Mesh(new THREE.BoxGeometry(x1-x0-0.04,0.004,0.008),led);st.position.set((x0+x1)/2,y+t+0.002,z0+0.012);st.name='M~shelf3led';root.add(st);
+          for(let i=0;i<5;i++){const w=0.03+((i*7+k*3)%4)*0.008,hb=0.17+((i*5+k)%3)*0.03;const bk=new THREE.Mesh(new THREE.BoxGeometry(w,hb,0.15),new THREE.MeshStandardMaterial({color:books[(i+k)%5],roughness:.9}));
+            bk.position.set(x0+0.06+(k%2?0.4:0)+i*0.04,y+t+hb/2,(z0+z1)/2+0.01);bk.name='N~book3';bk.castShadow=true;root.add(bk)}
+          const v=new THREE.Mesh(new THREE.CylinderGeometry(0.035,0.045,0.14,20),new THREE.MeshStandardMaterial({color:k===1?0x3a3430:0xe8e2d8,roughness:.6}));v.position.set(k%2?x0+0.12:x1-0.12,y+t+0.07,(z0+z1)/2);v.name='N~vase3';root.add(v)});
+      }
       prep(root,'upper',null);const g=place(root,[UPX,UPY,UPZ],0,1);UPPER.add(g);g.visible=o==='B';PB[o]=g}
     window.__PB=PB;addRoomObj('upper',PB.A);addRoomObj('upper',PB.B);addRoomObj('upper',PB.C);
     const slab=new THREE.Mesh(new THREE.BoxGeometry(6.6,0.3,4.8),STD(0xd8d0c4,{roughness:1}));slab.position.set(UPX+1.25,UPY-0.16,UPZ-2.0);slab.receiveShadow=true;UPPER.add(slab);}
