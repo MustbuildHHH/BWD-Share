@@ -4278,7 +4278,7 @@ const AREAS={
  bar:{name:'Wet bar',no:'201',lvl:'L',rect:[-3.78,-6.29,-0.54,-2.56],th:0.05,ph:0.88,r:7.5,model:'wetbar',page:'Fabi_WetBar_3D.html'},
  theatre:{name:'Theatre and media wall',no:'202',lvl:'L',rect:[-0.42,-6.29,3.89,-2.60],th:0.15,ph:0.9,r:8.5,model:'media',page:'Fabi_Media_3D.html'},
  gym:{name:'Gym',no:'203',lvl:'L',rect:[-4.95,-2.56,3.28,1.93],th:-1.45,ph:0.92,r:10},
- gstore:{name:'Gym storage',no:'203',lvl:'L',rect:[-4.95,1.40,-2.78,1.93],th:Math.PI+0.18,ph:1.0,r:4.8},
+ gstore:{name:'Gym storage',no:'203',lvl:'L',rect:[-4.95,1.40,-1.80,1.93],th:Math.PI+0.12,ph:1.0,r:5.8},
  sauna:{name:'Sauna and pre-sauna',no:'204, 210',lvl:'L',rect:[-8.56,-6.29,-6.56,-1.50],th:0.55,ph:0.85,r:7},
  office:{name:'Office',no:'206',lvl:'L',rect:[-6.34,1.19,-1.85,5.57],th:1.75,ph:0.88,r:8.5,model:'office',page:'BWD_CAN_Office_3D.html'},
  bath:{name:'Washroom',no:'208',lvl:'L',rect:[-2.66,3.32,-0.01,5.57],th:Math.PI-0.2,ph:0.85,r:6.2,model:'bath',page:'Fabi_Bathroom_3D.html'},
@@ -4306,8 +4306,8 @@ const INFO={
  foyer:{scope:[],mw:'No millwork in this room.',notes:['Walls at the bottom of the stair follow the 19 Oct lighting plan: the east wall now stops at the stair, and the wall to the gym is gone, so the foyer opens to the bar and the gym. The Revit model still shows the old walls.','Ceiling 8\'-0" framed down. Stair open above.'],draw:['lighting']},
  bar:{scope:[16],mw:'Wet bar in a 10\'-6" niche: base cabinets with shaker fronts, stone counter with integrated sink, stone surround with a bevelled border, open shelves lit from above. The low shelf over the sink is removed (23 Oct).',notes:['Shown in the default finishes of the room page: oak, soapstone-look stone, tab pulls. Other options are on the room page.','Ceiling 9\'-0" in the tray, 8\'-0" at the 12" bulkhead.'],draw:['bar','lighting']},
  theatre:{scope:[15],mw:'Media wall: credenza with stone top and five shaker fronts, a hinged panel that swings clear of the TV housing, floating lit shelves.',notes:['Column in wood, smooth or fluted: switch below.','Options sent 7 Oct. Three CAD fixes still open: the Option D sheet number, the door swing, the panel height.','Ceiling 9\'-0" flat with a 6" border light.'],draw:['media','lighting']},
- gym:{scope:[],mw:'No millwork. Full-width mirror on the east wall, opposite the mechanical room.',notes:['Mirror about 14\'-9" wide (the full gym wall). Height shown 6" to 7\'-6" above the floor, to confirm.','Hardwood herringbone to match the basement, heavy mats under equipment (11 Sep).','Wall-wash pots 24" off the mirror wall. Coffer and raised area 9\'-0".'],draw:['lighting']},
- gstore:{scope:['GS'],mw:'New. 7\'-0" bench, 18" deep and 18" high, three bays with slab doors and a routed finger groove. Kettlebells inside on a rubber mat and a middle shelf. Seat cushion over two bays, dumbbell cradle on the third. Solid white oak peg wall above, 84" x 68", 1" thick on a French cleat, with 1 1/4" oak pegs on an 8" grid for rollers, rings, bands, rope and two loose shelves.',notes:['On the gym wall that backs onto the office.','Starter design to develop in 2D. The DXF starter is in Design\\DXF.','Not in the current scope. To price.'],draw:[]},
+ gym:{scope:[],mw:'No millwork. Full-width mirror on the east wall, opposite the mechanical room. Equipment: squat rack, Smith machine, chin-up station and bench press, no cardio (positions illustrative).',notes:['Mirror about 14\'-9" wide (the full gym wall). Height shown 6" to 7\'-6" above the floor, to confirm.','Hardwood herringbone to match the basement, heavy mats under equipment (11 Sep).','Wall-wash pots 24" off the mirror wall. Coffer and raised area 9\'-0".'],draw:['lighting']},
+ gstore:{scope:['GS'],mw:'New. 10\'-3" bench, 18" deep and 18" high, from the gym corner to 6" short of the pocket door. Four bays with slab doors and a routed finger groove. Kettlebells inside on a rubber mat and two shelves. Seat cushion over three bays, dumbbell cradle on the fourth. Solid white oak peg wall above, 123" x 68", 1" thick on a French cleat, with 1 1/4" oak pegs on an 8" grid for rollers, rings, bands, rope and two loose shelves.',notes:['On the gym wall that backs onto the office. The east part sits over the pocket door wall: fix the peg wall cleats only into the pocket frame studs or framing outside the pocket, with screws that cannot reach the door.','Starter design to develop in 2D. The DXF starter is in Design\\DXF.','Not in the current scope. To price.'],draw:[]},
  sauna:{scope:[],mw:'New. HUUM Drop 9 kW heater, cedar lining and floor, two-tier benches, hidden door, pre-sauna for towels and robes.',notes:['Heater 15.4" x 13.2" x 23.2", set 5.9" (150 mm) off the side walls. HUUM Table 1 for the Drop 9: A 150, B 690, C 485, D 220, E 310 mm. Check each letter against the manual figure before framing.','Ceiling 7\'-6" maximum. Upper bench top 38" so the bench to ceiling distance sits in HUUM\'s 1100 to 1300 mm range.','Cedar floor: the Revit room is 53.51 SF. The 57.18 SF on the earlier note matches the washroom.','Bench layout to confirm. Kit or site-built and supplier to confirm.'],draw:[]},
  office:{scope:[11],mw:'Window wall of display cabinets with open shelving above and deep drawers below, full-width counter. Built-in armoire in the column recess with pocket doors, printer pull-out and filing drawers. 22" display niche beside the linen closet.',notes:['Submitted to Prestige.','Picture light over the 22" display cabinet. Three 1" gimbal pin lights in the tray over the jersey gallery behind the desk.','Desk, chair and jersey frames are furniture, not millwork.','Ceiling: crown and tray with a NISA-KRA cove, as in the bedroom.'],draw:['office','lighting']},
  bath:{scope:[12],mw:'3\'-6" vanity with three U-shaped drawers and a fluted integrated marble sink, 11" tower with pull-out and upper cabinet, full-height linen cabinet with interior LED.',notes:['Submitted to Prestige.','Floor 12" x 24" grey marble-look, locked 14 Sep. Wall tile Equipe Tribeca, locked.','Ceiling 8\'-0" (sprinkler).'],draw:['bath','lighting']},
@@ -4520,51 +4520,53 @@ function buildGym(){
   mir.rotation.y=-Math.PI/2;mir.position.set(X-0.031,(y0+y1)/2,(Z0+Z1)/2);G.add(mir);GYM.mirror=mir;
   const fake=new THREE.Mesh(mg,MAT.mirror);fake.rotation.y=-Math.PI/2;fake.position.set(X-0.032,(y0+y1)/2,(Z0+Z1)/2);G.add(fake);GYM.fake=fake;
   addLabel('Full-width mirror',X-0.2,2.55,(Z0+Z1)/2,'gym',1);
-  // equipment: treadmill facing the mirror, spin bike, adjustable bench, on heavy mats (illustrative, by owner)
+  // equipment as listed by William 23 Oct: squat rack, Smith machine, chin-up station, bench press. No cardio. Positions illustrative.
   const mat=STD(0xffffff,{map:tex(TX.rubber,2,2),roughness:.95});
-  [[0.35,2.75,-2.0,-0.55],[0.55,2.2,0.15,1.15],[-2.2,-0.2,-1.9,-0.6]].forEach(r=>{const m=bx(r[0],r[1],0,0.015,r[2],r[3],mat,G);FURN.push(m)});
-  const blk=STD(0x1c1d1f,{roughness:.45,metalness:.5}),alu=STD(0xb8bbbe,{roughness:.3,metalness:1}),belt=STD(0x151515,{roughness:.9}),
-        pad=STD(0x2e3134,{roughness:.6}),red=STD(0x8a2a22,{roughness:.5}),scr=new THREE.MeshBasicMaterial({color:0x4a6a80,toneMapped:false});
-  const add=(m)=>{m.castShadow=true;m.receiveShadow=true;FURN.push(m);return m};
-  const cyl=(r,h,mt,x,y,z,rx,rz,ry)=>{const m=new THREE.Mesh(new THREE.CylinderGeometry(r,r,h,20),mt);m.position.set(x,y,z);m.rotation.set(rx||0,ry||0,rz||0);G.add(m);return add(m)};
-  const tube=(a,b,r,mt)=>{const A=new THREE.Vector3(...a),B=new THREE.Vector3(...b),L=A.distanceTo(B);const m=new THREE.Mesh(new THREE.CylinderGeometry(r,r,L,14),mt);
-    m.position.copy(A).add(B).multiplyScalar(.5);m.quaternion.setFromUnitVectors(new THREE.Vector3(0,1,0),B.clone().sub(A).normalize());G.add(m);return add(m)};
-  const rbox=(w,h,d,r,mt,x,y,z)=>{const sh=new THREE.Shape();const hw=w/2,hh=h/2;sh.moveTo(-hw+r,-hh);sh.lineTo(hw-r,-hh);sh.quadraticCurveTo(hw,-hh,hw,-hh+r);sh.lineTo(hw,hh-r);sh.quadraticCurveTo(hw,hh,hw-r,hh);
-    sh.lineTo(-hw+r,hh);sh.quadraticCurveTo(-hw,hh,-hw,hh-r);sh.lineTo(-hw,-hh+r);sh.quadraticCurveTo(-hw,-hh,-hw+r,-hh);
-    const g=new THREE.ExtrudeGeometry(sh,{depth:d,bevelEnabled:true,bevelSize:Math.min(r,.012),bevelThickness:Math.min(r,.012),bevelSegments:3,curveSegments:6});g.translate(0,0,-d/2);
-    const m=new THREE.Mesh(g,mt);m.position.set(x,y,z);G.add(m);return add(m)};
-  // treadmill: 2.0 m x 0.85 m, runs east toward the mirror
-  {const X0=0.55,X1=2.5,Zc=-1.25,W=0.84;
-   const d=rbox(X1-X0,0.16,W,.05,blk,(X0+X1)/2,0.11,Zc);
-   add(bx(X0+0.12,X1-0.35,0.19,0.205,Zc-0.25,Zc+0.25,belt,G));
-   [-1,1].forEach(s2=>{add(bx(X0+0.05,X1-0.3,0.19,0.215,Zc+s2*0.36-0.05,Zc+s2*0.36+0.05,alu,G));
-     tube([X1-0.32,0.2,Zc+s2*0.34],[X1-0.12,1.18,Zc+s2*0.34],0.028,blk);
-     tube([X1-0.12,1.18,Zc+s2*0.34],[X1-0.55,1.12,Zc+s2*0.34],0.02,blk)});
-   rbox(0.36,0.22,W,.06,blk,X1-0.18,0.2,Zc);
-   const con=rbox(0.16,0.34,0.62,.03,blk,X1-0.1,1.28,Zc);con.rotation.z=-0.5;
-   const sc=new THREE.Mesh(new THREE.PlaneGeometry(0.42,0.22),scr);sc.position.set(X1-0.19,1.31,Zc);sc.rotation.y=-Math.PI/2;sc.rotation.x=0;sc.rotateX(-0.5);G.add(sc);FURN.push(sc);
-   cyl(0.035,W-0.02,alu,X0+0.08,0.11,Zc,Math.PI/2)}
-  // spin bike, faces the mirror
-  {const x=1.4,z=0.65;
-   [[x-0.5],[x+0.42]].forEach(([xx])=>{tube([xx,0.04,z-0.26],[xx,0.04,z+0.26],0.03,blk)});
-   tube([x-0.5,0.06,z],[x+0.42,0.06,z],0.035,blk);
-   tube([x-0.35,0.06,z],[x-0.12,0.78,z],0.035,blk);tube([x+0.38,0.06,z],[x+0.22,1.02,z],0.035,blk);
-   const fw=new THREE.Mesh(new THREE.CylinderGeometry(0.25,0.25,0.05,40),alu);fw.rotation.x=Math.PI/2;fw.position.set(x+0.26,0.32,z);G.add(fw);add(fw);
-   const gd=new THREE.Mesh(new THREE.CylinderGeometry(0.27,0.27,0.07,40,1,false,Math.PI*0.6,Math.PI*1.1),red);gd.rotation.x=Math.PI/2;gd.position.set(x+0.26,0.32,z);G.add(gd);add(gd);
-   tube([x-0.12,0.78,z],[x-0.16,0.95,z],0.022,alu);
-   const sd=rbox(0.27,0.06,0.17,.05,pad,x-0.17,0.98,z);
-   tube([x+0.22,1.02,z],[x+0.24,1.12,z],0.022,alu);tube([x+0.24,1.12,z-0.24],[x+0.24,1.12,z+0.24],0.018,blk);
-   tube([x+0.24,1.12,z-0.24],[x+0.38,1.2,z-0.2],0.016,blk);tube([x+0.24,1.12,z+0.24],[x+0.38,1.2,z+0.2],0.016,blk);
-   cyl(0.012,0.2,alu,x+0.26,0.32,z,Math.PI/2);}
-  // adjustable bench, backrest inclined
-  {const x0=-1.65,x1=-0.55,z=-1.25;
-   tube([x0,0.05,z-0.24],[x0,0.05,z+0.24],0.03,blk);tube([x1,0.05,z-0.22],[x1,0.05,z+0.22],0.03,blk);
-   add(bx(x0,x1,0.06,0.12,z-0.04,z+0.04,blk,G));
-   tube([x0+0.45,0.12,z],[x0+0.45,0.38,z],0.035,blk);tube([x1-0.18,0.12,z],[x1-0.18,0.38,z],0.035,blk);
-   rbox(0.36,0.06,0.3,.03,pad,x1-0.24,0.42,z);
-   const bk=rbox(0.78,0.06,0.28,.03,pad,x0+0.34,0.58,z);bk.rotation.z=0.5;
-   tube([x0+0.62,0.38,z],[x0+0.25,0.62,z],0.025,blk);
-   [z-0.27,z+0.27].forEach(zz=>cyl(0.04,0.03,blk,x1+0.02,0.06,zz,Math.PI/2));}
+  [[1.05,2.95,-2.45,-0.75],[1.05,2.95,-0.55,1.85],[-1.9,0.55,-2.1,-0.55],[-4.85,-3.2,-2.45,-0.9]].forEach(r=>{const m=bx(r[0],r[1],0,0.02,r[2],r[3],mat,G);FURN.push(m)});
+  const blk=STD(0x1b1c1e,{roughness:.42,metalness:.55}),chrome=STD(0xcfd2d5,{roughness:.18,metalness:1}),pad=STD(0x2c2e31,{roughness:.6}),plateM=STD(0x26272a,{roughness:.5,metalness:.3}),red=STD(0x8a2a22,{roughness:.5});
+  const add=(m)=>{m.castShadow=true;m.receiveShadow=true;G.add(m);FURN.push(m);return m};
+  const post=(x,z,h,s2)=>add(bx(x-(s2||0.038),x+(s2||0.038),0.02,h,z-(s2||0.038),z+(s2||0.038),blk,G));
+  const beamX=(x0,x1,y,z,s2)=>add(bx(x0,x1,y-(s2||0.038),y+(s2||0.038),z-(s2||0.038),z+(s2||0.038),blk,G));
+  const beamZ=(z0,z1,y,x,s2)=>add(bx(x-(s2||0.038),x+(s2||0.038),y-(s2||0.038),y+(s2||0.038),z0,z1,blk,G));
+  const rod=(a,b,r,m)=>{const A=new THREE.Vector3(...a),B2=new THREE.Vector3(...b),L=A.distanceTo(B2);const o=new THREE.Mesh(new THREE.CylinderGeometry(r,r,L,16),m);
+    o.position.copy(A).add(B2).multiplyScalar(.5);o.quaternion.setFromUnitVectors(new THREE.Vector3(0,1,0),B2.clone().sub(A).normalize());return add(o)};
+  const plate=(x,y,z,r,t,axis)=>{const o=new THREE.Mesh(new THREE.CylinderGeometry(r,r,t,40),plateM);if(axis==='z')o.rotation.x=Math.PI/2;else o.rotation.z=Math.PI/2;o.position.set(x,y,z);add(o);
+    const hub=new THREE.Mesh(new THREE.CylinderGeometry(0.03,0.03,t+0.004,16),chrome);hub.rotation.copy(o.rotation);hub.position.copy(o.position);add(hub)};
+  const barbell=(x,y,z0,z1,plates)=>{rod([x,y,z0],[x,y,z1],0.014,chrome);const zc=(z0+z1)/2,half=(z1-z0)/2;
+    (plates||[]).forEach((r,k)=>{const off=half-0.24-k*0.05;plate(x,y,zc-off,r,0.045,'z');plate(x,y,zc+off,r,0.045,'z')});
+    [-1,1].forEach(sg=>add(new THREE.Mesh(new THREE.CylinderGeometry(0.026,0.026,0.04,16),chrome)).position.set(x,y,zc+sg*(half-0.42)))};
+  // squat rack (power rack): 48" x 48" x 90", faces the mirror; J-hooks, safeties, pull-up bar, plate horns
+  {const x0=1.5,x1=2.72,z0=-2.2,z1=-1.0,h=2.29;
+   [[x0,z0],[x1,z0],[x0,z1],[x1,z1]].forEach(([x,z])=>post(x,z,h));
+   beamZ(z0,z1,h-0.04,x0);beamZ(z0,z1,h-0.04,x1);beamX(x0,x1,h-0.04,z0);beamX(x0,x1,h-0.04,z1);beamZ(z0,z1,0.06,x0);beamZ(z0,z1,0.06,x1);beamX(x0,x1,0.06,z0);beamX(x0,x1,0.06,z1);
+   rod([x0-0.12,h+0.01,z0-0.05],[x0-0.12,h+0.01,z1+0.05],0.016,chrome);
+   [z0,z1].forEach(z=>{add(bx(x0+0.04,x0+0.12,1.33,1.37,z-0.03,z+0.03,blk,G));add(bx(x1-0.02,x1+0.02,0.6,0.64,z-0.03,z+0.03,blk,G));add(bx(x0,x1,0.6,0.64,z-0.025,z+0.025,red,G))});
+   for(let y=0.2;y<2.1;y+=0.06)[[x0,z0],[x1,z0],[x0,z1],[x1,z1]].forEach(([x,z])=>{const hl=bx(x-0.04,x-0.039,y,y+0.012,z-0.008,z+0.008,STD(0x0a0a0a),G)});
+   [[x1+0.04,z0+0.25],[x1+0.04,z1-0.25]].forEach(([x,z])=>{rod([x,0.45,z],[x+0.25,0.45,z],0.025,chrome);plate(x+0.15,0.45,z,0.225,0.06,'x');plate(x+0.21,0.45,z,0.17,0.05,'x')});
+   barbell(x0+0.08,1.40,z0-0.55,z1+0.55,[0.225,0.17]);}
+  // Smith machine: 84" wide, guided bar on chrome rods, faces the mirror
+  {const x0=1.5,x1=2.72,z0=-0.35,z1=1.75,h=2.13;
+   [[x0,z0],[x1,z0],[x0,z1],[x1,z1]].forEach(([x,z])=>post(x,z,h));
+   beamZ(z0,z1,h-0.04,x0);beamZ(z0,z1,h-0.04,x1);beamX(x0,x1,h-0.04,z0);beamX(x0,x1,h-0.04,z1);beamZ(z0,z1,0.06,x1);beamX(x0,x1,0.06,z0);beamX(x0,x1,0.06,z1);
+   const gx=(x0+x1)/2;[z0+0.12,z1-0.12].forEach(z=>{rod([gx,0.08,z],[gx,h-0.08,z],0.016,chrome);add(bx(gx-0.05,gx+0.05,1.22,1.36,z-0.04,z+0.04,blk,G))});
+   barbell(gx,1.29,z0-0.1,z1+0.1,[0.225]);
+   [z0+0.3,z1-0.3].forEach(z=>add(bx(x0+0.05,x1-0.05,0.55,0.59,z-0.02,z+0.02,red,G)));}
+  // bench press: Olympic flat bench with uprights, bar racked
+  {const x0=-1.65,x1=-0.35,z=-1.32;
+   rod([x0,0.04,z-0.25],[x0,0.04,z+0.25],0.03,blk);rod([x1,0.04,z-0.28],[x1,0.04,z+0.28],0.03,blk);add(bx(x0,x1,0.04,0.1,z-0.035,z+0.035,blk,G));
+   rod([x0+0.2,0.1,z],[x0+0.2,0.4,z],0.035,blk);rod([x1-0.2,0.1,z],[x1-0.2,0.4,z],0.035,blk);
+   const pd=bx(x0+0.05,x1-0.25,0.4,0.46,z-0.14,z+0.14,pad,G);FURN.push(pd);
+   [z-0.55,z+0.55].forEach(zz=>{rod([x1-0.08,0.04,zz],[x1-0.08,1.12,zz],0.03,blk);rod([x1-0.08,1.12,zz],[x1+0.02,1.16,zz],0.016,blk);rod([x1-0.2,0.04,zz],[x1+0.05,0.04,zz],0.03,blk)});
+   rod([x1-0.08,0.04,z-0.55],[x1-0.08,0.04,z+0.55],0.025,blk);
+   barbell(x1-0.02,1.17,z-1.1,z+1.1,[0.225,0.225]);}
+  // chin-up station: power tower with pull-up bar, dip handles, back and arm pads
+  {const x0=-4.75,x1=-3.35,z0=-2.3,z1=-1.1,h=2.2;
+   [[x0,z0],[x0,z1]].forEach(([x,z])=>{post(x,z,h,0.035);rod([x,0.04,z],[x1,0.04,z],0.03,blk);rod([x1,0.04,z],[x0,1.6,z],0.028,blk)});
+   beamZ(z0,z1,h-0.04,x0,0.035);beamZ(z0,z1,1.0,x0,0.03);
+   rod([x0+0.05,h+0.02,z0-0.15],[x0+0.05,h+0.02,z1+0.15],0.016,chrome);
+   rod([x0+0.05,h+0.02,z0-0.1],[x0+0.38,h+0.08,z0-0.1],0.016,chrome);rod([x0+0.05,h+0.02,z1+0.1],[x0+0.38,h+0.08,z1+0.1],0.016,chrome);
+   const bp=bx(x0+0.04,x0+0.1,0.95,1.45,(z0+z1)/2-0.15,(z0+z1)/2+0.15,pad,G);FURN.push(bp);
+   [z0+0.25,z1-0.25].forEach(z=>{const ap=bx(x0+0.04,x0+0.36,1.28,1.34,z-0.06,z+0.06,pad,G);FURN.push(ap);rod([x0+0.36,1.2,z],[x0+0.55,1.2,z],0.016,chrome)});}
 }
 const GYM={};
 function buildStorage(){
@@ -4583,62 +4585,62 @@ function oakTex(){return canvasTex(512,1024,(g)=>{const r=rnd(23);const cols=4,w
   for(let i=0;i<cols;i++){const t=r();g.fillStyle=`rgb(${206+t*16|0},${176+t*14|0},${134+t*12|0})`;g.fillRect(i*w,0,w,1024);
     g.globalAlpha=.10;for(let k=0;k<40;k++){g.fillStyle=r()>.5?'#8a6440':'#fff2dc';const x=i*w+r()*w;g.fillRect(x,0,1+r()*2,1024)}g.globalAlpha=1;
     g.fillStyle='rgba(90,60,35,.35)';g.fillRect(i*w,0,1.5,1024)}})}
-const GS={X0:-4.93,ZW:1.927};
+const GS={X0:-4.94,ZW:1.927,W:123}; // ends 6" short of the gym pocket door opening (lighting plan rev 5)
 function buildGymStore(){
   const R=new THREE.Group();LOWER.add(R);addRoomObj('gstore',R);
-  const X0=GS.X0,ZW=GS.ZW;
+  const X0=GS.X0,ZW=GS.ZW,W=GS.W,NB=4,BW=W/NB;
   const OAK=oakTex();
   const oak=STD(0xffffff,{map:OAK,roughness:.55,envMapIntensity:.5}),oakH=STD(0xffffff,{map:tex(OAK,1,1),roughness:.5,envMapIntensity:.5});oakH.map.rotation=Math.PI/2;
   const kick=STD(0x3b3329,{roughness:.8}),dark=STD(0x1a1714,{roughness:1}),rub=STD(0x2a2b2c,{roughness:1}),hole=new THREE.MeshBasicMaterial({color:0x2a1f16});
   const leather=STD(0x8a5a3a,{roughness:.6}),iron=STD(0x232425,{roughness:.55,metalness:.6}),chrome=STD(0xc8cbce,{roughness:.2,metalness:1});
   const B=(u0,u1,v0,v1,w0,w1,m,k)=>{const o=bx(X0+u0*IN,X0+u1*IN,v0*IN,v1*IN,ZW-w1*IN,ZW-w0*IN,m,R);if(k==='F'){FRONTS.push(o);PICK.push(o);o.userData.room='gstore'}else if(k==='N')FURN.push(o);else{PICK.push(o);o.userData.room='gstore'}return o};
   const P=(u,v,w)=>new THREE.Vector3(X0+u*IN,v*IN,ZW-w*IN);
-  const W=84;
-  // bench 84" x 18" deep, seat 18" high, three bays with slab doors
+  // bench, 18" deep and 18" high, four bays with slab doors
   B(0.5,W-0.5,0,3.5,0,15,kick);
   B(0,0.75,3.5,16.5,0,17.25,oak);B(W-0.75,W,3.5,16.5,0,17.25,oak);
-  [27.75,55.5].forEach(u=>B(u,u+0.75,3.5,16.5,0,16.5,oak));
+  for(let i=1;i<NB;i++){const u=i*BW-0.375;B(u,u+0.75,3.5,16.5,0,16.5,oak)}
   B(0.75,W-0.75,3.5,4.25,0,16.5,oak);B(0.75,W-0.75,4.25,16.5,0,0.5,STD(0xd8c7aa,{roughness:.8}));
   B(0.75,W-0.75,4.25,4.5,0.5,16.5,rub);
-  B(28.5,55.5,10.25,11,0.5,16.5,oak);                    // shelf in the middle bay
+  B(BW+0.375,2*BW-0.375,10.25,11,0.5,16.5,oak);B(2*BW+0.375,3*BW-0.375,10.25,11,0.5,16.5,oak);   // shelves in the two middle bays
   B(-0.25,W+0.25,16.5,18,0,18,oakH);                      // 1 1/2" solid white oak top
-  [[0.0625,27.6875],[28.1875,55.8125],[56.3125,83.9375]].forEach(([u0,u1])=>{B(u0,u1,4,16.375,16.5,17.25,oak,'F');B(u0+3,u1-3,15.4,16.0,17.25,17.3,dark,'F')}); // doors with a routed finger groove
-  // kettlebells stored inside (bells show with the doors off)
+  for(let i=0;i<NB;i++){const u0=i*BW+0.0625,u1=(i+1)*BW-0.0625;B(u0,u1,4,16.375,16.5,17.25,oak,'F');B(u0+3,u1-3,15.4,16.0,17.25,17.3,dark,'F')}
   const bell=(u,w,r,vb)=>{const b=new THREE.Mesh(new THREE.SphereGeometry(r*IN,24,16),iron);b.scale.y=0.92;b.position.copy(P(u,vb+r*0.92,w));R.add(b);b.castShadow=true;FURN.push(b);
     const h=new THREE.Mesh(new THREE.TorusGeometry(r*0.62*IN,0.55*IN,10,24,Math.PI),iron);h.position.copy(P(u,vb+r*1.62,w));h.rotation.y=Math.PI/2;R.add(h);FURN.push(h)};
-  bell(7,9,4.2,4.5);bell(19,9,3.7,4.5);bell(35,9,3.2,11);bell(48,9,3.2,11);bell(36,9,3.6,4.5);bell(48,9,3.9,4.5);bell(63,9,4.6,4.5);bell(76,9,4.2,4.5);
-  // seat cushion on the left two bays, dumbbell cradle on the right bay
-  const cu=B(1.5,54,18,20.5,1.5,16.75,leather,'N');
-  [3.5,13.5].forEach(w=>B(57.5,82.5,18,19.75,w-0.75,w+0.75,oak));
-  [[60,2.0],[65,2.2],[70.5,2.45],[76.5,2.7]].forEach(([u,r])=>{[0,1].forEach(()=>{});
+  [[8,4.4],[21,4.0]].forEach(([u,r])=>bell(u,9,r,4.5));
+  [[BW+8,3.2,11],[BW+21,3.2,11],[BW+9,3.7,4.5],[BW+22,3.9,4.5],[2*BW+8,3.0,11],[2*BW+21,3.0,11],[2*BW+9,4.2,4.5],[2*BW+22,4.4,4.5],[3*BW+9,4.8,4.5],[3*BW+22,4.6,4.5]].forEach(([u,r,v])=>bell(u,9,r,v));
+  // seat cushion over the first three bays, dumbbell cradle on the last bay
+  B(1.5,3*BW-1.5,18,20.5,1.5,16.75,leather,'N');
+  const c0=3*BW+1.5,c1=W-1.5;[3.5,13.5].forEach(w=>B(c0,c1,18,19.75,w-0.75,w+0.75,oak));
+  [[c0+3.5,2.0],[c0+9,2.2],[c0+15,2.45],[c0+21.5,2.7]].forEach(([u,r])=>{
     const hd=(w)=>{const m=new THREE.Mesh(new THREE.CylinderGeometry(r*IN,r*IN,1.8*IN,6),iron);m.rotation.x=Math.PI/2;m.position.copy(P(u,19.75+r*0.87,w));R.add(m);m.castShadow=true;FURN.push(m)};
     hd(2.0);hd(15.0);const hb=new THREE.Mesh(new THREE.CylinderGeometry(0.6*IN,0.6*IN,12*IN,12),chrome);hb.rotation.x=Math.PI/2;hb.position.copy(P(u,19.75+r*0.87,8.5));R.add(hb);FURN.push(hb)});
-  // solid white oak peg wall, 84" x 68", 1" thick, on a French cleat 1" off the wall, 1 1/4" pegs on an 8" grid
+  // solid white oak peg wall, full width x 68", 1" thick on French cleats 1" off the wall, 1 1/4" pegs on an 8" grid
   B(0,W,22,90,1,2,oak);B(2,W-2,80,83,0,1,kick);B(2,W-2,30,32,0,1,kick);
-  const HU=[],HV=[];for(let u=6;u<=78;u+=8)HU.push(u);for(let v=28;v<=84;v+=8)HV.push(v);
+  const HU=[],HV=[];const m0=(W-Math.floor((W-8)/8)*8)/2;for(let u=m0;u<=W-m0+0.01;u+=8)HU.push(u);for(let v=28;v<=84;v+=8)HV.push(v);GS.HU=HU;GS.HV=HV;
   const hg=new THREE.CircleGeometry(0.65*IN,16);
   HU.forEach(u=>HV.forEach(v=>{const h=new THREE.Mesh(hg,hole);h.position.copy(P(u,v,2.003));h.rotation.y=Math.PI;R.add(h)}));
-  const PEG=[];const peg=(u,v,len)=>{const m=new THREE.Mesh(new THREE.CylinderGeometry(0.625*IN,0.625*IN,(len||6)*IN,16),oakH);m.rotation.x=Math.PI/2-0.06;
-    m.position.copy(P(u,v+0.1,2+(len||6)/2));R.add(m);m.castShadow=true;PICK.push(m);m.userData.room='gstore';PEG.push(m)};
-  // foam rollers resting on peg pairs, left side
+  const peg=(u,v,len)=>{const m=new THREE.Mesh(new THREE.CylinderGeometry(0.625*IN,0.625*IN,(len||6)*IN,16),oakH);m.rotation.x=Math.PI/2-0.06;
+    m.position.copy(P(u,v+0.1,2+(len||6)/2));R.add(m);m.castShadow=true;PICK.push(m);m.userData.room='gstore'};
+  const H=i=>HU[Math.min(HU.length-1,i)];
+  // foam rollers on peg pairs (left)
   const rc=[0x5b5f63,0x7d7368,0x9a8f84,0x4a4e52];
-  [36,44,52,60].forEach((v,i)=>{peg(6,v-4);peg(22,v-4);const r=new THREE.Mesh(new THREE.CylinderGeometry(3*IN,3*IN,24*IN,28),STD(rc[i],{roughness:.95}));
-    r.rotation.z=Math.PI/2;r.position.copy(P(14,v-4+0.65+3,5.2));R.add(r);r.castShadow=true;FURN.push(r)});
-  // rope coil and resistance bands
-  peg(14,76,7);const rope=new THREE.Mesh(new THREE.TorusGeometry(5.5*IN,1.1*IN,10,36),STD(0x9a8d79,{roughness:1}));rope.position.copy(P(14,70.5,4.5));R.add(rope);FURN.push(rope);
-  const rope2=rope.clone();rope2.position.copy(P(14.6,70.2,5.6));rope2.rotation.z=0.2;R.add(rope2);FURN.push(rope2);
-  peg(30,76);[0x2f6b8f,0x7a3b3b,0x3f6b47].forEach((c,i)=>{const b=new THREE.Mesh(new THREE.TorusGeometry((4.5+i*0.4)*IN,0.35*IN,8,28),STD(c,{roughness:.8}));b.scale.y=2.0;b.position.copy(P(30,76-9.2-i*0.3,3.4+i*0.8));R.add(b);FURN.push(b)});
-  // pilates rings on single pegs
-  [[46,76],[62,76],[46,60]].forEach(([u,v])=>{peg(u,v);const ring=new THREE.Mesh(new THREE.TorusGeometry(6.5*IN,0.55*IN,10,40),STD(0x23479a,{roughness:.5}));ring.position.copy(P(u,v-6.0,3.2));R.add(ring);FURN.push(ring);
-    [[-1],[1]].forEach(([sg])=>{const g2=new THREE.Mesh(new THREE.BoxGeometry(1.2*IN,2.8*IN,1.6*IN),STD(0x111111));g2.position.copy(P(u+sg*6.5,v-6,3.2));R.add(g2);FURN.push(g2)})});
-  // two oak shelves resting on pegs: soft balls and blocks
-  peg(38,43,7);peg(54,43,7);B(32,60,43.7,44.7,2.2,9.5,oakH);
-  [36,43,50,57].forEach((u,i)=>{const b=new THREE.Mesh(new THREE.SphereGeometry(3.3*IN,22,16),STD(i%2?0xd9a3a3:0xe2b5b0,{roughness:.8}));b.position.copy(P(u,44.7+3.3,5.8));R.add(b);FURN.push(b)});
-  peg(70,59,7);peg(78,59,7);B(64,82,59.7,60.7,2.2,9.5,oakH);
-  [[67,0x9b8c7a],[72,0x6f7e86],[77,0x9b8c7a]].forEach(([u,c])=>{const b=bx(X0+(u-2)*IN,X0+(u+2)*IN,60.7*IN,66.7*IN,ZW-8.5*IN,ZW-3*IN,STD(c,{roughness:.9}),R);FURN.push(b)});
-  // rolled mats on peg pairs, right side
-  [[70,44,0x6e7b75],[70,36,0x8f8070]].forEach(([u,v,c])=>{peg(u,v-3.5);peg(u+8,v-3.5);const m=new THREE.Mesh(new THREE.CylinderGeometry(2.6*IN,2.6*IN,24*IN,24),STD(c,{roughness:.95}));m.rotation.z=Math.PI/2;m.position.copy(P(u+4,v-3.5+0.65+2.6,4.6));R.add(m);FURN.push(m)});
-  addLabel('Gym storage',X0+42*IN,2.55,ZW-0.3,'gstore');
+  [36,44,52,60].forEach((v,i)=>{peg(H(0),v-4);peg(H(2),v-4);const r=new THREE.Mesh(new THREE.CylinderGeometry(3*IN,3*IN,24*IN,28),STD(rc[i],{roughness:.95}));
+    r.rotation.z=Math.PI/2;r.position.copy(P((H(0)+H(2))/2,v-4+0.65+3,5.2));R.add(r);r.castShadow=true;FURN.push(r)});
+  // rope coils and bands
+  peg(H(1),76,7);const rope=new THREE.Mesh(new THREE.TorusGeometry(5.5*IN,1.1*IN,10,36),STD(0x9a8d79,{roughness:1}));rope.position.copy(P(H(1),70.5,4.5));R.add(rope);FURN.push(rope);
+  const rope2=rope.clone();rope2.position.copy(P(H(1)+0.6,70.2,5.6));rope2.rotation.z=0.2;R.add(rope2);FURN.push(rope2);
+  peg(H(3),76);[0x2f6b8f,0x7a3b3b,0x3f6b47].forEach((c,i)=>{const b=new THREE.Mesh(new THREE.TorusGeometry((4.5+i*0.4)*IN,0.35*IN,8,28),STD(c,{roughness:.8}));b.scale.y=2.0;b.position.copy(P(H(3),76-9.2-i*0.3,3.4+i*0.8));R.add(b);FURN.push(b)});
+  // pilates rings
+  [[5,76],[7,76],[5,60],[7,60]].forEach(([i,v])=>{peg(H(i),v);const ring=new THREE.Mesh(new THREE.TorusGeometry(6.5*IN,0.55*IN,10,40),STD(0x23479a,{roughness:.5}));ring.position.copy(P(H(i),v-6.0,3.2));R.add(ring);FURN.push(ring);
+    [-1,1].forEach(sg=>{const g2=new THREE.Mesh(new THREE.BoxGeometry(1.2*IN,2.8*IN,1.6*IN),STD(0x111111));g2.position.copy(P(H(i)+sg*6.5,v-6,3.2));R.add(g2);FURN.push(g2)})});
+  // loose oak shelves on pegs: soft balls and blocks
+  peg(H(4),43,7);peg(H(7),43,7);B(H(4)-5,H(7)+5,43.7,44.7,2.2,9.5,oakH);
+  for(let k=0;k<5;k++){const u=H(4)-1+k*((H(7)-H(4)+2)/4);const b=new THREE.Mesh(new THREE.SphereGeometry(3.3*IN,22,16),STD(k%2?0xd9a3a3:0xe2b5b0,{roughness:.8}));b.position.copy(P(u,44.7+3.3,5.8));R.add(b);FURN.push(b)}
+  peg(H(9),59,7);peg(H(11),59,7);B(H(9)-5,H(11)+5,59.7,60.7,2.2,9.5,oakH);
+  [[H(9),0x9b8c7a],[H(10),0x6f7e86],[H(11),0x9b8c7a]].forEach(([u,c])=>{const b=bx(X0+(u-2)*IN,X0+(u+2)*IN,60.7*IN,66.7*IN,ZW-8.5*IN,ZW-3*IN,STD(c,{roughness:.9}),R);FURN.push(b)});
+  // rolled mats and a second set of rollers on the right
+  [[9,44,0x6e7b75],[9,36,0x8f8070],[12,76,0x5b5f63],[12,68,0x7d7368]].forEach(([i,v,c])=>{peg(H(i),v-3.5);peg(H(i+2),v-3.5);const m=new THREE.Mesh(new THREE.CylinderGeometry(2.6*IN,2.6*IN,24*IN,24),STD(c,{roughness:.95}));m.rotation.z=Math.PI/2;m.position.copy(P((H(i)+H(i+2))/2,v-3.5+0.65+2.6,4.6));R.add(m);FURN.push(m)});
+  addLabel('Gym storage',X0+W/2*IN,2.55,ZW-0.3,'gstore');
 }
 
 /* bedroom 207 bedside light option: double capsule pendant, 4.7" dia x 27.6" high, bottom at the top of the headboard (48") */
