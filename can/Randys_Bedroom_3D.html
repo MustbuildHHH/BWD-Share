@@ -108,6 +108,17 @@ footer { font-size: 12px; color: var(--ink-2); border-top: 1px solid var(--line)
             <button data-val="off" aria-pressed="false">None</button>
           </div>
         </div>
+        <div class="row"><span class="k">Cabinets</span>
+          <div class="seg" data-opt="cab">
+            <button data-val="cream" aria-pressed="true">Cream</button>
+            <button data-val="graphite" aria-pressed="false">Graphite</button>
+          </div>
+          <span class="k">Bedside lights</span>
+          <div class="seg" data-opt="pend">
+            <button data-val="huron" aria-pressed="true">Huron, dropped to 48"</button>
+            <button data-val="capsule" aria-pressed="false">Double capsule</button>
+          </div>
+        </div>
         <div class="row"><span class="k">Shelves</span>
           <div class="seg" data-opt="shelf">
             <button data-val="graphite" aria-pressed="true">Graphite</button>
@@ -159,7 +170,7 @@ footer { font-size: 12px; color: var(--ink-2); border-top: 1px solid var(--line)
       <div class="block">
         <h2>Built-ins</h2>
         <ul>
-          <li>Lacquered graphite with brushed brass pulls and slim shaker fronts.</li>
+          <li>Lacquered cream (graphite as an option) with brushed brass pulls and slim shaker fronts.</li>
           <li>Hanging cabinets left and right with double doors. Closet lights switch on when the doors open, by pressure switch.</li>
           <li>Open shelves in the centre with a hewn wood tongue and groove back and LED lights in the underside of each shelf. Shelves in graphite or oak.</li>
           <li>Oak counter at 35″. Three rows of drawers below on a 4″ kick.</li>
@@ -517,8 +528,9 @@ footer { font-size: 12px; color: var(--ink-2); border-top: 1px solid var(--line)
   const MAT_GOLD = new THREE.MeshStandardMaterial({ color: col(0xb5925a), metalness: 1, roughness: 0.45 });
   const MAT_FROST = new THREE.MeshStandardMaterial({ color: col(0xf6f2ea), emissive: col(0xffe2b8), emissiveIntensity: 0.35, roughness: 0.6 });
   const MAT_CORD = new THREE.MeshStandardMaterial({ color: col(0x151515), roughness: 0.6 });
+  const __pn = scene.children.length;
   [122.25, 15.75].forEach(py => {
-    const px = RL - 9, r = 3.56, yb = 65.6, yt = 81.55, ySplit = 75.1;   // centreline radius and arc centres
+    const px = RL - 9, r = 3.56, yb = 65.6 - 14.04, yt = 81.55 - 14.04, ySplit = 75.1 - 14.04;   // centreline radius and arc centres
     const P = (s_, y) => new THREE.Vector3(px, y, -(py + s_));          // s_ along the wall: + is left as seen from the room
     const arc = (cy, a0, a1, n) => { const out = []; for (let i = 0; i <= n; i++) { const a = a0 + (a1 - a0) * i / n; out.push(P(r * Math.cos(a), cy + r * Math.sin(a))); } return out; };
     const line = (s_, y0, y1, n) => { const out = []; for (let i = 0; i <= n; i++) out.push(P(s_, y0 + (y1 - y0) * i / n)); return out; };
@@ -526,15 +538,36 @@ footer { font-size: 12px; color: var(--ink-2); border-top: 1px solid var(--line)
     tube([...line(r, ySplit, yt, 6), ...arc(yt, 0, Math.PI, 32).slice(1)], MAT_GOLD);
     tube([...line(-r, yt, yb, 10), ...arc(yb, Math.PI, 2 * Math.PI, 32).slice(1), ...line(r, yb, ySplit, 6).slice(1)], MAT_FROST);
     [P(r, ySplit), P(-r, yt)].forEach(p => { const c = new THREE.Mesh(new THREE.SphereGeometry(0.5, 16, 10), MAT_GOLD); c.position.copy(p); scene.add(c); });
-    const stem = new THREE.Mesh(new THREE.CylinderGeometry(0.18, 0.18, 8.75, 10), MAT_GOLD); stem.position.set(px, 85.1 + 4.375, -py); scene.add(stem);
-    const cTop = YB - 1.375; const cord = new THREE.Mesh(new THREE.CylinderGeometry(0.08, 0.08, cTop - 93.85, 8), MAT_CORD); cord.position.set(px, (93.85 + cTop) / 2, -py); scene.add(cord);
+    const stem = new THREE.Mesh(new THREE.CylinderGeometry(0.18, 0.18, 8.75, 10), MAT_GOLD); stem.position.set(px, 85.1 - 14.04 + 4.375, -py); scene.add(stem);
+    const cTop = YB - 1.375; const cord = new THREE.Mesh(new THREE.CylinderGeometry(0.08, 0.08, cTop - (93.85 - 14.04), 8), MAT_CORD); cord.position.set(px, ((93.85 - 14.04) + cTop) / 2, -py); scene.add(cord);
     const can = new THREE.Mesh(new THREE.CylinderGeometry(2.375, 2.375, 1.375, 40), MAT_GOLD); can.position.set(px, YB - 0.69, -py); scene.add(can);
-    const L1 = new THREE.PointLight(0xffd6a6, 0, 110, 1.5); L1.position.set(px - 2, 73, -py); scene.add(L1); sconceLights.push(L1);
+    const L1 = new THREE.PointLight(0xffd6a6, 0, 110, 1.5); L1.position.set(px - 2, 73 - 14.04, -py); scene.add(L1); sconceLights.push(L1);
   });
 
   // ---------- headboard: two layers, from the BWD plan ----------
   // Back layer: 2" thick, 48" high, held 1" off the wall for the LED glow, wrapping both nightstands on an 11" to 13" radius.
   // Front layer: 1" upholstered pad, 44" high, the width of the bed.
+  // pendants dropped 23 Oct so the bottom of the fixture sits at the top of the headboard (48"); option: double capsule pendant, 4.7" dia x 27.6" high
+  const pendH = new THREE.Group(); scene.add(pendH);
+  scene.children.slice(__pn).forEach(o => { if (!o.isLight && o !== pendH) pendH.add(o); });
+  const pendQ = new THREE.Group(); scene.add(pendQ);
+  (function () {
+    const glass = new THREE.MeshStandardMaterial({ color: col(0xfff6e6), emissive: col(0xffd9a0), emissiveIntensity: 0.8, roughness: 0.25, transparent: true, opacity: 0.92 });
+    const blk = new THREE.MeshStandardMaterial({ color: col(0x161616), metalness: 0.6, roughness: 0.4 });
+    const brs = new THREE.MeshStandardMaterial({ color: col(0xb5925a), metalness: 1, roughness: 0.35 });
+    const R = 2.35, H = 27.6, cap = H / 2 - 0.6, yb = 48;
+    const prof = []; for (let i = 0; i <= 16; i++) { const t = i / 16; prof.push(new THREE.Vector2(R * (0.55 + 0.45 * Math.sin(Math.PI * Math.pow(t, 0.9))), t * cap)); }
+    [122.25, 15.75].forEach(py => {
+      const px = RL - 9;
+      [0, 1].forEach(k => {
+        const m = new THREE.Mesh(new THREE.LatheGeometry(prof, 14), glass); m.position.set(px, yb + k * (cap + 1.2), -py); m.castShadow = true; pendQ.add(m);
+        const ring = new THREE.Mesh(new THREE.CylinderGeometry(R * 0.6, R * 0.6, 0.6, 20), brs); ring.position.set(px, yb + (k + 1) * cap + k * 1.2 + 0.3, -py); pendQ.add(ring);
+      });
+      const top = yb + H, cord = new THREE.Mesh(new THREE.CylinderGeometry(0.1, 0.1, YB - top, 8), blk); cord.position.set(px, (top + YB) / 2, -py); pendQ.add(cord);
+      const can = new THREE.Mesh(new THREE.CylinderGeometry(2.4, 2.4, 1.2, 30), blk); can.position.set(px, YB - 0.6, -py); pendQ.add(can);
+    });
+  })();
+  const GR0 = { g: MAT.graphite.color.clone(), p: MAT.graphitePanel.color.clone(), d: MAT.graphiteDeep.color.clone() };
   const HB = new THREE.Group(); scene.add(HB);
   const NSX = RL - 14, NSN = 121.38, NSS = 16.62;            // nightstand centres
   const D2R = Math.PI / 180, SWEEP = 75 * D2R;
@@ -675,7 +708,7 @@ footer { font-size: 12px; color: var(--ink-2); border-top: 1px solid var(--line)
   const fillB = new THREE.PointLight(0xfff0dc, 0.35, 260, 1.2); fillB.position.set(135, 100, -70); scene.add(fillB);
 
   // ---------- options ----------
-  const state = { light: 'day', finish: 'reeded', top: 'leather', jamb: 'leather', shelf: 'graphite', crown: 'on' };
+  const state = { light: 'day', finish: 'reeded', top: 'leather', jamb: 'leather', shelf: 'graphite', crown: 'on', cab: 'cream', pend: 'huron' };
   function apply() {
     const day = state.light === 'day';
     sun.intensity = day ? 0.95 : 0; hemi.intensity = day ? 0.3 : 0.08;
@@ -692,6 +725,9 @@ footer { font-size: 12px; color: var(--ink-2); border-top: 1px solid var(--line)
     nsParts.body.concat(nsParts.fronts).forEach(m => m.material = mt);
     nsParts.leatherTop.forEach(m => m.visible = state.top === 'leather');
     nsParts.oakTop.forEach(m => m.visible = state.top !== 'leather');
+    const cr = state.cab === 'cream';
+    MAT.graphite.color.copy(cr ? col(0xe9e1d2) : GR0.g); MAT.graphitePanel.color.copy(cr ? col(0xe2d9c7) : GR0.p); MAT.graphiteDeep.color.copy(cr ? col(0xcdc2ae) : GR0.d);
+    pendH.visible = state.pend === 'huron'; pendQ.visible = state.pend === 'capsule';
   }
   document.querySelectorAll('.seg[data-opt]').forEach(seg => seg.addEventListener('click', e => {
     const b = e.target.closest('button'); if (!b) return; state[seg.dataset.opt] = b.dataset.val;
