@@ -4204,6 +4204,7 @@ else
 (function(){
 if(typeof THREE==='undefined'){document.getElementById('err').style.display='block';return;}
 const $=id=>document.getElementById(id);
+const ONLY=window.CAN_ONLY||null;   // single-area page (e.g. the gym storage wall for Krys)
 const IN=0.0254;const LITE=/[?&]lite/.test(location.search);
 const GH='https://mustbuildhhh.github.io/BWD-Share/can/';
 
@@ -4315,6 +4316,7 @@ const INFO={
  store:{scope:[],mw:'No millwork. Shelving shown is by owner and only illustrative.',notes:['Mechanical and laundry share room 209. Pre-sauna (210) is shown with the sauna.'],draw:['lighting']},
  upper:{scope:[14],mw:'Option B, picked by Krys: wall-to-wall desk with drawers in the counter, oak shelves lit from behind, capsule mirror balanced by the computer, reading nook by the window.',notes:['Krys picked Option B. Its drawing is next for item 14. A and C stay here for reference only.','It is upstairs in the house. Here it sits beside the lower level as its own small building so it is easy to see.'],draw:[]}
 };
+const INFO_CLIENT={gstore:{scope:[],mw:'A 10\'-3" white oak bench along the gym wall, 18" high and 18" deep, with four doors. Kettlebells store inside, dumbbells sit in a cradle on the end, and the rest of the top is finished in rubber.',notes:['Above it, a solid white oak peg wall with 1 1/4" oak pegs on an 8" grid. Move the pegs to hang foam rollers, rings, bands, rope, mats and two loose shelves wherever you like.','Try the Bench switch to see the end section raised to counter height.','Doors: off shows what is stored inside.'],draw:[]}};
 const EXTRA={bed:[['Night table 3D','Canmore_Nightstand_3D_Viewer.html'],['Cove detail','Fabi_Custom_Cove_Detail.html']]};
 
 /* ---------------- model loading ---------------- */
@@ -4853,20 +4855,21 @@ const bar=$('bar');let PBOPT='B';
 function mk(txt,fn,cls,k){const b=document.createElement('button');b.textContent=txt;if(cls)b.className=cls;if(k)b.dataset.k=k;b.onclick=fn;bar.appendChild(b);return b}
 function setHash(k,room){const h=room?k+'/room':(k==='lower'?'':k);if(location.hash.replace('#','')===h){fromHash(false)}else location.hash=h}
 function buildBar(){
-  mk('Tour',()=>{setHash('lower');tourStart()},'tourbtn');
+  if(!ONLY){mk('Tour',()=>{setHash('lower');tourStart()},'tourbtn');
   ORDER.forEach(k=>mk(BTN[k],()=>{tourStop();setHash(k)},'',k));
-  const sep=document.createElement('span');sep.className='sep';bar.appendChild(sep);
+  const sep=document.createElement('span');sep.className='sep';bar.appendChild(sep);}
+  else{$('lv').style.display='none';mk('Front view',()=>openRoom(ONLY),'tourbtn')}
   window.bDoors=mk('Doors: on',()=>{const on=!FRONTS[0]||!FRONTS[0].visible?true:false;FRONTS.forEach(o=>o.visible=on);bDoors.textContent=on?'Doors: on':'Doors: off';bDoors.classList.toggle('on',!on);ren.shadowMap.needsUpdate=true});
   window.bFurn=mk('Furniture: on',()=>{const on=!(FURN[0]&&FURN[0].visible);FURN.forEach(o=>o.visible=on);bFurn.textContent=on?'Furniture: on':'Furniture: off';bFurn.classList.toggle('on',!on);ren.shadowMap.needsUpdate=true});
   window.bWalls=mk('Walls: full height',()=>{cutUser=!cutUser;bWalls.textContent=cutUser?'Walls: cut away':'Walls: full height';bWalls.classList.toggle('on',cutUser)});
-  window.bLights=mk('Light fixtures: off',()=>{LIGHTS.visible=!LIGHTS.visible;bLights.textContent=LIGHTS.visible?'Light fixtures: on':'Light fixtures: off';bLights.classList.toggle('on',LIGHTS.visible)});
-  $('lvL').onclick=()=>{tourStop();setHash('lower')};$('lvU').onclick=()=>{tourStop();setHash('upper')};
+  if(!ONLY)window.bLights=mk('Light fixtures: off',()=>{LIGHTS.visible=!LIGHTS.visible;bLights.textContent=LIGHTS.visible?'Light fixtures: on':'Light fixtures: off';bLights.classList.toggle('on',LIGHTS.visible)});
+  if(!ONLY)$('lvL').onclick=()=>{tourStop();setHash('lower')};if(!ONLY)$('lvU').onclick=()=>{tourStop();setHash('upper')};
 }
 function drawLinks(keys){return keys.map(d=>{const D=DRAW[d];const url=GH+'drawings/'+D.f;
   return '<div class="dw" data-f="'+D.f+'"><span>'+D.t+'</span><a class="open" href="'+url+'" target="_blank" rel="noopener">Drawings</a><a class="dl" href="'+url+'" download="'+D.f+'">Download</a><em>Sheet to follow</em></div>'}).join('')}
 function updateUi(){
   [...bar.querySelectorAll('button')].forEach(b=>{if(b.dataset.k)b.classList.toggle('on',b.dataset.k===cur)});
-  const a=AREAS[cur],I=INFO[cur],c=$('card');
+  const a=AREAS[cur],I=(ONLY&&INFO_CLIENT[cur])||INFO[cur],c=$('card');
   let h='<div class="ch"><b>'+a.name+'</b>'+(a.no?'<span class="no">'+a.no+'</span>':'')+'</div>';
   if(I.scope.length)h+='<div class="sc">'+I.scope.map(n=>'<div><span class="pill">'+n+'</span>'+SCOPE[n]+'</div>').join('')+'</div>';
   h+='<p class="mw">'+I.mw+'</p>';
@@ -4877,11 +4880,11 @@ function updateUi(){
   if(cur==='bed')h+='<div class="opts" data-g="pend">Bedside lights: <button data-v="P" class="'+(OPT.pend==='P'?'on':'')+'">Huron, dropped</button><button data-v="Q" class="'+(OPT.pend==='Q'?'on':'')+'">Double capsule</button></div>';
   if(cur==='upper')h+='<div class="opts">Shown: '+['A','B','C'].map(o=>'<button data-o="'+o+'" class="'+(o===PBOPT?'on':'')+'">'+(o==='B'?'B, picked':o)+'</button>').join('')+'</div>';
   const act=[];
-  if(cur!=='lower'){act.push(mode==='scene'?'<button id="cBack">Back to the whole level</button>':'<button id="cOpen" class="pri">Open the room</button>')}
+  if(cur!=='lower'&&!ONLY){act.push(mode==='scene'?'<button id="cBack">Back to the whole level</button>':'<button id="cOpen" class="pri">Open the room</button>')}
   if(a.page)act.push('<a href="'+pageUrl(a.page)+'" target="_blank" rel="noopener">Detailed room page</a>');
   (EXTRA[cur]||[]).forEach(e=>act.push('<a href="'+pageUrl(e[1])+'" target="_blank" rel="noopener">'+e[0]+'</a>'));
   if(act.length)h+='<div class="act">'+act.join('')+'</div>';
-  if(I.draw.length)h+='<div class="dws"><div class="dh">Technical drawings</div>'+drawLinks(I.draw)+'</div>';
+  if(I.draw.length&&!ONLY)h+='<div class="dws"><div class="dh">Technical drawings</div>'+drawLinks(I.draw)+'</div>';
   if(mode==='scene'&&tour&&tour.paused)h+='<div class="act"><button id="cResume" class="pri">Back to the tour</button></div>';
   c.innerHTML=h;c.style.display='block';
   const o=$('cOpen');if(o)o.onclick=()=>setHash(cur,true);
@@ -4890,6 +4893,7 @@ function updateUi(){
   c.querySelectorAll('.opts[data-g] button').forEach(b=>b.onclick=()=>{OPT[b.parentNode.dataset.g]=b.dataset.v;applyOpts();updateUi()});
   c.querySelectorAll('.opts:not([data-g]) button').forEach(b=>b.onclick=()=>{PBOPT=b.dataset.o;['A','B','C'].forEach(q=>window.__PB[q].visible=q===PBOPT);updateUi();ren.shadowMap.needsUpdate=true});
   checkDrawings(c);
+  if(ONLY){$('ttl').querySelector('small').textContent='Gym storage wall, design in progress. Drag to turn, scroll or pinch to zoom.';return}
   $('ttl').querySelector('small').textContent=mode==='scene'?'Room open: '+a.name+'. Drag to turn, pinch or scroll to zoom.':'Lower level and primary bedroom, for Prestige Millwork';
 }
 function pageUrl(f){const local=location.protocol==='file:'||/github\.io$/.test(location.hostname);return (local?'':GH)+encodeURI(f)}
@@ -4934,7 +4938,7 @@ cv.addEventListener('contextmenu',e=>e.preventDefault());
 /* ---------------- hash links ---------------- */
 function fromHash(inst){const h=decodeURIComponent(location.hash.replace('#',''));const m=/^([a-z]+)(\/room)?$/.exec(h);
   if(m&&AREAS[m[1]]){if(m[2])openRoom(m[1],!!(tour));else goto(m[1],inst)}else goto('lower',inst)}
-window.addEventListener('hashchange',()=>fromHash(false));
+window.addEventListener('hashchange',()=>{if(!ONLY)fromHash(false)});
 
 function resize(){const w=innerWidth,h=innerHeight;ren.setSize(w,h,false);cam.aspect=w/h;cam.setViewOffset(w,h,0,26,w,h);cam.updateProjectionMatrix()}
 addEventListener('resize',resize);resize();
@@ -4960,8 +4964,8 @@ function tick(now){
   requestAnimationFrame(tick)}
 
 buildBar();setLevel('L');applyCam();
-build().then(()=>{$('loading').style.display='none';fromHash(true);requestAnimationFrame(tick);window.__READY=true;window.__S=S;window.__cam=cam;window.__scene=scene;window.__T=THREE;
-  if(!location.hash){let seen=false;try{seen=sessionStorage.getItem('can_toured')==='1'}catch(e){}if(!seen)setTimeout(tourStart,900)}})
+build().then(()=>{$('loading').style.display='none';if(ONLY){openRoom(ONLY)}else fromHash(true);requestAnimationFrame(tick);window.__READY=true;window.__S=S;window.__cam=cam;window.__scene=scene;window.__T=THREE;
+  if(!location.hash&&!ONLY){let seen=false;try{seen=sessionStorage.getItem('can_toured')==='1'}catch(e){}if(!seen)setTimeout(tourStart,900)}})
  .catch(e=>{console.error(e);$('loading').textContent='The model could not load: '+e.message});
 })();
 </script>
