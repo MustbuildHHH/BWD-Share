@@ -1,0 +1,631 @@
+<title>Fabi Media Wall</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<style>
+/* By William sheet (media wall): white 17 x 11 sheet, Arial, "by William" mark top right, heavy rule at the foot with project,
+   scale, issue, date and sheet title. Viewer on the left of the drawing field, option schedule on the right. */
+:root {
+  --desk: #e7e7e4; --ink: #111111; --ink-2: #555555; --hair: #c4c4c4; --sheet: #ffffff; --focus: #1e6fd9;
+  --f: Arial, "Helvetica Neue", Helvetica, "Liberation Sans", sans-serif;
+}
+@media (prefers-color-scheme: dark) { :root:not([data-theme="light"]) { --desk: #1c1d1f; color-scheme: dark; } }
+:root[data-theme="dark"] { --desk: #1c1d1f; color-scheme: dark; }
+* { box-sizing: border-box; }
+html, body { background: var(--desk); }
+body { margin: 0; font-family: var(--f); color: var(--ink);
+  padding-left: max(16px, env(safe-area-inset-left, 0px)); padding-right: max(16px, env(safe-area-inset-right, 0px)); padding-block: 20px 40px; }
+.sheet { max-width: 1400px; margin: 0 auto; background: var(--sheet); color: var(--ink); box-shadow: 0 1px 3px rgba(0,0,0,.18);
+  display: grid; grid-template-rows: auto 1fr auto; gap: 10px; padding: 22px 26px 16px; }
+@media (min-width: 1100px) { .sheet { min-height: calc(min(1400px, 100vw - 32px) * 11 / 17); } .viewport { min-height: 560px; } }
+.top { display: flex; justify-content: space-between; align-items: flex-start; gap: 16px; }
+.top h1 { font-size: 15px; font-weight: 700; margin: 0; letter-spacing: .02em; }
+.top p { margin: 4px 0 0; font-size: 12px; color: var(--ink-2); max-width: 60ch; }
+.logo { width: 150px; flex: none; }
+.logo img { width: 100%; height: auto; display: block; }
+.field { display: grid; grid-template-columns: minmax(0, 1fr) 270px; gap: 18px; min-height: 0; }
+@media (max-width: 900px) { .field { grid-template-columns: minmax(0, 1fr); } }
+.viewcol { display: grid; grid-template-rows: auto 1fr; gap: 8px; min-height: 0; min-width: 0; }
+.viewport { position: relative; border: 1px solid var(--hair); background: #f6f5f2; min-height: 420px; height: 100%; touch-action: none; }
+@media (max-width: 1099px) { .viewport { height: 62vh; } }
+.viewport canvas { display: block; width: 100%; height: 100%; outline: none; }
+.hint { position: absolute; left: 10px; bottom: 6px; font-size: 11px; color: var(--ink-2); pointer-events: none; background: rgba(255,255,255,.75); padding: 2px 6px; }
+.vlabel { position: absolute; left: 10px; top: 8px; font-size: 11px; letter-spacing: .1em; text-transform: uppercase; color: var(--ink-2); background: rgba(255,255,255,.75); padding: 2px 6px; pointer-events: none; }
+.err { padding: 20px; color: var(--ink-2); }
+.opts { display: grid; gap: 12px; align-content: start; font-size: 13px; }
+.grp { display: grid; gap: 6px; border-top: 1px solid var(--ink); padding-top: 6px; }
+.grp h2 { font-size: 11px; font-weight: 700; letter-spacing: .12em; text-transform: uppercase; margin: 0; }
+.seg { display: flex; flex-wrap: wrap; gap: 4px; }
+.seg button { font: 12.5px/1 var(--f); color: var(--ink); background: #fff; border: 1px solid var(--hair); border-radius: 2px; padding: 7px 9px; cursor: pointer; display: inline-flex; gap: 6px; align-items: center; }
+.seg button[aria-pressed="true"] { background: var(--ink); color: #fff; border-color: var(--ink); }
+.seg button:focus-visible { outline: 2px solid var(--focus); outline-offset: 2px; }
+.chip { width: 12px; height: 12px; border-radius: 50%; border: 1px solid rgba(0,0,0,.25); display: inline-block; }
+.views { display: flex; flex-wrap: wrap; gap: 4px; }
+.note { font-size: 11.5px; color: var(--ink-2); line-height: 1.4; margin: 0; }
+.foot { display: grid; grid-template-columns: 1fr auto; align-items: end; row-gap: 4px; }
+.proj { grid-column: 2; text-align: right; font-weight: 700; font-size: 14px; padding-bottom: 3px; }
+.rule { grid-column: 1 / -1; height: 4px; background: var(--ink); }
+.issue { display: flex; gap: 40px; font-weight: 700; font-size: 13px; flex-wrap: wrap; }
+.ttl { text-align: right; }
+.ttl .d { font-weight: 700; font-size: 10.5px; }
+.ttl .n { font-weight: 700; font-size: 22px; line-height: 1.15; }
+[hidden] { display: none !important; }
+.savebtn { position: absolute; top: 10px; right: 10px; z-index: 2; font: 500 13px/1 "Figtree", "Segoe UI", system-ui, sans-serif; padding: 8px 12px; border-radius: 3px; border: 1px solid rgba(31,32,28,.25); background: rgba(255,255,255,.94); color: #1f201c; cursor: pointer; }
+.savebtn:hover { background: #ffffff; border-color: rgba(31,32,28,.5); }
+.savebtn:focus-visible { outline: 2px solid #6e4430; outline-offset: 2px; }
+.savemsg { position: absolute; top: 48px; right: 10px; z-index: 2; font: 12px/1.3 "Figtree", system-ui, sans-serif; background: rgba(20,20,18,.8); color: #ffffff; padding: 5px 9px; border-radius: 3px; }
+
+.savebtn { font-family: var(--f); background: #fff; color: #111; border-color: var(--hair); border-radius: 2px; }
+</style>
+<section class="sheet" aria-label="Media wall 3D model sheet">
+  <div class="top">
+    <div>
+      <h1>Media Wall, TV Room</h1>
+      <p>Built from Media_canmore_2 with the PS80 pull and swivel mount. Pick the finishes, open the TV panel and wing to see the storage, turn the model, then save the view as an image.</p>
+    </div>
+    <div class="logo"><img src="data:image/png;base64,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" alt="by William"></div>
+  </div>
+  <div class="field">
+    <div class="viewcol">
+      <div class="views seg" id="views">
+        <button data-v="front" aria-pressed="true">Front, from the couch</button>
+        <button data-v="left" aria-pressed="false">From the door side</button>
+        <button data-v="right" aria-pressed="false">From the column side</button>
+        <button data-v="storage" aria-pressed="false">Open, storage close up</button>
+        <button data-v="shelves" aria-pressed="false">Floating shelves</button>
+        <button data-v="ceiling" aria-pressed="false">Ceiling edge</button>
+      </div>
+      <div class="viewport" id="vp"><div class="vlabel" id="vlabel">Front, from the couch</div><div class="hint">Drag to turn · scroll to zoom · right-drag to pan</div></div>
+    </div>
+    <aside class="opts" aria-label="Options">
+      <div class="grp"><h2>TV panel and wing</h2>
+        <div class="seg" data-opt="open">
+          <button data-val="closed" aria-pressed="true">Closed</button>
+          <button data-val="open" aria-pressed="false">Open, storage showing</button>
+        </div>
+      </div>
+      <div class="grp"><h2>Column</h2>
+        <div class="seg" data-opt="column">
+          <button data-val="gray" aria-pressed="true">Same plaster as the back wall</button>
+          <button data-val="wood" aria-pressed="false">Wood clad, slatted, in the wood picked below</button>
+        </div>
+      </div>
+      <div class="grp"><h2>Back wall and column plaster</h2>
+        <div class="seg" data-opt="wall">
+          <button data-val="grey" aria-pressed="true"><i class="chip" style="background:#56575a"></i>Textured grey</button>
+          <button data-val="charcoal" aria-pressed="false"><i class="chip" style="background:#3b3733"></i>Charcoal plaster</button>
+          <button data-val="taupe" aria-pressed="false"><i class="chip" style="background:#8a7d6f"></i>Warm taupe</button>
+          <button data-val="olive" aria-pressed="false"><i class="chip" style="background:#4a4c3c"></i>Deep olive</button>
+          <button data-val="white" aria-pressed="false"><i class="chip" style="background:#e8e3da"></i>Soft white</button>
+        </div>
+      </div>
+      <div class="grp"><h2>Door and drawer fronts</h2>
+        <div class="seg" data-opt="front">
+          <button data-val="shaker" aria-pressed="true">Slim shaker</button>
+          <button data-val="flat" aria-pressed="false">Flat panel</button>
+        </div>
+      </div>
+      <div class="grp"><h2>Stone, credenza top and coffee table</h2>
+        <div class="seg" data-opt="stone">
+          <button data-val="grey" aria-pressed="true"><i class="chip" style="background:#5b5c5e"></i>Grey, to match the wall</button>
+          <button data-val="calacatta" aria-pressed="false"><i class="chip" style="background:#ece8e1"></i>Calacatta</button>
+          <button data-val="lime" aria-pressed="false"><i class="chip" style="background:#b8ab96"></i>Taupe limestone</button>
+          <button data-val="soap" aria-pressed="false"><i class="chip" style="background:#45443f"></i>Soapstone</button>
+          <button data-val="nero" aria-pressed="false"><i class="chip" style="background:#161616"></i>Nero marquina</button>
+        </div>
+      </div>
+      <div class="grp"><h2>Wood</h2>
+        <div class="seg" data-opt="wood">
+          <button data-val="oak" aria-pressed="true"><i class="chip" style="background:#b79a76"></i>White oak</button>
+          <button data-val="smoked" aria-pressed="false"><i class="chip" style="background:#7a6450"></i>Smoked oak</button>
+          <button data-val="walnut" aria-pressed="false"><i class="chip" style="background:#5c4030"></i>Walnut</button>
+        </div>
+      </div>
+      <div class="grp"><h2>Ceiling</h2>
+        <div class="seg" data-opt="ceil">
+          <button data-val="knife" aria-pressed="true">Dropped field, 6″ LED reveal</button>
+          <button data-val="flat" aria-pressed="false">Flat</button>
+        </div>
+      </div>
+      <div class="grp"><h2>Light</h2>
+        <div class="seg" data-opt="light">
+          <button data-val="day" aria-pressed="true">Daytime</button>
+          <button data-val="eve" aria-pressed="false">Evening, LEDs on</button>
+        </div>
+        <div class="seg" data-opt="furn">
+          <button data-val="on" aria-pressed="true">Couch and table</button>
+          <button data-val="off" aria-pressed="false">Empty room</button>
+        </div>
+      </div>
+      <p class="note">From the drawing: 12′‑0½″ wall, 24″ column, credenza 14″ high floating 12″ off the floor, 18½″ deep with a 1″ stone top. TV panel 65⅜″ × 40¾″ and wing 23⅜″ on a housing 9¼″ deep. Floating shelves 9¼″ deep. The TV panel rides a PS80 pull and swivel mount, shown 18″ out and turned 30°. Colours are representative, not samples.</p>
+    </aside>
+  </div>
+  <div class="foot">
+    <div class="proj">Fabi Residence - Media Room</div><div class="rule"></div>
+    <div class="issue"><span>Scale = NTS</span><span>Issued for review Oct 19, 2026</span></div>
+    <div class="ttl"><div class="d">Oct 19, 2026</div><div class="n">Media Wall 3D Model</div></div>
+  </div>
+</section>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/three@0.128.0/examples/js/controls/OrbitControls.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/three@0.128.0/examples/js/environments/RoomEnvironment.js"></script>
+<script>
+(function () {
+  const vp = document.getElementById('vp');
+  if (!window.THREE || !THREE.OrbitControls) { vp.innerHTML = '<p class="err">The 3D viewer could not load. Refresh the page to try again.</p>'; return; }
+  const col = h => new THREE.Color(h).convertSRGBToLinear();
+  let seed = 7; const R = () => (seed = (seed * 16807) % 2147483647) / 2147483647;
+
+  // ---------- textures ----------
+  function canvasTex(w, h, draw, rx, ry, srgb) {
+    const c = document.createElement('canvas'); c.width = w; c.height = h; draw(c.getContext('2d'), w, h);
+    const t = new THREE.CanvasTexture(c); t.wrapS = t.wrapT = THREE.RepeatWrapping; t.repeat.set(rx, ry);
+    if (srgb) t.encoding = THREE.sRGBEncoding; t.anisotropy = 8; return t;
+  }
+  function woodDraw(base, dark, light) {
+    return (g, w, h) => {
+      g.fillStyle = base; g.fillRect(0, 0, w, h);
+      for (let i = 0; i < 300; i++) {
+        let x = R() * w; const a = 0.04 + R() * 0.12; g.strokeStyle = (R() < 0.62 ? dark : light).replace('A', a.toFixed(3));
+        g.lineWidth = 0.6 + R() * 2.6; g.beginPath(); g.moveTo(x, 0);
+        for (let y = 0; y <= h; y += 32) { x += (R() - 0.5) * 2.4; g.lineTo(x, y); } g.stroke();
+      }
+    };
+  }
+  const WOODS = {
+    oak: canvasTex(512, 1024, woodDraw('#a99073', 'rgba(96,70,46,A)', 'rgba(222,206,180,A)'), 0.7, 1, true),
+    smoked: canvasTex(512, 1024, woodDraw('#76604c', 'rgba(52,36,22,A)', 'rgba(170,148,120,A)'), 0.7, 1, true),
+    walnut: canvasTex(512, 1024, woodDraw('#5a3f2f', 'rgba(34,22,14,A)', 'rgba(140,100,70,A)'), 0.7, 1, true)
+  };
+  function stoneDraw(base, speck, veins, veinW, veinA, n) {
+    return (g, w, h) => {
+      g.fillStyle = base; g.fillRect(0, 0, w, h);
+      for (let i = 0; i < 26000; i++) { g.fillStyle = speck[(R() * speck.length) | 0]; g.globalAlpha = 0.05 + R() * 0.12; g.fillRect(R() * w, R() * h, 1 + R() * 2.5, 1 + R() * 2.5); }
+      g.globalAlpha = 1;
+      for (let k = 0; k < n; k++) {
+        let x = R() * w, y = R() * h, ang = (R() - 0.5) * 1.2 + 0.6;
+        g.strokeStyle = veins[(R() * veins.length) | 0]; g.globalAlpha = veinA * (0.4 + R() * 0.6); g.lineWidth = veinW * (0.4 + R());
+        g.beginPath(); g.moveTo(x, y);
+        for (let s = 0; s < 120; s++) { ang += (R() - 0.5) * 0.5; x += Math.cos(ang) * 9; y += Math.sin(ang) * 9; g.lineTo(x, y); }
+        g.stroke();
+      }
+      g.globalAlpha = 1;
+    };
+  }
+  const STONES = {
+    soap: { map: canvasTex(1024, 1024, stoneDraw('#45443f', ['#2e2d2a', '#55534d', '#3a3935'], ['#6c6a62', '#57564f'], 1.4, 0.35, 34), 1, 1, true), rough: 0.55 },
+    calacatta: { map: canvasTex(1024, 1024, stoneDraw('#ece8e1', ['#dcd7cf', '#f6f3ee', '#d8d2c8'], ['#8d8a85', '#a89a7c', '#9e9b96'], 2.4, 0.55, 22), 1, 1, true), rough: 0.18 },
+    lime: { map: canvasTex(1024, 1024, stoneDraw('#b8ab96', ['#a99b85', '#c7bba7', '#b0a28c'], ['#a3957e'], 1, 0.15, 10), 1, 1, true), rough: 0.6 },
+    verde: { map: canvasTex(1024, 1024, stoneDraw('#2f4339', ['#253830', '#3a5045', '#1f2f28'], ['#cfd8cf', '#9fb3a5', '#e6ece4'], 1.8, 0.6, 40), 1, 1, true), rough: 0.2 },
+    nero: { map: canvasTex(1024, 1024, stoneDraw('#161616', ['#0d0d0d', '#222222'], ['#e8e6e2', '#bdbab4'], 1.6, 0.7, 26), 1, 1, true), rough: 0.18 }
+  };
+  const floorMap = canvasTex(1024, 1024, (g, w, h) => {
+    const pw = 128; for (let x = 0; x < w; x += pw) { const t = R(); g.fillStyle = `rgb(${205 + t * 18 | 0},${186 + t * 16 | 0},${160 + t * 14 | 0})`; g.fillRect(x, 0, pw, h);
+      for (let i = 0; i < 40; i++) { g.strokeStyle = `rgba(150,120,90,${0.05 + R() * 0.08})`; g.lineWidth = 1 + R() * 2; let xx = x + R() * pw; g.beginPath(); g.moveTo(xx, 0); for (let y = 0; y <= h; y += 64) { xx += (R() - .5) * 2; g.lineTo(xx, y); } g.stroke(); }
+      g.fillStyle = 'rgba(90,70,50,.35)'; g.fillRect(x, 0, 2, h); }
+  }, 5, 3, true);
+  const gardenMap = canvasTex(512, 512, (g, w, h) => {
+    const sky = g.createLinearGradient(0, 0, 0, h); sky.addColorStop(0, '#eef2ee'); sky.addColorStop(0.45, '#dfe7dc'); sky.addColorStop(1, '#b9c9ad'); g.fillStyle = sky; g.fillRect(0, 0, w, h);
+    for (let i = 0; i < 900; i++) { const y = h * 0.25 + R() * h * 0.75, r = 6 + R() * 26; g.fillStyle = `rgba(${90 + R() * 70 | 0},${120 + R() * 70 | 0},${80 + R() * 50 | 0},${0.12 + R() * 0.2})`; g.beginPath(); g.arc(R() * w, y, r, 0, 7); g.fill(); }
+    for (let i = 0; i < 120; i++) { g.fillStyle = `rgba(${200 + R() * 50 | 0},${170 + R() * 60 | 0},${170 + R() * 60 | 0},.35)`; g.beginPath(); g.arc(R() * w, h * 0.6 + R() * h * 0.4, 2 + R() * 4, 0, 7); g.fill(); }
+  }, 1, 1, true);
+
+  // ---------- media-specific textures ----------
+  STONES.grey = { map: canvasTex(1024, 1024, stoneDraw('#3f4043', ['#36373a', '#4a4b4e', '#3b3c3f', '#535457'], ['#626366', '#333437'], 1.2, 0.22, 14), 1, 1, true), rough: 0.7 };
+  const WTEX = {};
+  Object.keys(WOODS).forEach(k => {
+    const v = WOODS[k]; v.repeat.set(1, 1);
+    const h = v.clone(); h.needsUpdate = true; h.center.set(0.5, 0.5); h.rotation = Math.PI / 2; h.repeat.set(1, 1);
+    const l = v.clone(); l.needsUpdate = true; l.center.set(0.5, 0.5); l.rotation = Math.PI / 2; l.repeat.set(1, 4);
+    WTEX[k] = { v, h, l };
+  });
+  const plasterMap = canvasTex(1024, 1024, (g, w, h) => {
+    g.fillStyle = '#e9e9e9'; g.fillRect(0, 0, w, h);
+    for (let i = 0; i < 2600; i++) { const v = 200 + R() * 55 | 0, r = 8 + R() * 60; g.fillStyle = `rgba(${v},${v},${v},${0.05 + R() * 0.08})`; g.beginPath(); g.arc(R() * w, R() * h, r, 0, 7); g.fill(); }
+    for (let i = 0; i < 160; i++) { g.strokeStyle = `rgba(255,255,255,${0.08 + R() * 0.1})`; g.lineWidth = 2 + R() * 6; let x = R() * w, y = R() * h; g.beginPath(); g.moveTo(x, y); for (let s = 0; s < 6; s++) { x += (R() - .5) * 120; y += (R() - .3) * 40; g.lineTo(x, y); } g.stroke(); }
+  }, 3, 2.25, true);
+  // herringbone floor, one canvas for the whole room (12 px per inch), 3" x 18" planks laid at 45 degrees
+  const FW = 168.5, FD = 141.75;
+  const herring = canvasTex(2048, 1724, (g, w, h) => {
+    g.fillStyle = '#b89c7c'; g.fillRect(0, 0, w, h);
+    g.save(); g.translate(w / 2, h / 2); g.rotate(Math.PI / 4);
+    const W = 36, L = 216, N = 40;
+    const plank = (x, y, pw, ph, vert) => {
+      const t = R(); g.fillStyle = `rgb(${196 + t * 26 | 0},${168 + t * 22 | 0},${132 + t * 20 | 0})`; g.fillRect(x, y, pw, ph);
+      for (let i = 0; i < 6; i++) { g.strokeStyle = `rgba(120,88,58,${0.06 + R() * 0.08})`; g.lineWidth = 1 + R() * 1.5; g.beginPath();
+        if (vert) { const xx = x + R() * pw; g.moveTo(xx, y); g.lineTo(xx + (R() - .5) * 3, y + ph); } else { const yy = y + R() * ph; g.moveTo(x, yy); g.lineTo(x + pw, yy + (R() - .5) * 3); } g.stroke(); }
+      g.strokeStyle = 'rgba(70,50,32,.55)'; g.lineWidth = 1.4; g.strokeRect(x, y, pw, ph);
+    };
+    for (let m = -N; m <= N; m++) for (let k = -N; k <= N; k++) {
+      const ox = k * W + m * L, oy = k * W - m * L;
+      if (Math.abs(ox) > 2200 || Math.abs(oy) > 2200) continue;
+      plank(ox, oy, L, W, false); plank(ox, oy + W, W, L, true);
+    }
+    g.restore();
+  }, 1, 1, true);
+  herring.wrapS = herring.wrapT = THREE.ClampToEdgeWrapping;
+  const slatMap = canvasTex(64, 64, (g, w, h) => { g.fillStyle = '#fff'; g.fillRect(0, 0, w, h); }, 1, 1, false);
+
+  // ---------- renderer and scene ----------
+  const renderer = new THREE.WebGLRenderer({ antialias: true, preserveDrawingBuffer: true });
+  renderer.setPixelRatio(Math.min(devicePixelRatio || 1, 2)); renderer.outputEncoding = THREE.sRGBEncoding;
+  renderer.toneMapping = THREE.ACESFilmicToneMapping; renderer.toneMappingExposure = 0.95;
+  renderer.shadowMap.enabled = true; renderer.shadowMap.type = THREE.PCFSoftShadowMap; renderer.setClearColor(0xf6f5f2);
+  vp.prepend(renderer.domElement); renderer.domElement.tabIndex = 0; renderer.domElement.setAttribute('aria-label', '3D model of the media wall');
+  const scene = new THREE.Scene();
+  let envTex = null; if (THREE.RoomEnvironment) { const pm = new THREE.PMREMGenerator(renderer); envTex = scene.environment = pm.fromScene(new THREE.RoomEnvironment(), 0.04).texture; }
+  const std = (h, r, ex) => new THREE.MeshStandardMaterial(Object.assign({ color: col(h), roughness: r, envMapIntensity: 0.5 }, ex || {}));
+  const M = {
+    wood: new THREE.MeshStandardMaterial({ map: WTEX.oak.v, roughness: 0.6, envMapIntensity: 0.4 }),
+    woodH: new THREE.MeshStandardMaterial({ map: WTEX.oak.h, roughness: 0.6, envMapIntensity: 0.4 }),
+    woodL: new THREE.MeshStandardMaterial({ map: WTEX.oak.l, roughness: 0.6, envMapIntensity: 0.4 }),
+    woodPanel: new THREE.MeshStandardMaterial({ map: WTEX.oak.h, color: col(0xe6e2dc), roughness: 0.6, envMapIntensity: 0.4 }),
+    stone: new THREE.MeshStandardMaterial({ map: STONES.calacatta.map, roughness: 0.2, envMapIntensity: 0.7 }),
+    stoneLong: new THREE.MeshStandardMaterial({ map: STONES.calacatta.map, roughness: 0.2, envMapIntensity: 0.7 }),
+    back: new THREE.MeshStandardMaterial({ map: plasterMap, color: col(0x3b3733), roughness: 0.92, envMapIntensity: 0.25 }),
+    wall: std(0xe6e0d6, 0.95), ceiling: std(0xf1eee8, 0.95), shadow: std(0x120f0d, 1), dark: std(0x1d1b19, 0.8),
+    gray: std(0x55575a, 0.8), slatBack: std(0x1a1715, 0.9),
+    floor: new THREE.MeshStandardMaterial({ map: herring, roughness: 0.62, envMapIntensity: 0.3 }),
+    tv: std(0x050506, 0.12, { metalness: 0.3, envMapIntensity: 1.1 }), tvEdge: std(0x1a1a1b, 0.4),
+    steel: std(0x2a2b2d, 0.45, { metalness: 0.7 }), plate: std(0xf1eee7, 0.4),
+    led: new THREE.MeshBasicMaterial({ color: col(0xffd7a0) }),
+    glass: new THREE.MeshStandardMaterial({ color: col(0xd8e2e4), roughness: 0.05, metalness: 0.1, transparent: true, opacity: 0.3 }),
+    garden: new THREE.MeshBasicMaterial({ map: gardenMap, toneMapped: false }), frame: std(0x222222, 0.5),
+    fabric: std(0xcfc6b8, 0.95), fabricDark: std(0xb9ae9e, 0.95), table: std(0x2c2724, 0.5),
+    ceramic: std(0xb3a48e, 0.7), ceramicDark: std(0x3a3430, 0.6), book1: std(0xd8d0c2, 0.8), book2: std(0x6e5d4b, 0.8), book3: std(0x2f3a40, 0.8)
+  };
+  const SLONG = {}; Object.keys(STONES).forEach(k => { const t = STONES[k].map.clone(); t.needsUpdate = true; t.repeat.set(4, 0.6); SLONG[k] = t; });
+
+  // coordinates in inches. x along the TV wall (0 at the column face, 144.5 at the right wall), y up, z out from the TV wall.
+  function box(x0, x1, y0, y1, z0, z1, mat, parent) {
+    const m = new THREE.Mesh(new THREE.BoxGeometry(x1 - x0, y1 - y0, z1 - z0), mat);
+    m.position.set((x0 + x1) / 2, (y0 + y1) / 2, (z0 + z1) / 2); m.castShadow = m.receiveShadow = true; (parent || scene).add(m); return m;
+  }
+  const CH = 108, RX = 144.5, RZ = 141.75, CX = -24, CZ = 24.5;
+  const additive = map => new THREE.MeshBasicMaterial({ map, transparent: true, depthWrite: false, blending: THREE.AdditiveBlending, toneMapped: false });
+  const gradTex = (a) => { const t = canvasTex(256, 128, (g, w, h) => {
+      const img = g.createImageData(w, h);
+      for (let y = 0; y < h; y++) for (let x = 0; x < w; x++) {
+        const v = Math.pow(1 - y / (h - 1), 1.8), e = Math.min(1, Math.min(x, w - 1 - x) / (w * 0.08)), k = a * v * e * e, i = (y * w + x) * 4;
+        img.data[i] = 255; img.data[i + 1] = 200; img.data[i + 2] = 135; img.data[i + 3] = 255 * k;
+      }
+      g.putImageData(img, 0, 0); }, 1, 1, true); t.wrapS = t.wrapT = THREE.ClampToEdgeWrapping; return t; };
+  const GLOW = gradTex(0.85);
+  const SCALLOP = (() => { const t = canvasTex(128, 192, (g, w, h) => {
+      const img = g.createImageData(w, h);
+      for (let y = 0; y < h; y++) for (let x = 0; x < w; x++) {
+        const v = y / (h - 1), u = Math.abs(x / (w - 1) * 2 - 1), half = 0.12 + 0.85 * Math.pow(v, 0.8);
+        const across = Math.max(0, 1 - Math.pow(u / half, 2.2)), along = Math.min(1, v * 6) * Math.pow(1 - v, 1.6);
+        const k = 0.95 * across * along, i = (y * w + x) * 4;
+        img.data[i] = 255; img.data[i + 1] = 205; img.data[i + 2] = 145; img.data[i + 3] = 255 * k;
+      }
+      g.putImageData(img, 0, 0); }, 1, 1, true); t.wrapS = t.wrapT = THREE.ClampToEdgeWrapping; t.flipY = true; return t; })();
+  const glows = [];
+  // glow plane: anchored at the light edge, fading over len. dir is the fade direction in the plane.
+  function glowPlane(w, len, pos, rot, flip) {
+    const m = new THREE.Mesh(new THREE.PlaneGeometry(w, len), additive(GLOW));
+    if (flip) m.geometry.rotateZ(Math.PI);
+    m.rotation.set(...rot); m.position.set(...pos); m.renderOrder = 2; scene.add(m); glows.push(m); return m;
+  }
+
+  // ---------- room ----------
+  const walls = [];
+  const floor = new THREE.Mesh(new THREE.PlaneGeometry(FW, FD), M.floor); floor.rotation.x = -Math.PI / 2; floor.position.set((CX + RX) / 2, 0, FD / 2); floor.receiveShadow = true; scene.add(floor);
+  const tvWall = box(0, RX, 0, CH, -6, 0, M.back);
+  // column: 24" wide, 24 1/2" out from the TV wall, full height
+  const colMap = plasterMap.clone(); colMap.needsUpdate = true; colMap.repeat.set(0.5, 2.25);
+  M.colPlaster = new THREE.MeshStandardMaterial({ map: colMap, color: M.back.color, roughness: 0.92, envMapIntensity: 0.25 });
+  const colGray = box(CX, 0, 0, CH, -6, CZ, M.colPlaster);
+  const colWood = new THREE.Group(); scene.add(colWood);
+  box(CX, -0.75, 0, CH, -6, CZ - 0.75, M.slatBack, colWood);
+  for (let x = CX + 0.25; x < -0.5; x += 1.75) box(x, Math.min(x + 1.25, -0.25), 0, CH, CZ - 0.75, CZ, M.wood, colWood);
+  for (let z = 0.25; z < CZ - 0.5; z += 1.75) box(-0.75, 0, 0, CH, z, Math.min(z + 1.25, CZ - 0.25), M.wood, colWood);
+  box(CX, 0, 0, CH, CZ - 0.75, CZ - 0.74, M.slatBack, colWood);
+  const wallL = new THREE.Group(), wallR = new THREE.Group(), wallB = new THREE.Group(); scene.add(wallL, wallR, wallB);
+  box(CX - 6, CX, 0, CH, CZ, RZ + 6, M.wall, wallL);
+  // right wall with the 34" doorway, 22 1/4" from the TV wall
+  const DZ0 = 22.25, DZ1 = 56.25, DH = 80;
+  box(RX, RX + 6, 0, CH, -6, DZ0, M.wall, wallR); box(RX, RX + 6, 0, CH, DZ1, RZ + 6, M.wall, wallR); box(RX, RX + 6, DH, CH, DZ0, DZ1, M.wall, wallR);
+  box(RX + 6, RX + 30, 0, CH, DZ0 - 20, DZ1 + 20, std(0xcfc9be, 0.95), wallR);
+  // back wall with the window opposite
+  const WX0 = 18.5, WX1 = 79.5, WY0 = 30, WY1 = 84;
+  box(CX - 6, WX0, 0, CH, RZ, RZ + 6, M.wall, wallB); box(WX1, RX + 6, 0, CH, RZ, RZ + 6, M.wall, wallB);
+  box(WX0, WX1, 0, WY0, RZ, RZ + 6, M.wall, wallB); box(WX0, WX1, WY1, CH, RZ, RZ + 6, M.wall, wallB);
+  box(WX0, WX1, WY0, WY0 + 1.5, RZ + 2, RZ + 3, M.frame, wallB); box(WX0, WX1, WY1 - 1.5, WY1, RZ + 2, RZ + 3, M.frame, wallB);
+  box(WX0, WX0 + 1.5, WY0, WY1, RZ + 2, RZ + 3, M.frame, wallB); box(WX1 - 1.5, WX1, WY0, WY1, RZ + 2, RZ + 3, M.frame, wallB);
+  const gp = new THREE.Mesh(new THREE.PlaneGeometry(WX1 - WX0 + 40, WY1 - WY0 + 30), M.garden); gp.rotation.y = Math.PI; gp.position.set((WX0 + WX1) / 2, (WY0 + WY1) / 2, RZ + 40); wallB.add(gp);
+  const ceil = new THREE.Mesh(new THREE.PlaneGeometry(FW + 12, FD + 12), M.ceiling); ceil.rotation.x = Math.PI / 2; ceil.position.set((CX + RX) / 2, CH, FD / 2); scene.add(ceil);
+  // baseboards on the plain walls
+  box(CX, CX + 0.6, 0, 4, CZ, RZ, M.wall, wallL); box(RX - 0.6, RX, 0, 4, DZ1, RZ, M.wall, wallR);
+
+  // ---------- floating credenza: 12" off the floor, 14" high, 18 1/2" deep, 1" stone top over a 1/2" reveal ----------
+  box(0.5, 144, 12, 26, 0, 17.75, M.woodL);                         // carcass, held 1/2" off each wall
+  box(0.5, 144, 26, 26.5, 0, 17.0, M.shadow);                        // reveal under the top
+  box(0, RX, 26.5, 27.5, 0, 18.45, M.stoneLong);                     // stone top, same slab as the coffee table
+  const FRONTS = [[1.62, 28.87], [30.12, 57.37], [58.62, 85.87], [87.12, 114.37], [115.62, 142.87]];
+  const FY0 = 13.0, FY1 = 24.88;
+  const frontSets = { shaker: new THREE.Group(), flat: new THREE.Group() }; scene.add(frontSets.shaker, frontSets.flat);
+  function shaker(x0, x1, y0, y1, z, g, panelMat) {
+    const fw = 0.5, t = 0.75;
+    box(x0, x1, y1 - fw, y1, z, z + t, M.woodH, g); box(x0, x1, y0, y0 + fw, z, z + t, M.woodH, g);
+    box(x0, x0 + fw, y0 + fw, y1 - fw, z, z + t, M.wood, g); box(x1 - fw, x1, y0 + fw, y1 - fw, z, z + t, M.wood, g);
+    box(x0 + fw, x1 - fw, y0 + fw, y1 - fw, z, z + t - 0.375, panelMat || M.woodPanel, g);
+  }
+  FRONTS.forEach(([x0, x1]) => {
+    box(x0 - 0.12, x1 + 0.12, FY0 - 0.12, FY1 + 0.12, 17.73, 17.76, M.shadow);
+    shaker(x0, x1, FY0, FY1, 17.75, frontSets.shaker);
+    box(x0, x1, FY0, FY1, 17.75, 18.5, M.woodH, frontSets.flat);
+  });
+
+  // ---------- floating shelves on the right, 9 1/4" deep, LED in the front underside ----------
+  const SHELVES = [[102.37, 144.5, 39.63], [114.37, 144.5, 55.0], [102.37, 144.5, 71.38]];
+  const shelfLeds = [];
+  SHELVES.forEach(([x0, x1, y]) => {
+    box(x0, x1 - 0.25, y, y + 1, 0, 9.25, M.woodH);
+    // pin lights recessed in the underside, about 3" off the wall, throwing scallops down the wall
+    const n = Math.max(2, Math.round((x1 - x0) / 13)), step = (x1 - x0) / n;
+    for (let i = 0; i < n; i++) {
+      const px = x0 + step * (i + 0.5);
+      const pin = new THREE.Mesh(new THREE.CylinderGeometry(0.4, 0.4, 0.08, 20), M.led); pin.position.set(px, y - 0.03, 3); scene.add(pin); shelfLeds.push(pin);
+      const ring = new THREE.Mesh(new THREE.CylinderGeometry(0.55, 0.55, 0.05, 20), M.steel); ring.position.set(px, y - 0.01, 3); scene.add(ring);
+      const sc = new THREE.Mesh(new THREE.PlaneGeometry(11, 15), additive(SCALLOP)); sc.position.set(px, y - 7.6, 0.05); sc.renderOrder = 2; scene.add(sc); glows.push(sc);
+    }
+  });
+
+  // ---------- TV housing: 9 1/4" deep box behind the panel and wing, top and bottom in line with the floating shelves ----------
+  const HX0 = 3.62, HX1 = 88.37, HY0 = 39.63, HY1 = 72.38, HD = 9.25;
+  box(HX0, HX1, HY0, HY0 + 1, 0, HD, M.woodH); box(HX0, HX1, HY1 - 1, HY1, 0, HD, M.woodH);
+  box(HX0, HX0 + 0.75, HY0 + 1, HY1 - 1, 0, HD, M.wood); box(HX1 - 0.75, HX1, HY0 + 1, HY1 - 1, 0, HD, M.wood);
+  box(HX0 + 0.75, HX1 - 0.75, HY0 + 1, HY1 - 1, 0, 0.5, M.wood);                       // wood back lining
+  box(25.0, 25.75, HY0 + 1, HY1 - 1, 0.5, HD - 0.25, M.wood);                           // divider at the wing
+  // behind the wing: shelves in line with the middle floating shelf
+  box(HX0 + 0.75, 25.0, 55.5, 56.5, 0.5, HD - 0.25, M.woodH);
+  // behind the TV: PS80 wall plate in the centre, device shelves either side, power and HDMI plate
+  const TVC = (25.0 + 90.37) / 2, TVY = (35.63 + 76.38) / 2;
+  box(TVC - 5.5, TVC + 5.5, TVY - 14.06, TVY + 14.06, 0.5, 0.75, M.steel);
+  box(25.75, 44, 49, 49.75, 0.5, HD - 0.5, M.woodH); box(71.5, HX1 - 0.75, 49, 49.75, 0.5, HD - 0.5, M.woodH);
+  box(28, 40, 49.75, 51.6, 1.5, 8, M.dark); box(30, 37, 41, 42.4, 2, 7, M.dark);          // receiver and streaming box
+  box(74, 82, 49.75, 50.9, 2, 7.5, M.dark);
+  [[33, 60], [78, 60]].forEach(([x, y]) => { box(x - 1.4, x + 1.4, y - 2.25, y + 2.25, 0.5, 0.65, M.plate); box(x - 0.7, x + 0.7, y - 1.6, y + 1.6, 0.65, 0.72, std(0xdedbd3, 0.5)); });
+  // decor behind the wing
+  function vessel(prof, x, y, z, mat, s) { const g = new THREE.LatheGeometry(prof.map(p => new THREE.Vector2(p[0] * s, p[1] * s)), 32); const m = new THREE.Mesh(g, mat); m.position.set(x, y, z); m.castShadow = true; scene.add(m); return m; }
+  const bowl = [[0, 0], [1.6, 0], [2.8, 0.5], [3.6, 1.5], [3.9, 2.2], [3.7, 2.3], [3.1, 1.4], [0, 0.8]];
+  const vase = [[0, 0], [1.5, 0], [2.1, 1], [2.3, 3.2], [1.8, 5], [1.0, 6], [0.9, 7], [1.15, 7.3], [0, 7.3]];
+  const round = [[0, 0], [1.2, 0], [2.9, 1], [3.6, 3], [3.2, 5.4], [1.6, 6.8], [0.9, 7.2], [1.0, 8.4], [0, 8.4]];
+  vessel(vase, 14, 56.5, 4.5, M.ceramic, 1); box(8, 9.2, 40.63, 49, 2, 8, M.book1); box(9.3, 10.5, 40.63, 48.5, 2, 8, M.book2); box(10.6, 11.6, 40.63, 49.4, 2, 8, M.book3);
+  vessel(bowl, 18, 40.63, 4.5, M.ceramicDark, 0.8);
+  // on the floating shelves and the credenza
+  vessel(round, 124, 72.38, 4.6, M.ceramic, 0.9); box(120, 128, 56, 57.2, 2, 7.5, M.book1); box(120.5, 127.5, 57.2, 58.2, 2.3, 7.2, M.book2);
+  vessel(bowl, 112, 40.63, 4.6, M.ceramicDark, 0.7); const sph = new THREE.Mesh(new THREE.SphereGeometry(2.1, 24, 16), M.ceramicDark); sph.position.set(134, 42.7, 4.6); scene.add(sph);
+  vessel(bowl, 118, 27.5, 9, M.ceramicDark, 0.75);
+
+  // ---------- the moving parts ----------
+  const PW0 = 1.62, PW1 = 25.0, PX1 = 90.37, PY0 = 35.63, PY1 = 76.38;
+  // TV panel on the PS80 pull and swivel mount: group origin at the back face of the panel, centred
+  const tvG = new THREE.Group(); tvG.position.set(TVC, TVY, HD); scene.add(tvG);
+  const pw = PX1 - PW1, ph = PY1 - PY0;
+  const panelSets = { shaker: new THREE.Group(), flat: new THREE.Group() }; tvG.add(panelSets.shaker, panelSets.flat);
+  shaker(-pw / 2, pw / 2, -ph / 2, ph / 2, 0, panelSets.shaker, M.woodPanel);
+  box(-pw / 2, pw / 2, -ph / 2, ph / 2, 0, 0.75, M.woodH, panelSets.flat);
+  // TV, 57 3/8" x 32 3/4", 1 1/4" deep, held 1/4" proud of the panel
+  const tx0 = 29.0 - TVC, tx1 = 86.37 - TVC, ty0 = 39.63 - TVY, ty1 = 72.38 - TVY;
+  box(tx0 + 4, tx1 - 4, ty0 + 4, ty1 - 4, 0.75, 1.75, M.steel, tvG);
+  box(tx0, tx1, ty0, ty1, 1.75, 2.95, M.tvEdge, tvG); box(tx0 + 0.2, tx1 - 0.2, ty0 + 0.45, ty1 - 0.2, 2.95, 3.0, M.tv, tvG);
+  // PS80 screen frame on the back of the panel: 35 7/16" x 31 5/16"
+  [-16.2, 16.2].forEach(x => box(x - 0.6, x + 0.6, -15.6, 15.6, -1.2, 0, M.steel, tvG));
+  [-14.7, 14.7].forEach(y => box(-17.7, 17.7, y - 0.6, y + 0.6, -1.2, 0, M.steel, tvG));
+  // scissor arms from the wall plate to the frame
+  const arms = [0, 1, 2, 3].map(() => { const m = new THREE.Mesh(new THREE.BoxGeometry(1, 1, 1), M.steel); m.castShadow = true; scene.add(m); return m; });
+  const armTop = new THREE.Vector3(), armBot = new THREE.Vector3(), tmp = new THREE.Vector3();
+  function placeArm(m, a, b) { tmp.subVectors(b, a); m.scale.set(0.9, 0.9, tmp.length()); m.position.addVectors(a, b).multiplyScalar(0.5); m.lookAt(b); }
+  // wing: hinged on its left edge, swings forward clear of the column
+  const wingG = new THREE.Group(); wingG.position.set(PW0, 0, HD); scene.add(wingG);
+  const wingSets = { shaker: new THREE.Group(), flat: new THREE.Group() }; wingG.add(wingSets.shaker, wingSets.flat);
+  shaker(0, PW1 - PW0 - 0.12, PY0, PY1, 0, wingSets.shaker, M.woodPanel);
+  box(0, PW1 - PW0 - 0.12, PY0, PY1, 0, 0.75, M.wood, wingSets.flat);
+  // LEDs: behind the panel on the housing top and bottom, inside the housing, under the credenza
+  const panelLeds = [box(HX0 + 1, HX1 - 1, HY1, HY1 + 0.06, 6.5, 7.5, M.led), box(HX0 + 1, HX1 - 1, HY0 - 0.06, HY0, 6.5, 7.5, M.led)];
+  glowPlane(HX1 - HX0 + 6, 18, [(HX0 + HX1) / 2, HY1 + 9, 0.05], [0, 0, 0], true);
+  glowPlane(HX1 - HX0 + 6, 16, [(HX0 + HX1) / 2, HY0 - 8, 0.05], [0, 0, 0], false);
+  const innerLed = box(HX0 + 1, HX1 - 1, HY1 - 1.06, HY1 - 1, 7.4, 8.0, M.led);
+  const credLed = box(2, 142.5, 11.94, 12, 15.5, 16.2, M.led);
+  glowPlane(RX - 2, 26, [RX / 2, 0.04, 13], [-Math.PI / 2, 0, 0], false);
+  glowPlane(RX - 2, 12, [RX / 2, 6, 0.05], [0, 0, 0], false);
+  const housingLight = new THREE.PointLight(0xffd29a, 0, 70, 1.6); housingLight.position.set(46, 66, 6); scene.add(housingLight);
+
+  // ---------- ceiling: the whole field dropped 1 3/16", stopping 6" short of every wall. A mud-in LED channel in the
+  // field edge throws light outward across the 6" strip of upper ceiling and into the wall corner. ----------
+  const ceilG = new THREE.Group(); scene.add(ceilG);
+  const GAP = 6, DROP = 1.1875, YB = CH - DROP;
+  {
+    const ix0 = CX + GAP, ix1 = RX - GAP, iz0 = GAP, iz1 = RZ - GAP, izc = CZ + GAP, ixc = GAP;
+    const field = [[ixc, iz0], [ix1, iz0], [ix1, iz1], [ix0, iz1], [ix0, izc], [ixc, izc]];
+    const sh = new THREE.Shape(field.map(p => new THREE.Vector2(p[0], p[1])));
+    const g = new THREE.ExtrudeGeometry(sh, { depth: DROP, bevelEnabled: false }); g.rotateX(Math.PI / 2); g.translate(0, CH, 0);
+    const slab = new THREE.Mesh(g, M.ceiling); slab.receiveShadow = true; ceilG.add(slab);
+    const inside = (x, z) => x > ix0 && x < ix1 && z > iz0 && z < iz1 && !(x < ixc && z < izc);
+    field.map((p, i) => [p, field[(i + 1) % field.length]]).forEach(([a, b]) => {
+      const x0 = Math.min(a[0], b[0]), x1 = Math.max(a[0], b[0]), z0 = Math.min(a[1], b[1]), z1 = Math.max(a[1], b[1]);
+      const horiz = z0 === z1, len = horiz ? x1 - x0 : z1 - z0, mx = (x0 + x1) / 2, mz = (z0 + z1) / 2;
+      let nx = 0, nz = 0; if (horiz) nz = inside(mx, mz + 1) ? 1 : -1; else nx = inside(mx + 1, mz) ? 1 : -1;   // n points into the room
+      // LED lens in the outer edge of the field, facing the wall
+      const ly0 = YB + 0.35, ly1 = YB + 0.85;
+      const l = horiz ? box(x0 - GAP * (nx || 0), x1, ly0, ly1, mz - nz * 0.09, mz - nz * 0.03, M.led, ceilG) : box(mx - nx * 0.09, mx - nx * 0.03, ly0, ly1, z0, z1, M.led, ceilG);
+      if (horiz) { l.scale.x = 1; l.position.x = mx; l.geometry = new THREE.BoxGeometry(len, ly1 - ly0, 0.06); }
+      l.castShadow = false;
+      // wash on the 6" strip of upper ceiling, brightest at the field edge, fading to the corner
+      const wash = new THREE.Mesh(new THREE.PlaneGeometry(len + 2 * GAP, GAP), additive(GLOW)); wash.renderOrder = 2;
+      wash.rotation.set(Math.PI / 2, 0, horiz ? (nz > 0 ? 0 : Math.PI) : (nx > 0 ? Math.PI / 2 : -Math.PI / 2), 'YXZ');
+      wash.position.set(mx - nx * GAP / 2, CH - 0.03, mz - nz * GAP / 2); ceilG.add(wash); glows.push(wash);
+      // and down the top of the wall from the corner
+      const wg = new THREE.Mesh(new THREE.PlaneGeometry(len + 2 * GAP, 14), additive(GLOW)); wg.renderOrder = 2;
+      wg.rotation.y = horiz ? (nz > 0 ? 0 : Math.PI) : (nx > 0 ? Math.PI / 2 : -Math.PI / 2);
+      wg.position.set(mx - nx * (GAP - 0.06), CH - 7, mz - nz * (GAP - 0.06)); ceilG.add(wg); glows.push(wg);
+      if (horiz && mz === izc) { wg.geometry = new THREE.PlaneGeometry(-CX, 14); wg.position.x = CX / 2; }      // column front
+      if (!horiz && mx === ixc) { wg.geometry = new THREE.PlaneGeometry(CZ, 14); wg.position.z = CZ / 2; }      // column side
+    });
+  }
+  const ceilLights = [[30, 30], [110, 30], [30, 110], [110, 110]].map(([x, z]) => { const l = new THREE.PointLight(0xffd6a6, 0, 120, 1.6); l.position.set(x, CH - 3, z); scene.add(l); return l; });
+
+  // ---------- furniture from the plan ----------
+  const furn = new THREE.Group(); scene.add(furn);
+  // couch: classic tan leather, plan footprint 88" x 46", on short dark legs
+  const tan = std(0x9a6a40, 0.5, { envMapIntensity: 0.6 }), tanDark = std(0x86592f, 0.55, { envMapIntensity: 0.6 });
+  [[18, 93], [102.5, 93], [18, 136], [102.5, 136]].forEach(([x, z]) => box(x - 0.75, x + 0.75, 0, 4, z - 0.75, z + 0.75, M.dark, furn));
+  box(17.25, 103.25, 4, 16, 92.5, 137.75, tan, furn);                                     // base
+  box(16.25, 25.25, 4, 26, 91.75, 137.75, tan, furn); box(95.25, 104.25, 4, 26, 91.75, 137.75, tan, furn);   // arms
+  [[16.25, 25.25], [95.25, 104.25]].forEach(([x0, x1]) => { const r = new THREE.Mesh(new THREE.CylinderGeometry(4.5, 4.5, 46, 28), tan); r.rotation.x = Math.PI / 2; r.position.set((x0 + x1) / 2, 25, 114.75); r.castShadow = true; furn.add(r); });
+  box(25.25, 95.25, 16, 33, 128.5, 137.75, tan, furn);                                    // back
+  box(25.5, 59.9, 16, 21.5, 95, 128.5, tanDark, furn); box(60.6, 95, 16, 21.5, 95, 128.5, tanDark, furn);      // seat cushions
+  box(26, 59.9, 21.5, 36, 122, 128.5, tanDark, furn).rotation.x = -0.12; box(60.6, 94.5, 21.5, 36, 122, 128.5, tanDark, furn).rotation.x = -0.12;   // back cushions
+  // coffee table: black steel wireframe, 3/4" square tube, with a 1 1/4" stone slab on top
+  const T0x = 30.27, T1x = 90.27, T0z = 47.75, T1z = 75.75, TH = 15.5, ST2 = 1.25, tb = 0.75, ty = TH - ST2;
+  const steel = std(0x161616, 0.4, { metalness: 0.8 });
+  [[T0x + 1, T0z + 1], [T1x - 1, T0z + 1], [T0x + 1, T1z - 1], [T1x - 1, T1z - 1]].forEach(([x, z]) => box(x - tb / 2, x + tb / 2, 0, ty, z - tb / 2, z + tb / 2, steel, furn));
+  [0, ty - tb].forEach(y => {
+    box(T0x + 1, T1x - 1, y, y + tb, T0z + 1 - tb / 2, T0z + 1 + tb / 2, steel, furn); box(T0x + 1, T1x - 1, y, y + tb, T1z - 1 - tb / 2, T1z - 1 + tb / 2, steel, furn);
+    box(T0x + 1 - tb / 2, T0x + 1 + tb / 2, y, y + tb, T0z + 1, T1z - 1, steel, furn); box(T1x - 1 - tb / 2, T1x - 1 + tb / 2, y, y + tb, T0z + 1, T1z - 1, steel, furn);
+  });
+  box(T0x, T1x, ty, TH, T0z, T1z, M.stone, furn);
+  vessel(bowl, 60, TH, 62, M.ceramicDark, 1.1);
+
+  // ---------- daylight ----------
+  const hemi = new THREE.HemisphereLight(0xfff7ec, 0x6a5a48, 0.45); scene.add(hemi);
+  const sun = new THREE.DirectionalLight(0xfff2de, 0.7); sun.position.set(40, 150, 320); sun.target.position.set(60, 30, 0); scene.add(sun, sun.target);
+  sun.castShadow = true; sun.shadow.mapSize.set(2048, 2048); sun.shadow.bias = -0.0005; Object.assign(sun.shadow.camera, { left: -130, right: 130, top: 130, bottom: -40, near: 50, far: 600 });
+  const fill = new THREE.PointLight(0xfff0dc, 0.3, 300, 1.2); fill.position.set(60, 90, 90); scene.add(fill);
+  const shelfLights = SHELVES.map(([x0, x1, y]) => { const l = new THREE.PointLight(0xffd29a, 0, 30, 1.8); l.position.set((x0 + x1) / 2, y - 2, 7); scene.add(l); return l; });
+  const panelLight = new THREE.PointLight(0xffc98a, 0, 60, 1.8); panelLight.position.set(46, 80, 4); scene.add(panelLight);
+  const credLight = new THREE.PointLight(0xffc98a, 0, 60, 1.8); credLight.position.set(72, 6, 12); scene.add(credLight);
+
+  // ---------- options ----------
+  const state = { stone: 'grey', open: 'closed', column: 'gray', wall: 'grey', front: 'shaker', wood: 'oak', ceil: 'knife', light: 'day', furn: 'on' };
+  const WALLS = { grey: 0x56575a, charcoal: 0x3b3733, taupe: 0x8a7d6f, olive: 0x4a4c3c, white: 0xe8e3da };
+  const TINT = { oak: 0xe6e2dc, smoked: 0xd8d2ca, walnut: 0xd2cbc4 };
+  let openT = 0, openGoal = 0;
+  function pose(t) {
+    const e = t * t * (3 - 2 * t);
+    tvG.position.set(TVC, TVY, HD + 18 * e); tvG.rotation.y = -(30 * Math.PI / 180) * Math.max(0, (e - 0.35) / 0.65);
+    wingG.rotation.y = -(85 * Math.PI / 180) * e;
+    // scissor arms: wall plate to the frame on the back of the panel
+    tvG.updateMatrixWorld();
+    [[-1, 1], [1, -1], [-1, -1], [1, 1]].forEach(([sx, sy], i) => {
+      armTop.set(TVC + sx * 3.5, TVY + sy * 11, 0.9);
+      armBot.set(sx * 10, -sy * 11, -0.6).applyMatrix4(tvG.matrixWorld);
+      placeArm(arms[i], armTop, armBot);
+    });
+  }
+  function apply() {
+    openGoal = state.open === 'open' ? 1 : 0;
+    colGray.visible = state.column === 'gray'; colWood.visible = state.column === 'wood';
+    M.back.color.copy(col(WALLS[state.wall])); M.colPlaster.color.copy(M.back.color);
+    const shk = state.front === 'shaker';
+    [frontSets, panelSets, wingSets].forEach(s => { s.shaker.visible = shk; s.flat.visible = !shk; });
+    const w = WTEX[state.wood]; M.wood.map = w.v; M.woodH.map = w.h; M.woodL.map = w.l; M.woodPanel.map = w.h; M.woodPanel.color.copy(col(TINT[state.wood]));
+    [M.wood, M.woodH, M.woodL, M.woodPanel].forEach(m => m.needsUpdate = true);
+    ceilG.visible = state.ceil === 'knife';
+    const st = STONES[state.stone]; M.stone.map = st.map; M.stoneLong.map = SLONG[state.stone]; M.stone.roughness = M.stoneLong.roughness = st.rough; M.stone.needsUpdate = M.stoneLong.needsUpdate = true;
+    furn.visible = state.furn === 'on';
+    const eve = state.light === 'eve';
+    hemi.intensity = eve ? 0.4 : 0.45; sun.intensity = eve ? 0 : 0.7; fill.intensity = eve ? 0.04 : 0.3;
+    shelfLights.forEach(l => l.intensity = eve ? 0.5 : 0.08); panelLight.intensity = eve ? 0.7 : 0.1; credLight.intensity = eve ? 0.6 : 0.05;
+    ceilLights.forEach(l => l.intensity = eve && state.ceil === 'knife' ? 0.18 : 0);
+    glows.forEach(g => g.material.opacity = eve ? 1 : 0.06);
+    scene.environment = eve ? null : envTex; M.tv.envMapIntensity = 1.1;
+    M.led.color.copy(col(eve ? 0xffd7a0 : 0xd9cdbb));
+    M.garden.color.copy(eve ? new THREE.Color(0x2c3440) : new THREE.Color(0xffffff));
+    renderer.toneMappingExposure = eve ? 1.3 : 0.95;
+  }
+  function updateHousing() { housingLight.intensity = (state.light === 'eve' ? 0.6 : 0.2) * openT; }
+  document.querySelectorAll('.seg[data-opt]').forEach(seg => seg.addEventListener('click', e => {
+    const b = e.target.closest('button'); if (!b) return; setOpt(seg.dataset.opt, b.dataset.val);
+  }));
+  function setOpt(k, v) {
+    state[k] = v;
+    const seg = document.querySelector(`.seg[data-opt="${k}"]`);
+    if (seg) seg.querySelectorAll('button').forEach(x => x.setAttribute('aria-pressed', x.dataset.val === v));
+    apply();
+  }
+
+  // ---------- cameras ----------
+  const cam = new THREE.PerspectiveCamera(40, 1, 1, 3000);
+  let controls, viewName = 'front';
+  const VIEWS = {
+    front: { label: 'Front, from the couch', pos: [62, 58, 128], tgt: [62, 50, 0], fov: 56 },
+    left: { label: 'From the door side', pos: [205, 74, 175], tgt: [56, 48, 6], fov: 38 },
+    right: { label: 'From the column side', pos: [-70, 70, 190], tgt: [70, 46, 4], fov: 38 },
+    storage: { label: 'Open, storage close up', pos: [138, 64, 64], tgt: [50, 56, 4], fov: 48, open: true },
+    shelves: { label: 'Floating shelves', pos: [96, 62, 70], tgt: [128, 54, 2], fov: 42 },
+    ceiling: { label: 'Ceiling edge', pos: [96, 70, 112], tgt: [40, 104, 8], fov: 50 }
+  };
+  function size() { const w = vp.clientWidth, h = vp.clientHeight; renderer.setSize(w, h, false); cam.aspect = w / h; cam.updateProjectionMatrix(); }
+  function setView(name) {
+    const v = VIEWS[name] || VIEWS.front; viewName = name;
+    if (v.open && state.open !== 'open') setOpt('open', 'open');
+    if (controls) controls.dispose();
+    cam.fov = v.fov; cam.position.set(...v.pos); cam.lookAt(...v.tgt); size();
+    controls = new THREE.OrbitControls(cam, renderer.domElement); controls.target.set(...v.tgt); controls.enableDamping = true; controls.dampingFactor = 0.08;
+    controls.screenSpacePanning = true; controls.minDistance = 10; controls.maxDistance = 700; controls.update();
+    document.getElementById('vlabel').textContent = v.label;
+    document.querySelectorAll('#views button').forEach(b => b.setAttribute('aria-pressed', b.dataset.v === name));
+  }
+  document.getElementById('views').addEventListener('click', e => { const b = e.target.closest('button'); if (b) setView(b.dataset.v); });
+  // walls between the camera and the room drop away, so the room reads like a cutaway
+  function cutaway() {
+    const p = cam.position;
+    wallB.visible = p.z < RZ; wallL.visible = p.x > CX; wallR.visible = p.x < RX;
+    const inside = p.y < CH - 1;
+    ceil.visible = inside; ceilG.visible = inside && state.ceil === 'knife';
+    tvWall.visible = p.z > 0;
+  }
+  new ResizeObserver(size).observe(vp);
+  apply(); pose(0); setView('front');
+  // ---------- save image ----------
+  (function () {
+    const host = vp;
+    const btn = document.createElement('button');
+    btn.type = 'button'; btn.className = 'savebtn'; btn.textContent = 'Save image';
+    btn.setAttribute('aria-label', 'Save the current view as a PNG image');
+    const msg = document.createElement('div'); msg.className = 'savemsg'; msg.setAttribute('role', 'status'); msg.hidden = true;
+    host.appendChild(btn); host.appendChild(msg);
+    let timer = 0;
+    const say = t => { msg.textContent = t; msg.hidden = false; clearTimeout(timer); timer = setTimeout(() => { msg.hidden = true; }, 2800); };
+    const inViewer = !!(window.claude && window.claude.use);
+    let dl = null;
+    if (inViewer) { btn.hidden = true; window.claude.use('downloads').then(d => { dl = d; btn.hidden = !d; }).catch(() => {}); }
+    btn.addEventListener('click', () => {
+      const pr = renderer.getPixelRatio();
+      renderer.setPixelRatio(Math.max(2, pr)); (size)(); (() => { controls.update(); cutaway(); renderer.render(scene, cam); })();
+      renderer.domElement.toBlob(async blob => {
+        renderer.setPixelRatio(pr); (size)();
+        if (!blob) { say('Could not capture the view.'); return; }
+        const name = (() => ['Fabi-Media', viewName, state.open, state.stone, 'column-' + state.column, state.wall, state.front, state.wood, state.ceil].join('-') + (state.light === 'eve' ? '-evening' : ''))() + '.png';
+        if (dl) {
+          try { await dl.save({ filename: name, data: blob }); say('Image saved'); }
+          catch (e) {
+            const c = e && e.code;
+            if (c === 'declined') return;
+            if (c === 'rate_limited') say('A save is already open. Try again in a moment.');
+            else { say('Saving is not available here.'); if (c === 'unavailable' || c === 'not_granted' || c === 'capability_disabled' || c === 'capability_removed') btn.hidden = true; }
+          }
+        } else if (!inViewer) {
+          const a = document.createElement('a'); a.href = URL.createObjectURL(blob); a.download = name;
+          document.body.appendChild(a); a.click(); a.remove(); setTimeout(() => URL.revokeObjectURL(a.href), 4000); say('Image saved');
+        }
+      }, 'image/png');
+    });
+  })();
+
+  let last = performance.now();
+  (function loop(now) {
+    requestAnimationFrame(loop);
+    const dt = Math.min(0.05, ((now || performance.now()) - last) / 1000); last = now || performance.now();
+    if (openT !== openGoal) { openT = openGoal > openT ? Math.min(openGoal, openT + dt / 1.6) : Math.max(openGoal, openT - dt / 1.6); pose(openT); updateHousing(); }
+    controls.update(); cutaway(); renderer.render(scene, cam);
+  })();
+  window.__still = function (name, w, h, opts) {
+    if (opts) { Object.assign(state, opts); apply(); }
+    setView(name); openT = openGoal; pose(openT); updateHousing();
+    renderer.setPixelRatio(1); renderer.setSize(w, h, false); cam.aspect = w / h; cam.updateProjectionMatrix();
+    controls.update(); cutaway(); renderer.render(scene, cam); return renderer.domElement.toDataURL('image/jpeg', 0.9);
+  };
+})();
+</script>

@@ -1,0 +1,724 @@
+<title>Fabi Bathroom</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<style>
+/* By William sheet (bathroom): white 17 x 11 sheet, Arial, "by William" mark top right, heavy rule at the foot with project,
+   scale, issue, date and sheet title. Viewer on the left of the drawing field, option schedule on the right. */
+:root {
+  --desk: #e7e7e4; --ink: #111111; --ink-2: #555555; --hair: #c4c4c4; --sheet: #ffffff; --focus: #1e6fd9;
+  --f: Arial, "Helvetica Neue", Helvetica, "Liberation Sans", sans-serif;
+}
+@media (prefers-color-scheme: dark) { :root:not([data-theme="light"]) { --desk: #1c1d1f; color-scheme: dark; } }
+:root[data-theme="dark"] { --desk: #1c1d1f; color-scheme: dark; }
+* { box-sizing: border-box; }
+html, body { background: var(--desk); }
+body { margin: 0; font-family: var(--f); color: var(--ink);
+  padding-left: max(16px, env(safe-area-inset-left, 0px)); padding-right: max(16px, env(safe-area-inset-right, 0px)); padding-block: 20px 40px; }
+.sheet { max-width: 1400px; margin: 0 auto; background: var(--sheet); color: var(--ink); box-shadow: 0 1px 3px rgba(0,0,0,.18);
+  display: grid; grid-template-rows: auto 1fr auto; gap: 10px; padding: 22px 26px 16px; }
+@media (min-width: 1100px) { .sheet { min-height: calc(min(1400px, 100vw - 32px) * 11 / 17); } .viewport { min-height: 560px; } }
+.top { display: flex; justify-content: space-between; align-items: flex-start; gap: 16px; }
+.top h1 { font-size: 15px; font-weight: 700; margin: 0; letter-spacing: .02em; }
+.top p { margin: 4px 0 0; font-size: 12px; color: var(--ink-2); max-width: 60ch; }
+.logo { width: 150px; flex: none; }
+.logo img { width: 100%; height: auto; display: block; }
+.field { display: grid; grid-template-columns: minmax(0, 1fr) 270px; gap: 18px; min-height: 0; }
+@media (max-width: 900px) { .field { grid-template-columns: minmax(0, 1fr); } }
+.viewcol { display: grid; grid-template-rows: auto 1fr; gap: 8px; min-height: 0; min-width: 0; }
+.viewport { position: relative; border: 1px solid var(--hair); background: #f6f5f2; min-height: 420px; height: 100%; touch-action: none; }
+@media (max-width: 1099px) { .viewport { height: 62vh; } }
+.viewport canvas { display: block; width: 100%; height: 100%; outline: none; }
+.hint { position: absolute; left: 10px; bottom: 6px; font-size: 11px; color: var(--ink-2); pointer-events: none; background: rgba(255,255,255,.75); padding: 2px 6px; }
+.vlabel { position: absolute; left: 10px; top: 8px; font-size: 11px; letter-spacing: .1em; text-transform: uppercase; color: var(--ink-2); background: rgba(255,255,255,.75); padding: 2px 6px; pointer-events: none; }
+.err { padding: 20px; color: var(--ink-2); }
+.opts { display: grid; gap: 12px; align-content: start; font-size: 13px; }
+.grp { display: grid; gap: 6px; border-top: 1px solid var(--ink); padding-top: 6px; }
+.grp h2 { font-size: 11px; font-weight: 700; letter-spacing: .12em; text-transform: uppercase; margin: 0; }
+.seg { display: flex; flex-wrap: wrap; gap: 4px; }
+.seg button { font: 12.5px/1 var(--f); color: var(--ink); background: #fff; border: 1px solid var(--hair); border-radius: 2px; padding: 7px 9px; cursor: pointer; display: inline-flex; gap: 6px; align-items: center; }
+.seg button[aria-pressed="true"] { background: var(--ink); color: #fff; border-color: var(--ink); }
+.seg button:focus-visible { outline: 2px solid var(--focus); outline-offset: 2px; }
+.chip { width: 12px; height: 12px; border-radius: 50%; border: 1px solid rgba(0,0,0,.25); display: inline-block; }
+.views { display: flex; flex-wrap: wrap; gap: 4px; }
+.note { font-size: 11.5px; color: var(--ink-2); line-height: 1.4; margin: 0; }
+.foot { display: grid; grid-template-columns: 1fr auto; align-items: end; row-gap: 4px; }
+.proj { grid-column: 2; text-align: right; font-weight: 700; font-size: 14px; padding-bottom: 3px; }
+.rule { grid-column: 1 / -1; height: 4px; background: var(--ink); }
+.issue { display: flex; gap: 40px; font-weight: 700; font-size: 13px; flex-wrap: wrap; }
+.ttl { text-align: right; }
+.ttl .d { font-weight: 700; font-size: 10.5px; }
+.ttl .n { font-weight: 700; font-size: 22px; line-height: 1.15; }
+[hidden] { display: none !important; }
+.savebtn { position: absolute; top: 10px; right: 10px; z-index: 2; font: 500 13px/1 "Figtree", "Segoe UI", system-ui, sans-serif; padding: 8px 12px; border-radius: 3px; border: 1px solid rgba(31,32,28,.25); background: rgba(255,255,255,.94); color: #1f201c; cursor: pointer; }
+.savebtn:hover { background: #ffffff; border-color: rgba(31,32,28,.5); }
+.savebtn:focus-visible { outline: 2px solid #6e4430; outline-offset: 2px; }
+.savemsg { position: absolute; top: 48px; right: 10px; z-index: 2; font: 12px/1.3 "Figtree", system-ui, sans-serif; background: rgba(20,20,18,.8); color: #ffffff; padding: 5px 9px; border-radius: 3px; }
+
+.savebtn { font-family: var(--f); background: #fff; color: #111; border-color: var(--hair); border-radius: 2px; }
+</style>
+<section class="sheet" aria-label="Bathroom 3D model sheet">
+  <div class="top">
+    <div>
+      <h1>Bathroom, Fabi Residence</h1>
+      <p>Built from Bath_Canmore. Pick the finishes, open the pocket door and the pull-out tower, turn the model, then save the view as an image.</p>
+    </div>
+    <div class="logo"><img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAjAAAADLBAMAAACCFbSvAAAAGFBMVEX///+ioqJUVFQqKiomJiYlJSUjIyMeHh4fTQXCAAAb6UlEQVR42u193XIjyZXedwpQhK1tsjIL7CtNNwog5QjbmiH4owg7LO2A3VSEL2yHW5q590v4NeQn8D7Azu5oFWFfWE12s6W58W6TBGd8pSFQhZ6JkLQNVibIdoRjh6jjC9RPFpAgu9kEELtEXpFVharKr875zk+ezAQWbdEWbdEWbeaNAACeqwGwXuCRtRIA4J9//9+WhLcAxmhlAIDC2hrwvxZw5M0BALACNBYCMwYMoIF4gYYFGAHEC4kZB4bA4AUa48AIhlhwjE1iaAGFFZgy+jheoGEh3whag6TIThh/3mEHD8LDgaKaVz0KhqpVqww6GgBJl1jpuyoxBKBBXq20NhQUqn/a/GFdAEDth/LJHZYYF3Dpv/zqPlaVBiA//kyWd5QGaBfx4A5zzE8ByGedU/aeCADiWVBuDg0VH/CdtOOJKpFG9+MArEUZAAkN3So9GWpZie+uxAiHgecakJcvJECsAQwgAInmXXfwPggAoBw3AVKAAEMDjsbewd0FhgCdpKk2JCA0qLlUBgCvhTV1d4EpAQgSxw4AAwK19BL/DquSBO4FSDPAUBrfY+csgeVuZjydRJOGsXW5NTTRgABKxwD51XBwhyVGANAAhE5MM4k+oAFqQPAdBqaBOFMYDQD0E1wKNYQId1iVxBAPEg0gHJKOcC41IAG+yxIDOMNsjCAMjfMbdhhA+UAP9B0GJhkgoGYiMKhownMNCF+UDu4wMJRQy+UBfGUoF1UfgPhuA8MABAl8pwFAtC41A3RWwh1tCce0YgCQpQbChFIcVwOevrMDlM7QoVMOACoDSUpcN08GALmAGNxliTl42AKAJlrfDY1SDxQA5Oo7O3I7lBi9qgGQGzZ+pZOgoOEDa4pSj++OSsxrgAB56L9OUgzqACS9JVXBXR25HVqd//f63yz/4fuf1v/u+I/J8X/2r5x/8X97f1wTfxy07jAw4O+2tPcvXx7/IT2u//Anv/2Hf/j3Xzb+591UJUqjaXn/R890mqujmgLA2vmvCH5zN4FJxpVYqc7/zo/KTy//ux6mI07vtoM3IkYV/a0AQPcv72wpZ9l69Od7ZQIAH1ALiTGa3v4pA5Dr5e/uqMBMkJiW+H4I0P2B8yu9kJi8sRIhQLJZ3g+wkBij9cKNEPK++1l0V3HBhNo7T4rKg+d3smLoamCGA5J3F5ZFW7RFW7RFW7RFW7RFW7RFW7RFW7RbiK7fs8lbiM0l5plxtgEj3rNLJAUJ1hxMvuXw/7GaJOMyKSHBam4ZoTJAtbGj2ds4/ti5KDs5/sPOEBf5i5P1/Z9dPst6RZ5XvHAoTmPTC3Mpk94n0bkre8/nVVNQBnC/aR65vDg0Epo/LiDDfXF6mANT/CHw3S8BQNZWzsQAxzs//zwD5tORx/7Df7Me/k2GS+UXg+Oty2ePfvz7QM8NGHVkfDnvcqXRzmX7g72C0HS2V0ycXuq6ebI6/Na7vL+Gx/vHSzJXhD0YV3Lp98M/Dsl4ctzNLiHP3aMtN9iAX/1sbsAwFJvasHYvV3UqkWsQYKnZ/cboysPw8ZFxr+0/A0Dek0OFYMlDNPjZ005ypxiFK9O21TZuTiL7IPKTPawu76/UX+ryk7/Q85IYqhudbWvXHBrgx6Z1oVL9G4OuVyvkGT89VQDkCqlS8yjU9Tqwk4rMiy1TYkBnqXx6JjDq71KB4V3ua1k906XL78m5AXPZNg6sbLgnhpnodIuWY635G8OinRbfmQFUfvLi0Tm5r+o4O0ZZJpaptrRve/rL4u/XUoF5sv+43d3aio4rG9jbnItlcgBo0zicBYWiO/GocPlKx5B9MXA2zJPbGiCP4v7yoZYBFOjeTnJrv+Xbnl4vmqUERaqA9l9tMriy0dP+ipyXxGAb4FRD2tRH/rp0vrJdeHluG6qkZGV3RGDkB988PH6opGhDbuPe7xI9GOjtNYv5kdsFRyBdRMF7tfNsU7SPRD1uVTbOZDAnYFgvffVBN++u+zrDxXm13DUv7z8yYfIkDo1/LxiQnnZ8VdOR5CgSAZ78cnijzSAakVMA6BSUxHOGpbOyGR5vtAGBDjy3g42Ono8qYdnxaZJbrq9wiknzCMUQacNB9CKGuIHnfKmLvxLz4pi4u+xMOO/2zbciwf1afkBTAacYgFfsENO7d4pWQlF46rmcEzDQOu6PcEUGhFPsmaKcRQXRmMTsFC9e//YG7yR0UTCdxryAaU2sch6MibEkQ5P60YieSS4CI8N3/9o0OF+msTh7HsAwoSjx+Wu5tbFQO5dyB7qAWzUNIzNV8/s3mYnAXlT4UDwPknEA4GJpAsWQL90i3UruGBJTfH+hIUKzD5WH3eq7J3yE73abocldr+alSiNLmrFpDqJRidH09saCdc1/d1WqL/cLiLsX81IlfHNWUOO8M2X+ymQ+ZqWM6Eg9HI1jZN08EHfd8AZawFoE5s/6/hyAKScyEr+d36AMAiLDXwYAagEkOsWr9fK7v5PWeUqTFcDduamSW7EX24lYX2kRCuaaFNC/hSTt+HSXeF7ARNWip5bZqHLcr479xEhojvjBAHXe/5XIHT0wL88X8YTZ+CQQXpEZZ2ExOaOdaN0CUnNz8Bh6wkfRVmrM9UiM6FV0pbK9XVP997/HbXEMKfs0YnbccWxkrvp6FMTYH7n8JuNWJ6MHwnlF19qJ7B0YOGISlnaBUrVRvXp3NmYqwEmIg7lJDOuHhW+fKgsUj3WMskt9zt3i8033Aw2wqnAlA2cj2HpwA6uk6lHuLNWji3U9N44JsWxlFhmpYCK/kuQ8UU40PHwgnKXM7YjL7N6gU9FSWfiZDyAamB/HdO0DzUK8JSEDQpELgPU9Lxeyg+b+TQYS2VjMh5bX7h3MTWJGOZKuYk7uk8Uw+0GilOXeKzdnh5Vf3eCd1BfrmZHncu8Nzw+YflW/vSk5FxbRcfXQF1IHjfPM7SjH6zfxhFkPcJBqowj1XEoeEj8G/WJyYcz+XOuIJmDyafnPX2Uhp7N3o4/9+o2fglvC6g/mBwwg+rZoxe71sS3YjSkxqtFBnJHvIL5ZhKAOMnajHj3X8wSGRmLoxNLY2pK2ht0JE/BpHvNtfn6zPvHrL8NEMOP+1/OZZOeMJJ+ulxgSXctZnYVb0a8fQUuhJbzDmyqB6nVlHNZISjGvyWRDYC5LZAsEJxjxlGTMsxf+RfIvRwdbVafmO1vtG/eJO9G5D8kk3aM5zcpMElWq4EOlOmRXpdwvLhzNBgjU172NjlvfP41uzpocfY2dI6UQzasKL+GYDl9haUbe+Xzbclbm8TlH0fH6YX+98z61UCo4PWGnEc2zBu+mQfDk3J72WmLPfU9HXrUFjue3qs8QGF0zSyyzJULsYiSth01l5DYJtN/vxTjiaJ7TVcs2AyTTgidr+o7bQo9TDBdWWORboIb5rirh2Mg30ZIJ/t1Yhg0AlKvxT6ol5BuwVWnsX7JiZaR5mNV33IeEpJx0YpIq8W/N1HzkD3VILyUHKgMiPym7pGpSuFnAsnbPPZolIin1ewDUW1GRJDHUBVVQUhIy0REuRKsJMPYSlKzrImZz/LgxvrGO255Zno0ECRK7YFIASAyeK09dR0hS0kpzeP3LQOQl60LSSjMikEt7JAxoEgePrhZUJe9FuaroH4xb+HSfM3kLFDoWvo98YVppItpLH6VoW/SOhenwyNGfUo12RW9PAqzXtrezQnwp5arA2TEJQOFny/v5o1I/xrcMRdLDMHPfLp10OJnTOpCCKrnO8F9PjFL1DfRkZI6CkUGVJCqPwHtG51cFn4aVx/t5oZ5ZfNzWAKS3/eCkVtoMAGe3vUdbP/8cGiApP8FxjYOtSAPbLAalmgiKwBSrntPAIL9/Z3njZZaosrmDjjMEsWwiI+SLf3cT5tkF0ip+qgGXnVxa7jc1TkOq14ZdHspHHKrzmlHpuLKewRZpwJO/2I+F8kQwFCG+fP7pX2pQbWWDtb+XzhWRcNytp6nkJcBcjnCL0ACW2UiqtfzUSlNyujCERI2/Hf5hlu726GYrmMZ99vw0nARnqdKarAUHTe6v+cg1+6xd9x4/i1bWnubIHHpiiAE9+SW8+x/S44OHQQcS4KOtVZxCSe7WP3nG7RDwhii+pC2xtXefj4sOXlHih09Yzw94Pf1hCox2aZxjVFoQcmgA467cLCzoeMfiLA/wszve/yhcdQ/5YmsPUqb65Wy7R5XHL3X8vVpmE9aWWiLLBch7JeDDlldDB6BNjjrOFv/wa8fb2ziqbx5vShVpANtCtSvNrx7pwPRjuOiFiBEHL9pQlzQafBfY5MgmG0KXbmZ2vKwe0anX62nGkH7UjTtSi0Eb5EnTRLjhZrQWZzXILMLNer2mlIr60pNN0dunyubQlsjoSNcOnQ9+KH2AtbcpzzrJsKKoDMpRPylmty7FNOw5hVkOM/Kgs/ps8UEFGB1b8cs8rkqDo5tJjK6wk8zJ4CPjC5zH5D5/jAq8KGqnyJx13P7gVOyqh19sPkuRVZ3EOF14u3vnHRInfmeoSpFerbW3TvsbqFd/u9nZo82gX48AvISs3Hv+SB8NZT8lX9/0870LGQKimyd3W+I8Q626ZInI/XTwp2MAU6u5N4ofa2HtyDC95k3IPRwxySQgurINaO/DoyS9Gm6mXzGShzIgkKuSXwSIImgSgTzEckASnaTYSQJnZw+PIBuBoUpFveDRnnsNI5iK0RKYS7vOhSzLW3hC6USYHGMJDKlRSgFwlpBXx7slbbHXl9PH5RqfyKvezh6OZRMYhAXcNAA4bmjKkFEvPpSv4mtW5x4Py+W92wBm0NwwgRlxNX0A1M+A4VBnY4OA5uZYrqbkzx0Y5dzKrAMaSGFYpcKsBuh/DUB0s42e3Y4ZTukYGJbcGb+4N/d8TNSve3/2/vvGOsfa5BhLWM19N2d+nckWXww9vBFgZhJXX3nWPZZ8C3WMpEkYqkRjr0CmqUq2ukt+6esxLNWsa1jGRnjIj/nw4P2BGfhVMoApWCWPNAAXr9LH6GNDJnqX37YEyC3EwP3WrHN3UkrJ5GeRN/ellv77r1VB3VBMIt/hoJox7S1kgEXucgkADYGZ61JKA1ubiEhKub2pnFr+Bgr+LagSiR2DfC1uSM1P3UeKkZdnk7fV/+AICOtzAyY+lFIqBUQB1h6absP5Ldhr6ZvmujhVjQmAXzyoMr2SFjlzZ8wwUi4rpSq7u8tFO1R7f9SHcUA5j4RNRdIAgVNzXch8sqIzf5yuZ0m+5Hfa2N4CIiVlYXiis/6+a7yAlVgyVEkXO0mAMD1wNZynNfQXSGmhUQvnpkp8RNJjBUQhtouzsvu3cPdoMCntAHEOUJwLhfsa0Jm2hD4IJI/FWAZnVm1VSLAG1taiqDgt8xZWUJJCC50BwwURdL8BQNhMp7cV9ES88ea4UYzQIP8oHUqSK81CUllOzIyRqy1DzraVjzbVuWmunfNqFmiweACUmDIfwdcADrxkKQcXLGDETgDedwj/LUGh1fVAiLO9jgqUUkqp4PRFYXkJxya6W3yxtXp2rJyNcHWzcKYRbFWVuvioX/B8hRkr4QR5LgqoCk3GtDcxZGCdqHGAxrEgf+bRkV5+Wdl9qoxhMVa9whV9m0r3yu5TpaH0huMW5oRxCZ8pQBY0goahoJVjHBAgSGWswhpASTVoYtzSmMUALUnq/WWx7JcVXWcDqLX7WTJSKc8K553TSGlA/4+fhhYM0ge4ZqcdImhVHD3TKk/QSKBReMZMyHenFgXBSLZKFVTaNlTLW6+Hh9WBLwtLLHhHgQbAPatwpD+v5mIowkBA9LnwHXikWHFJz9yNufzrznjH+Xp3qpX8qndcWCEJl8pQiEnAKDfnZg47AIy5q61ETLgQbheePQtgPo+uozVtu6DNKWhxNDEynAhMgTUIAn+e5zaGkJ3V8pmjY37ULIjYXvJb4BiyOTLZkj5lH/tv+6JWYKjkNyjOeWOYk2J5UuChjZn7MNZO2WrBJv2sJif4OFdxTCEiEvktJflDiTHfoGR+KAk5n5XHMFYqabMBlG8qRk4hXX7VOGk5j4YGlSzNMPjmB6K/fH4OAF7f/WpcpmTp23b6jL5aVXPwhSVIkChiMQjH2ZSzWkuorjaFY/A2wJhoc01+B50GkToXqr7pBxnBLs9YYkgkFWLOI8TH43o1ceEE+2vylcB0q5kpVDVxSkZg/dFnAKAH1S+XbZwnHny5MVNUJAmUGgA703OfMmD4VQ4MC87jrQi0nFq1DA0t32SJK4KjZ7j6gvQEtoWSp+ebAB8LMWVgQI6RwSvOrl5OvJtNIz8jWKo8ezczYEjWdtuVqBfC4z2UHkS6MW1gzHlbsZNXxHqVVGP7uWCIwXlVqFxFZzUXgmorO71gtQ2JTUTKi8/ry9N5kmNIiTFaZUSpQqQrLp2ffJQht8r5FbGejeMLUO3+x62V5t7m6tbm3t75qnDktKYb5BKj8hoGDZSyMs4MLqZschtAudtDs6v6l9tRyz325ZEWvCpUR3LUntIiKjmV0GE2TUJqlTsmofZTg8h5xkaJfnp13K3zxzPBxau7QvFZWGeABFiRs+VP2ypBP8hTG6+MRLgOP0ogYLdryJSeaZwEAFRpBPB1XXVIDBeWO+vuhFPKsxqmqHEhbB6P0Ok1ZxNmj1Y1HcxEkarhcLwx/yTyzJmSC5UDE0+Yae7mw/kTtFkENBOJqYxhsLVRqWHawEwsssgWyWP7eCMJ9mdBv+Q9H/Pwj2jwbNrAqAnj+3lKSosJA7HVmQzQyh+NHTqLdH36EnNidwlYtvVV0RagxWAW/Hs/3Bl9tYqMT3am7vlOCnjyVfGF9QoOvZnYpMLkBWKA6mLraT8SUwaGYR8o6leXEmT44KH9lWmCwChHvm+VK4l0kgUJmdVLSVYXO7zfBtS01rQ1JCYma6VA90E2D5S7wqprLyZ0X5XoVkRlKK4N3kk9zfN7sv9UK9aF2HdqVsleKWAwz/mku0wMWG7R+TLy3K7Gahx0phq5msDYn1PNAkQm/926L2/XK+4blhJqyh6C4flOWD1RVPICFP/dxELi9jYSpwqHmeSuX3w9bc/JkJiBvepdyuyFzvCuGtO/RVWKVEoxNKCpby5kAMPG3AGz0/41bsxkdeHbmfWQEUv2ID39Sgszg2mfZBy9BcdOaBPueDNObl5kmdX4ZIlnCMyEZ4XM18iGK971NW+UXBJ5YVOJZykx5FhJ5iLnCW0lX0dMUiaK0/X5uUjD6XJyI8OrOzQpXAMI8WX6eOcjXB/73qIq2ZMqbCwaO4FLJ8WQejO0y0YvySkXACXW9rGQN3IYseRcR9NxlSapUmz98HHu1vIru3c3ERhnUPZsfV3ZkWMdBNDZsJI1j47FF1ZXV1MHZpJQutfYH341SeMJLn5Wr1s6W/55vQZwEQdWZc+zJZ5qo/cwy2Dk9CXGHnWYWy7YgXEmMaGAh17lyTgwvb3yp/957FNoV+9++sRGc7ufFrpPS31Mu10vMfI6t14gnHSm7Z21bJFpxeGQLF5PJzq0XM2HL4v0ly1hMyNg7C2+lufEJFVyA8WlmgXYaDM6tUigFx+pE8t9tjd5VEflLMl3Qv/YCpKhARO/nkb0pjmwzNLmyy+b4TgjUW212bBQFQ+XNM/uE5ewkaVmatOXGGXtoWnFrRaAwiJR1kw1VNB1gB3hF59K5AOl4pdgRSgJAA5F5uUctZrAkv9F9n4Bp9s8SRlNHxgWE3IH14gtG8uGDEjCLK2JW1gGQEXQubt0PHY/1lEQJUudZFLISin1au0M3MpJyXHjck0AIOl9MiW2KV/b7euLpahluoM1JdSI1woEAxtBD5at99aDeIT61DKgv8r3yK1HBxuaQOL+x631o6kDo6+N+Nia/PR/b9xj2xo4hkvWKn9/wj44y5ak2Xn5XipHHDZ+u/Ip0Gs1L3tq+hIzYaFEfQ10VJAQv10ZjL+rfmDbPEqJ7jsp/UaQWruquwfA8/dQD2bAMdYrrv8iRfoILLE2ozJugzApicy/szgAbDyoHwd1bPu0uYpSfWP6wFjrzQvemx06syp0Qir2zL4C7on9pfpdyzhNbz1zd6nRoV2xtnnY3f3o+SwcPH1tfk5cJ1N8/Ni2iApa8VvJWwJ/6I4nODjXOw5XB5pfHioGBs9nAExfyvH3LEjJMYna1dhpsu49VAWPr3fLioTs2pI8FrbT1M8KmHSNX+479Rr2So+oLqk2ZY5x6rVxJ6+QXtV9HssxLJu8yjSw5fOUXxK6PgZZdF61fAq8fuS0xrF97vsZ3Xe6UjJ0JDthnarT2JO16DAweVdZazC5FremMG0s4gPb9/v1x2v+0Vpj5LbqQVl9/GJcOIIXzfH3iHxZ1F4FgFXv5bl9l/Hb5Ji2ZaZ7AYjSQznmqRXzVOpNbAlM+WygfYuadq2r3fKXtip/NbAuDlNBf6M+ZVVK5uhfAYy25HeLdet88NDmnESlw279LByTgkv6cn0cmF7zhQUu+6451ADXp61KoqgWV3rBE9I43POtQvDrWmxZIkz9dsfmEivbHFZ10bB6AiUEz6cMDHsaV0vMQFtC8KKER1/Y9IB7dffYpOUhnOqcPj6wXP03H9vU0cqxSqI2mDIwgz6cq801vzq+zjTyqfVw9Ffg8RW++PVBbHF7+LVNcKPPrUHu5cvSxpSB0Vp4/tUcc379ROLIOpeb1RvbckBKtWyjWeqFNWqzPZuC6GDaQSQefEmmM+6GG8eVEfFxxmhmdJtV/vpJy9nQNT4suZHW1doQWtX6yd7uy/5mfC64uxwmA+Xco/VVDl0NONUjz00qr7nn/KcWNZSGIqGb0TC1EH31Hw9WqwEHVENEkB1n/cudvVN1xmniaPnb1wCocSStQY1bjcx109P5GVRYTL1Kr0aBYfTXzTU++uXKVvy3RXev/fza8VX1/Me9k+YenA0IHenEjeW//+I/PHNX5aAPHQckl1OP5Hd+bXCyrgLqaZ0Vbyk6ePRyf7UOBaqfriUreL9+vnoW1cXqIUB1yNozGfeiAFFJFuRba3MLXaqnaRHNqrC7MtnsBw/+jx4FRpeldAqmT8unIyEl+aM0pP80KvIB7fbaoM1et+75z9KNoxS94NXlvZV1Xed2V8WpivUGbecRK0Cu+KwHySKjqk1LxO1wI/BErZOMnyvsPnjBgfAEBAergp3qMwWok2aSH1ny/x4AhDkORZlEu07NMx3UpcxvlaZ0aPGnsbUdfBSW7ufx7ao3x44s/WaMDDqfre2sqrMQbakqH7Yzp9hr/RTxPrC2uuJeZjDqlSfQnoeI+WDndcZJp/ITsA4QYem88TQ5+NmTkjhEXQESnbj0VCkN4PVnBZ/4u7+y24/eX0/gz5HrX+vR6dw1HvMqRvIIksbY1zpPXErarhK409HGeUnifhMAes/NtZWlJLHmA9wOtHmY5EoTwGmoso3aSa4+UvJQQtUlTsdWepCaAYxMYqJUQUc3c0n/p8I2HBKap1YrgGRPBdYjRTUSJADWI/kvmWylcP1hEpI+wRCuae7WNZvpEbf7ygIkxiFftEVbtEVbtH/87f8DIpNiEuDYfvwAAAAASUVORK5CYII=" alt="by William"></div>
+  </div>
+  <div class="field">
+    <div class="viewcol">
+      <div class="views seg" id="views">
+        <button data-v="door" aria-pressed="true">From the doorway</button>
+        <button data-v="vanity" aria-pressed="false">Vanity and tower</button>
+        <button data-v="elev" aria-pressed="false">Vanity wall, straight on</button>
+        <button data-v="shower" aria-pressed="false">Shower</button>
+        <button data-v="niche" aria-pressed="false">Shower niche</button>
+        <button data-v="shelves" aria-pressed="false">Open shelving</button>
+        <button data-v="toilet" aria-pressed="false">Toilet wall</button>
+        <button data-v="over" aria-pressed="false">Overhead</button>
+      </div>
+      <div class="viewport" id="vp"><div class="vlabel" id="vlabel">From the doorway</div><div class="hint">Drag to turn · scroll to zoom · right-drag to pan</div></div>
+    </div>
+    <aside class="opts" aria-label="Options">
+      <div class="grp"><h2>Doors, tower and linen closet</h2>
+        <div class="seg" data-opt="door">
+          <button data-val="open" aria-pressed="true">Pocket door open</button>
+          <button data-val="closed" aria-pressed="false">Closed</button>
+        </div>
+        <div class="seg" data-opt="tower">
+          <button data-val="closed" aria-pressed="true">Tower closed</button>
+          <button data-val="open" aria-pressed="false">Tower pull-outs and door open</button>
+        </div>
+        <div class="seg" data-opt="linen">
+          <button data-val="closed" aria-pressed="true">Linen doors closed</button>
+          <button data-val="open" aria-pressed="false">Linen doors open</button>
+        </div>
+      </div>
+      <div class="grp"><h2>Walls</h2>
+        <div class="seg" data-opt="cut">
+          <button data-val="auto" aria-pressed="true">All walls</button>
+          <button data-val="far" aria-pressed="false">Remove rear wall</button>
+          <button data-val="shower" aria-pressed="false">Remove shower wall</button>
+          <button data-val="vanity" aria-pressed="false">Remove vanity wall</button>
+          <button data-val="door" aria-pressed="false">Remove door wall</button>
+        </div>
+      </div>
+      <div class="grp"><h2>Metal finish</h2>
+        <div class="seg" data-opt="metal">
+          <button data-val="nickel" aria-pressed="true"><i class="chip" style="background:#b9b6af"></i>Brushed nickel</button>
+          <button data-val="gold" aria-pressed="false"><i class="chip" style="background:#b8924f"></i>Brushed gold</button>
+          <button data-val="black" aria-pressed="false"><i class="chip" style="background:#222"></i>Matte black</button>
+        </div>
+      </div>
+      <div class="grp"><h2>Wood, vanity and tower</h2>
+        <div class="seg" data-opt="wood">
+          <button data-val="oak" aria-pressed="true"><i class="chip" style="background:#b79a76"></i>Wire brushed white oak</button>
+          <button data-val="smoked" aria-pressed="false"><i class="chip" style="background:#7a6450"></i>Smoked oak</button>
+          <button data-val="walnut" aria-pressed="false"><i class="chip" style="background:#5c4030"></i>Walnut</button>
+        </div>
+      </div>
+      <div class="grp"><h2>Marble, counter, niche and threshold</h2>
+        <div class="seg" data-opt="marble">
+          <button data-val="carrara" aria-pressed="true"><i class="chip" style="background:#e6e4e0"></i>Carrara</button>
+          <button data-val="calacatta" aria-pressed="false"><i class="chip" style="background:#efe9df"></i>Calacatta</button>
+          <button data-val="grey" aria-pressed="false"><i class="chip" style="background:#9a9894"></i>Grey veined</button>
+        </div>
+      </div>
+      <div class="grp"><h2>Shower wall tile, 3 × 8 stack bond</h2>
+        <div class="seg" data-opt="tile">
+          <button data-val="white" aria-pressed="true"><i class="chip" style="background:#eeebe5"></i>Soft white</button>
+          <button data-val="grey" aria-pressed="false"><i class="chip" style="background:#a9a6a0"></i>Warm grey</button>
+          <button data-val="sage" aria-pressed="false"><i class="chip" style="background:#9fac98"></i>Sage</button>
+          <button data-val="charcoal" aria-pressed="false"><i class="chip" style="background:#3d3d3d"></i>Charcoal</button>
+        </div>
+        <div class="seg" data-opt="lay">
+          <button data-val="vert" aria-pressed="true">Vertical stack</button>
+          <button data-val="horiz" aria-pressed="false">Horizontal stack</button>
+        </div>
+      </div>
+      <div class="grp"><h2>Floor, 12 × 24 tile</h2>
+        <div class="seg" data-opt="floor">
+          <button data-val="charcoal" aria-pressed="true"><i class="chip" style="background:#4a4845"></i>Charcoal</button>
+          <button data-val="slate" aria-pressed="false"><i class="chip" style="background:#6e6b66"></i>Slate grey</button>
+          <button data-val="stone" aria-pressed="false"><i class="chip" style="background:#9b958c"></i>Warm grey stone</button>
+          <button data-val="marble" aria-pressed="false"><i class="chip" style="background:#e3e1dc"></i>Light marble look</button>
+        </div>
+        <div class="seg" data-opt="fdir">
+          <button data-val="across" aria-pressed="true">Long side across the room</button>
+          <button data-val="turned" aria-pressed="false">Turned 90°</button>
+        </div>
+      </div>
+      <div class="grp"><h2>Light</h2>
+        <div class="seg" data-opt="light">
+          <button data-val="day" aria-pressed="true">All lights on</button>
+          <button data-val="eve" aria-pressed="false">Evening, sconces and LEDs</button>
+        </div>
+      </div>
+      <p class="note">From the drawing: 8′‑9½″ × 7′‑3½″ room, 8′ ceiling with shadow gap reveals at ceiling and floor. Curbless shower 3′‑2″ wide, linear drain under the niche, glass door and panel floor to ceiling. Vanity 3′‑6″ × 3′ with fluted integrated marble sink and a shelf behind the bowl for the faucet, Remi 18″ sconces, 11″ tower ¼″ proud of the vanity, Toto Legato. White shaker pocket door with a stepped panel in a 38″ opening, sliding into the wall extension. Colours are representative, not samples.</p>
+    </aside>
+  </div>
+  <div class="foot">
+    <div class="proj">Fabi Residence - Bathroom</div><div class="rule"></div>
+    <div class="issue"><span>Scale = NTS</span><span>Issued for review Oct 19, 2026</span></div>
+    <div class="ttl"><div class="d">Oct 19, 2026</div><div class="n">Bathroom 3D Model</div></div>
+  </div>
+</section>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/three@0.128.0/examples/js/controls/OrbitControls.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/three@0.128.0/examples/js/environments/RoomEnvironment.js"></script>
+<script>
+(function () {
+  const vp = document.getElementById('vp');
+  if (!window.THREE || !THREE.OrbitControls) { vp.innerHTML = '<p class="err">The 3D viewer could not load. Refresh the page to try again.</p>'; return; }
+  const col = h => new THREE.Color(h).convertSRGBToLinear();
+  let seed = 7; const R = () => (seed = (seed * 16807) % 2147483647) / 2147483647;
+
+  // ---------- textures ----------
+  function canvasTex(w, h, draw, rx, ry, srgb) {
+    const c = document.createElement('canvas'); c.width = w; c.height = h; draw(c.getContext('2d'), w, h);
+    const t = new THREE.CanvasTexture(c); t.wrapS = t.wrapT = THREE.RepeatWrapping; t.repeat.set(rx, ry);
+    if (srgb) t.encoding = THREE.sRGBEncoding; t.anisotropy = 8; return t;
+  }
+  function woodDraw(base, dark, light) {
+    return (g, w, h) => {
+      g.fillStyle = base; g.fillRect(0, 0, w, h);
+      for (let i = 0; i < 300; i++) {
+        let x = R() * w; const a = 0.04 + R() * 0.12; g.strokeStyle = (R() < 0.62 ? dark : light).replace('A', a.toFixed(3));
+        g.lineWidth = 0.6 + R() * 2.6; g.beginPath(); g.moveTo(x, 0);
+        for (let y = 0; y <= h; y += 32) { x += (R() - 0.5) * 2.4; g.lineTo(x, y); } g.stroke();
+      }
+    };
+  }
+  const WOODS = {
+    oak: canvasTex(512, 1024, woodDraw('#a99073', 'rgba(96,70,46,A)', 'rgba(222,206,180,A)'), 0.7, 1, true),
+    smoked: canvasTex(512, 1024, woodDraw('#76604c', 'rgba(52,36,22,A)', 'rgba(170,148,120,A)'), 0.7, 1, true),
+    walnut: canvasTex(512, 1024, woodDraw('#5a3f2f', 'rgba(34,22,14,A)', 'rgba(140,100,70,A)'), 0.7, 1, true)
+  };
+  function stoneDraw(base, speck, veins, veinW, veinA, n) {
+    return (g, w, h) => {
+      g.fillStyle = base; g.fillRect(0, 0, w, h);
+      for (let i = 0; i < 26000; i++) { g.fillStyle = speck[(R() * speck.length) | 0]; g.globalAlpha = 0.05 + R() * 0.12; g.fillRect(R() * w, R() * h, 1 + R() * 2.5, 1 + R() * 2.5); }
+      g.globalAlpha = 1;
+      for (let k = 0; k < n; k++) {
+        let x = R() * w, y = R() * h, ang = (R() - 0.5) * 1.2 + 0.6;
+        g.strokeStyle = veins[(R() * veins.length) | 0]; g.globalAlpha = veinA * (0.4 + R() * 0.6); g.lineWidth = veinW * (0.4 + R());
+        g.beginPath(); g.moveTo(x, y);
+        for (let s = 0; s < 120; s++) { ang += (R() - 0.5) * 0.5; x += Math.cos(ang) * 9; y += Math.sin(ang) * 9; g.lineTo(x, y); }
+        g.stroke();
+      }
+      g.globalAlpha = 1;
+    };
+  }
+  const STONES = {
+    soap: { map: canvasTex(1024, 1024, stoneDraw('#45443f', ['#2e2d2a', '#55534d', '#3a3935'], ['#6c6a62', '#57564f'], 1.4, 0.35, 34), 1, 1, true), rough: 0.55 },
+    calacatta: { map: canvasTex(1024, 1024, stoneDraw('#ece8e1', ['#dcd7cf', '#f6f3ee', '#d8d2c8'], ['#8d8a85', '#a89a7c', '#9e9b96'], 2.4, 0.55, 22), 1, 1, true), rough: 0.18 },
+    lime: { map: canvasTex(1024, 1024, stoneDraw('#b8ab96', ['#a99b85', '#c7bba7', '#b0a28c'], ['#a3957e'], 1, 0.15, 10), 1, 1, true), rough: 0.6 },
+    verde: { map: canvasTex(1024, 1024, stoneDraw('#2f4339', ['#253830', '#3a5045', '#1f2f28'], ['#cfd8cf', '#9fb3a5', '#e6ece4'], 1.8, 0.6, 40), 1, 1, true), rough: 0.2 },
+    nero: { map: canvasTex(1024, 1024, stoneDraw('#161616', ['#0d0d0d', '#222222'], ['#e8e6e2', '#bdbab4'], 1.6, 0.7, 26), 1, 1, true), rough: 0.18 }
+  };
+  const floorMap = canvasTex(1024, 1024, (g, w, h) => {
+    const pw = 128; for (let x = 0; x < w; x += pw) { const t = R(); g.fillStyle = `rgb(${205 + t * 18 | 0},${186 + t * 16 | 0},${160 + t * 14 | 0})`; g.fillRect(x, 0, pw, h);
+      for (let i = 0; i < 40; i++) { g.strokeStyle = `rgba(150,120,90,${0.05 + R() * 0.08})`; g.lineWidth = 1 + R() * 2; let xx = x + R() * pw; g.beginPath(); g.moveTo(xx, 0); for (let y = 0; y <= h; y += 64) { xx += (R() - .5) * 2; g.lineTo(xx, y); } g.stroke(); }
+      g.fillStyle = 'rgba(90,70,50,.35)'; g.fillRect(x, 0, 2, h); }
+  }, 5, 3, true);
+  const gardenMap = canvasTex(512, 512, (g, w, h) => {
+    const sky = g.createLinearGradient(0, 0, 0, h); sky.addColorStop(0, '#eef2ee'); sky.addColorStop(0.45, '#dfe7dc'); sky.addColorStop(1, '#b9c9ad'); g.fillStyle = sky; g.fillRect(0, 0, w, h);
+    for (let i = 0; i < 900; i++) { const y = h * 0.25 + R() * h * 0.75, r = 6 + R() * 26; g.fillStyle = `rgba(${90 + R() * 70 | 0},${120 + R() * 70 | 0},${80 + R() * 50 | 0},${0.12 + R() * 0.2})`; g.beginPath(); g.arc(R() * w, y, r, 0, 7); g.fill(); }
+    for (let i = 0; i < 120; i++) { g.fillStyle = `rgba(${200 + R() * 50 | 0},${170 + R() * 60 | 0},${170 + R() * 60 | 0},.35)`; g.beginPath(); g.arc(R() * w, h * 0.6 + R() * h * 0.4, 2 + R() * 4, 0, 7); g.fill(); }
+  }, 1, 1, true);
+
+  // ---------- bathroom textures ----------
+  Object.values(WOODS).forEach(t => t.repeat.set(1, 1));
+  const WTEX = {};
+  Object.keys(WOODS).forEach(k => { const v = WOODS[k]; const h = v.clone(); h.needsUpdate = true; h.center.set(0.5, 0.5); h.rotation = Math.PI / 2; WTEX[k] = { v, h }; });
+  const MARBLES = {
+    carrara: canvasTex(1024, 1024, stoneDraw('#e2e0dc', ['#d6d4d0', '#eeece8', '#cfcdc8'], ['#5d5b57', '#77746f', '#4e4c49', '#9a9792'], 2.6, 0.9, 62), 1, 1, true),
+    calacatta: canvasTex(1024, 1024, stoneDraw('#ece7de', ['#e2ddd3', '#f4f0e9'], ['#7a6c52', '#8f8064', '#5f574a', '#a8987a'], 4.2, 0.95, 26), 1, 1, true),
+    grey: canvasTex(1024, 1024, stoneDraw('#9a9894', ['#8e8c88', '#a6a4a0', '#93918d'], ['#3d3b38', '#4f4d49', '#f0eeea'], 3.2, 0.9, 40), 1, 1, true)
+  };
+  // 3" x 8" stack bond: one canvas covers 24" x 24"
+  function tileCanvas(vert) {
+    return (g, w, h) => {
+      const px = w / 24, tw = (vert ? 3 : 8) * px, th = (vert ? 8 : 3) * px, gr = Math.max(1.5, px * 0.0625 * 2);
+      g.fillStyle = '#b9b6b0'; g.fillRect(0, 0, w, h);
+      for (let y = 0; y < h; y += th) for (let x = 0; x < w; x += tw) {
+        const t = 236 + R() * 16 | 0; g.fillStyle = `rgb(${t},${t},${t})`; g.fillRect(x + gr / 2, y + gr / 2, tw - gr, th - gr);
+        const sh = g.createLinearGradient(x, y, x, y + th); sh.addColorStop(0, 'rgba(255,255,255,.18)'); sh.addColorStop(1, 'rgba(0,0,0,.06)'); g.fillStyle = sh; g.fillRect(x + gr / 2, y + gr / 2, tw - gr, th - gr);
+      }
+    };
+  }
+  const TILECAN = { vert: canvasTex(768, 768, tileCanvas(true), 1, 1, true), horiz: canvasTex(768, 768, tileCanvas(false), 1, 1, true) };
+  // 12" x 24" floor tile, a third offset, one canvas covers 48" x 36"
+  function floorCanvas(base, speck, veins) {
+    return (g, w, h) => {
+      const px = w / 48, tw = 24 * px, th = 12 * px;
+      stoneDraw(base, speck, veins, 1.6, 0.4, 18)(g, w, h);
+      g.strokeStyle = 'rgba(120,116,110,.75)'; g.lineWidth = 2;
+      for (let r = 0; r < 3; r++) { const y = r * th, off = (r * 8 * px) % tw; g.beginPath(); g.moveTo(0, y); g.lineTo(w, y); g.stroke(); for (let x = off - tw; x < w; x += tw) { g.beginPath(); g.moveTo(x, y); g.lineTo(x, y + th); g.stroke(); } }
+    };
+  }
+  const FLOORS = {
+    marble: canvasTex(1024, 768, floorCanvas('#e3e1dc', ['#d9d7d2', '#ebe9e5'], ['#a8a5a0', '#bdbab5']), 1, 1, true),
+    stone: canvasTex(1024, 768, floorCanvas('#9b958c', ['#8f8981', '#a7a198', '#948e85'], ['#7e786f']), 1, 1, true),
+    charcoal: canvasTex(1024, 768, floorCanvas('#4a4845', ['#403e3b', '#55524e', '#46443f'], ['#6a6763', '#38363320']), 1, 1, true),
+    slate: canvasTex(1024, 768, floorCanvas('#6e6b66', ['#64615c', '#7a7671', '#6a6762'], ['#8a8681', '#55524d']), 1, 1, true)
+  };
+
+  // ---------- renderer and scene ----------
+  const renderer = new THREE.WebGLRenderer({ antialias: true, preserveDrawingBuffer: true });
+  renderer.setPixelRatio(Math.min(devicePixelRatio || 1, 2)); renderer.outputEncoding = THREE.sRGBEncoding;
+  renderer.toneMapping = THREE.ACESFilmicToneMapping; renderer.toneMappingExposure = 1.0;
+  renderer.shadowMap.enabled = true; renderer.shadowMap.type = THREE.PCFSoftShadowMap; renderer.setClearColor(0xf6f5f2);
+  vp.prepend(renderer.domElement); renderer.domElement.tabIndex = 0; renderer.domElement.setAttribute('aria-label', '3D model of the bathroom');
+  const scene = new THREE.Scene();
+  let envTex = null; if (THREE.RoomEnvironment) { const pm = new THREE.PMREMGenerator(renderer); envTex = scene.environment = pm.fromScene(new THREE.RoomEnvironment(), 0.04).texture; }
+  const std = (h, r, ex) => new THREE.MeshStandardMaterial(Object.assign({ color: col(h), roughness: r, envMapIntensity: 0.5 }, ex || {}));
+  const M = {
+    wood: new THREE.MeshStandardMaterial({ map: WTEX.oak.v, roughness: 0.7, envMapIntensity: 0.35 }),
+    woodH: new THREE.MeshStandardMaterial({ map: WTEX.oak.h, roughness: 0.7, envMapIntensity: 0.35 }),
+    pullWood: new THREE.MeshStandardMaterial({ map: WTEX.oak.v, color: col(0x8c7d6c), roughness: 0.75, envMapIntensity: 0.25 }),
+    marble: new THREE.MeshStandardMaterial({ map: MARBLES.carrara, roughness: 0.2, envMapIntensity: 0.55 }),
+    flute: new THREE.MeshStandardMaterial({ map: MARBLES.carrara, roughness: 0.3, envMapIntensity: 0.35 }),
+    groove: std(0x6f6c67, 0.8),
+    metal: new THREE.MeshStandardMaterial({ color: col(0xb9b6af), metalness: 1, roughness: 0.32 }),
+    wall: std(0xe9e5de, 0.95), ceiling: std(0xf3f1ec, 0.95), shadow: std(0x151311, 1), white: std(0xf2f0eb, 0.55),
+    porcelain: std(0xf5f4f1, 0.18, { envMapIntensity: 0.9 }), glass: new THREE.MeshPhysicalMaterial({ color: col(0xe8f0ee), roughness: 0.02, metalness: 0, transparent: true, opacity: 0.18, envMapIntensity: 1 }),
+    mirror: new THREE.MeshStandardMaterial({ color: col(0xdfe3e2), metalness: 1, roughness: 0.03, envMapIntensity: 1.2 }),
+    led: new THREE.MeshBasicMaterial({ color: col(0xffe0b0) }), sconceGlass: std(0xfff4e2, 0.4, { emissive: col(0xffd9a6), emissiveIntensity: 0.6, transparent: true, opacity: 0.92 }),
+    floor: new THREE.MeshStandardMaterial({ map: FLOORS.charcoal, roughness: 0.45, envMapIntensity: 0.5 }),
+    towel: std(0xd9d2c5, 0.95), dark: std(0x262422, 0.6), plate: std(0xf1eee7, 0.4)
+  };
+  const tileMats = [];
+  function tileMat(w, h) {
+    const m = new THREE.MeshStandardMaterial({ map: TILECAN.vert.clone(), color: col(0xeeebe5), roughness: 0.25, envMapIntensity: 0.6 });
+    m.map.needsUpdate = true; m.map.repeat.set(w / 24, h / 24); m.userData.rep = [w / 24, h / 24]; tileMats.push(m); return m;
+  }
+
+  // coordinates in inches from the DWG plan: x across the room (0 at the left / shower wall drywall, 105.5 at the vanity wall),
+  // y up, z from the door wall (0) to the far wall (87.5)
+  function box(x0, x1, y0, y1, z0, z1, mat, parent) {
+    const m = new THREE.Mesh(new THREE.BoxGeometry(x1 - x0, y1 - y0, z1 - z0), mat);
+    m.position.set((x0 + x1) / 2, (y0 + y1) / 2, (z0 + z1) / 2); m.castShadow = m.receiveShadow = true; (parent || scene).add(m); return m;
+  }
+  function plane(w, h, mat, pos, ry, parent) { const m = new THREE.Mesh(new THREE.PlaneGeometry(w, h), mat); m.position.set(...pos); m.rotation.y = ry; m.receiveShadow = true; (parent || scene).add(m); return m; }
+  const RX = 105.5, RZ = 87.5, CH = 96, DX0 = 37.75, DX1 = 75.75, DH = 80;
+
+  function vessel0(prof, x, y, z, mat) { const m = new THREE.Mesh(new THREE.LatheGeometry(prof.map(p => new THREE.Vector2(p[0], p[1])), 28), mat); m.position.set(x, y, z); m.castShadow = true; scene.add(m); return m; }
+  // Loox5 pin light: recessed 1" puck in the underside of a shelf, with its pool of light on the shelf below and its scallop on the back
+  const RADIAL = (() => { const t = canvasTex(128, 128, (g, w, h) => { const gr = g.createRadialGradient(w / 2, h / 2, 0, w / 2, h / 2, w / 2); gr.addColorStop(0, 'rgba(255,214,160,.8)'); gr.addColorStop(1, 'rgba(255,214,160,0)'); g.fillStyle = gr; g.fillRect(0, 0, w, h); }, 1, 1, true); t.wrapS = t.wrapT = THREE.ClampToEdgeWrapping; return t; })();
+  const SCALLOP = (() => { const t = canvasTex(128, 192, (g, w, h) => { const img = g.createImageData(w, h);
+      for (let y = 0; y < h; y++) for (let x = 0; x < w; x++) { const v = y / (h - 1), u = Math.abs(x / (w - 1) * 2 - 1), half = 0.12 + 0.85 * Math.pow(v, 0.8);
+        const k = 0.9 * Math.max(0, 1 - Math.pow(u / half, 2.2)) * Math.min(1, v * 6) * Math.pow(1 - v, 1.6), i = (y * w + x) * 4; img.data[i] = 255; img.data[i + 1] = 210; img.data[i + 2] = 150; img.data[i + 3] = 255 * k; }
+      g.putImageData(img, 0, 0); }, 1, 1, true); t.wrapS = t.wrapT = THREE.ClampToEdgeWrapping; return t; })();
+  const glows = [], pins = [];
+  const addMat = map => new THREE.MeshBasicMaterial({ map, transparent: true, depthWrite: false, blending: THREE.AdditiveBlending, toneMapped: false });
+  // pin(x, yUnderside, z, drop to the shelf below, back plane x and its facing, parent)
+  function pin(x, y, z, drop, backX, parent) {
+    const g = parent || scene;
+    const ring = new THREE.Mesh(new THREE.CylinderGeometry(0.55, 0.55, 0.05, 24), M.metal); ring.position.set(x, y - 0.02, z); g.add(ring);
+    const p = new THREE.Mesh(new THREE.CylinderGeometry(0.42, 0.42, 0.06, 24), M.led); p.position.set(x, y - 0.04, z); g.add(p); pins.push(p);
+    const pool = new THREE.Mesh(new THREE.PlaneGeometry(Math.min(14, drop * 0.9), Math.min(14, drop * 0.9)), addMat(RADIAL)); pool.rotation.x = -Math.PI / 2; pool.position.set(x, y - drop + 0.03, z); pool.renderOrder = 2; g.add(pool); glows.push(pool);
+    if (backX !== undefined) { const sc = new THREE.Mesh(new THREE.PlaneGeometry(9, Math.min(15, drop)), addMat(SCALLOP)); sc.rotation.y = Math.PI / 2; sc.position.set(backX + 0.03, y - Math.min(15, drop) / 2, z); sc.renderOrder = 2; g.add(sc); glows.push(sc); }
+  }
+  // slab with an integrated edge pull: a routed notch where the slab is cut back, in a darker tone of the same wood.
+  // face: x of the show face; dir -1 = slab sits behind a face looking toward -x, +1 = looking toward +x
+  // routed edge pull per the BWD elevation: a shallow slot opening out of one edge, rounded on its inner corners.
+  // face/dir as slabNotch; yc, zc centre; w along z, h along y; open: 'top' | 'zmin' | 'zmax'
+  function edgePull(face, dir, yc, zc, w, h, open, g) {
+    const r = Math.min(w, h) * 0.5 * 0.95, s0 = new THREE.Shape(), x0 = -w / 2, x1 = w / 2, y0 = -h / 2, y1 = h / 2;
+    const rad = { bl: r, br: r, tr: r, tl: r };
+    if (open === 'top') { rad.tl = rad.tr = 0; } else if (open === 'zmin') { rad.bl = rad.tl = 0; } else { rad.br = rad.tr = 0; }
+    s0.moveTo(x0 + rad.bl, y0); s0.lineTo(x1 - rad.br, y0); if (rad.br) s0.quadraticCurveTo(x1, y0, x1, y0 + rad.br);
+    s0.lineTo(x1, y1 - rad.tr); if (rad.tr) s0.quadraticCurveTo(x1, y1, x1 - rad.tr, y1);
+    s0.lineTo(x0 + rad.tl, y1); if (rad.tl) s0.quadraticCurveTo(x0, y1, x0, y1 - rad.tl);
+    s0.lineTo(x0, y0 + rad.bl); if (rad.bl) s0.quadraticCurveTo(x0, y0, x0 + rad.bl, y0);
+    const m = new THREE.Mesh(new THREE.ShapeGeometry(s0, 12), M.pullWood);
+    m.rotation.y = dir < 0 ? -Math.PI / 2 : Math.PI / 2;
+    if (dir > 0) m.scale.x = -1;
+    m.position.set(face + dir * 0.012, yc, zc); (g || scene).add(m);
+    // the undercut along the open edge reads as a dark line
+    const lineW = open === 'top' ? w : 0.12, lineH = open === 'top' ? 0.12 : h;
+    const lz = open === 'zmin' ? zc - w / 2 + 0.06 : open === 'zmax' ? zc + w / 2 - 0.06 : zc, ly = open === 'top' ? yc + h / 2 - 0.06 : yc;
+    box(face + dir * 0.02 - 0.006, face + dir * 0.02 + 0.006, ly - lineH / 2, ly + lineH / 2, lz - lineW / 2, lz + lineW / 2, M.shadow, g);
+  }
+  function slabNotch(face, dir, t, y0, y1, z0, z1, n, depth, mat, g) {
+    const xa = dir < 0 ? face : face - t, xb = dir < 0 ? face + t : face;
+    const b = (ya, yb, za, zb) => { if (yb - ya > 0.01 && zb - za > 0.01) box(xa, xb, ya, yb, za, zb, mat, g); };
+    b(y0, n[0], z0, z1); b(n[1], y1, z0, z1); b(n[0], n[1], z0, n[2]); b(n[0], n[1], n[3], z1);
+    const ra = dir < 0 ? face + depth : face - t, rb = dir < 0 ? face + t : face - depth;
+    box(ra, rb, n[0], n[1], n[2], n[3], M.pullWood, g);
+  }
+  // ---------- room ----------
+  const wallL = new THREE.Group(), wallR = new THREE.Group(), wallN = new THREE.Group(), wallS = new THREE.Group(); scene.add(wallL, wallR, wallN, wallS);
+  box(-5, 0, 0, CH, -5, RZ + 5, M.wall, wallL);
+  box(RX, RX + 5.5, 0, CH, -5, RZ + 5, M.wall, wallR);
+  box(-5, RX + 5, 0, CH, RZ, RZ + 5, M.wall, wallS);
+  // door wall: pocket wall extension 4 1/2" thick, opening 38" for the pocket door
+  box(-5, DX0 - 0.5, 0, CH, -4.5, 0, M.wall, wallN); box(DX1 + 0.5, RX + 5, 0, CH, -4.5, 0, M.wall, wallN); box(DX0 - 0.5, DX1 + 0.5, DH + 0.5, CH, -4.5, 0, M.wall, wallN);
+  box(DX0 - 30, DX1 + 30, 0, CH, -60, -54, std(0xd8d3ca, 0.95), wallN); const hallFloor = box(DX0 - 30, DX1 + 30, -0.5, 0, -54, -4.5, std(0xb59a7a, 0.7), wallN);
+  const floor = new THREE.Mesh(new THREE.PlaneGeometry(RX, RZ), M.floor); floor.rotation.x = -Math.PI / 2; floor.position.set(RX / 2, 0, RZ / 2); floor.receiveShadow = true; scene.add(floor);
+    const ceil = new THREE.Mesh(new THREE.PlaneGeometry(RX + 10, RZ + 10), M.ceiling); ceil.rotation.x = Math.PI / 2; ceil.position.set(RX / 2, CH, RZ / 2); scene.add(ceil);
+  // shadow gap reveals at the ceiling and the floor, Z bead
+  const reveals = new THREE.Group(); scene.add(reveals);
+  [[0, 0.3, 0, RZ, 'x'], [RX - 0.3, RX, 0, RZ, 'x'], [0, RX, RZ - 0.3, RZ, 'z'], [0, DX0, 0, 0.3, 'z'], [DX1, RX, 0, 0.3, 'z']].forEach(([x0, x1, z0, z1]) => {
+    box(x0, x1, CH - 0.5, CH, z0, z1, M.shadow, reveals); box(x0, x1, 0, 0.25, z0, z1, M.shadow, reveals);
+  });
+  // recessed pot lights and the flush exhaust
+  const pots = [[20, 52], [60, 20], [60, 62], [92, 70], [18, 72]].map(([x, z]) => { const d = new THREE.Mesh(new THREE.CylinderGeometry(1.6, 1.6, 0.1, 24), M.led); d.position.set(x, CH - 0.05, z); scene.add(d); const l = new THREE.PointLight(0xfff0dc, 0, 140, 1.4); l.position.set(x, CH - 2, z); scene.add(l); return l; });
+  box(54, 64, CH - 0.15, CH, 62, 72, M.white); for (let i = 0; i < 8; i++) box(55, 63, CH - 0.2, CH - 0.15, 63 + i * 1.1, 63.5 + i * 1.1, std(0xcfccc6, 0.6));
+
+  // ---------- shower: 3' 2" wide, glass door and panel curb to ceiling ----------
+  const SX0 = 0.75, SX1 = 37.0, SZ0 = 29.25, SZ1 = 86.75;
+  // 3x8 tile on the three shower walls, tile face 3/4" proud of the framing
+  box(0, SX0, 0, CH, SZ0 - 0.75, RZ, std(0xd0ccc5, 0.9), wallL); box(0, 38.75, 0, CH, SZ1, RZ, std(0xd0ccc5, 0.9), wallS);
+  // niche in the north shower wall, 3 openings
+  const NX0 = 4, NX1 = 16, NY0 = 40, NY1 = 79, ND = 3.5;
+  // wall between the shelving and the shower, open where the niche is recessed into it
+  { const zb = SZ0 - ND - 0.5, wm = M.wall, ox0 = NX0 - 0.5, ox1 = NX1 + 0.5, oy0 = NY0 - 0.5, oy1 = NY1 + 0.5;
+    box(0, 38.75, 0, CH, 22.5, zb, wm);
+    box(0, ox0, 0, CH, zb, SZ0, wm); box(ox1, 38.75, 0, CH, zb, SZ0, wm); box(ox0, ox1, 0, oy0, zb, SZ0, wm); box(ox0, ox1, oy1, CH, zb, SZ0, wm); }
+  plane(SZ1 - SZ0, CH, tileMat(SZ1 - SZ0, CH), [SX0 + 0.01, CH / 2, (SZ0 + SZ1) / 2], Math.PI / 2, wallL);
+  plane(SX1 + 0.5 - SX0, CH, tileMat(SX1 + 0.5 - SX0, CH), [(SX0 + SX1 + 0.5) / 2, CH / 2, SZ1 - 0.01], Math.PI, wallS);
+  box(SX1 + 0.5, RX, 0, CH, SZ1, RZ, std(0xd0ccc5, 0.9), wallS);
+  plane(RX - SX1 - 0.5, CH, tileMat(RX - SX1 - 0.5, CH), [(RX + SX1 + 0.5) / 2, CH / 2, SZ1 - 0.01], Math.PI, wallS);   // tile carries on to the toilet wall corner
+  // north wall in pieces around the niche
+  const nw = (x0, x1, y0, y1) => plane(x1 - x0, y1 - y0, tileMat(x1 - x0, y1 - y0), [(x0 + x1) / 2, (y0 + y1) / 2, SZ0 + 0.01], 0);
+  nw(SX0, NX0, 0, CH); nw(NX1, SX1 + 0.5, 0, CH); nw(NX0, NX1, 0, NY0); nw(NX0, NX1, NY1, CH);
+  const nicheGlow = std(0xe9cfa6, 0.6, { emissive: col(0xffb866), emissiveIntensity: 1.6 });
+  box(NX0, NX1, NY0, NY1, SZ0 - ND - 0.5, SZ0 - ND, nicheGlow);                       // LED rear panel
+  const nicheLight = new THREE.PointLight(0xffd8a8, 0, 30, 1.8); nicheLight.position.set((NX0 + NX1) / 2, (NY0 + NY1) / 2, SZ0 + 2); scene.add(nicheLight);
+  box(NX0 - 0.5, NX0, NY0, NY1, SZ0 - ND, SZ0, M.marble); box(NX1, NX1 + 0.5, NY0, NY1, SZ0 - ND, SZ0, M.marble);
+  // slim metal edge trim so the niche reads against the tile
+  box(NX0 - 0.6, NX0 - 0.45, NY0 - 0.6, NY1 + 0.6, SZ0, SZ0 + 0.25, M.metal); box(NX1 + 0.45, NX1 + 0.6, NY0 - 0.6, NY1 + 0.6, SZ0, SZ0 + 0.25, M.metal);
+  box(NX0 - 0.6, NX1 + 0.6, NY0 - 0.6, NY0 - 0.45, SZ0, SZ0 + 0.25, M.metal); box(NX0 - 0.6, NX1 + 0.6, NY1 + 0.45, NY1 + 0.6, SZ0, SZ0 + 0.25, M.metal);
+  box(NX0, NX1, NY0 - 0.5, NY0, SZ0 - ND, SZ0 + 0.2, M.marble); box(NX0, NX1, NY1, NY1 + 0.5, SZ0 - ND, SZ0, M.marble);
+  [NY0 + 13, NY0 + 26].forEach(y => box(NX0, NX1, y - 0.5, y, SZ0 - ND, SZ0 + 0.2, M.marble));
+  [NY0, NY0 + 13, NY0 + 26].forEach(y => { box(NX0 + 0.3, NX1 - 0.3, y + 0.02, y + 0.3, SZ0 - ND + 0.05, SZ0 - ND + 0.4, M.led); const gp = new THREE.Mesh(new THREE.PlaneGeometry(NX1 - NX0, 12), new THREE.MeshBasicMaterial({ map: (() => { const t = canvasTex(4, 64, (g, w, h) => { const gr = g.createLinearGradient(0, h, 0, 0); gr.addColorStop(0, 'rgba(255,205,140,.9)'); gr.addColorStop(1, 'rgba(255,205,140,0)'); g.fillStyle = gr; g.fillRect(0, 0, w, h); }, 1, 1, true); t.wrapS = t.wrapT = THREE.ClampToEdgeWrapping; return t; })(), transparent: true, depthWrite: false, blending: THREE.AdditiveBlending, toneMapped: false })); gp.position.set((NX0 + NX1) / 2, y + 6.3, SZ0 - ND + 0.03); gp.renderOrder = 2; scene.add(gp); });
+  vessel0([[0, 0], [1.3, 0], [1.4, 4.5], [0.9, 5], [0.5, 5.6], [0, 5.6]], 7, NY0, SZ0 - 1.6, std(0xd9d2c5, 0.3)); vessel0([[0, 0], [1.2, 0], [1.3, 5.5], [0.6, 6.2], [0, 6.2]], 11.5, NY0, SZ0 - 1.6, std(0x5f6a63, 0.3)); vessel0([[0, 0], [1.5, 0], [1.6, 3.4], [0, 3.4]], 10, NY0 + 13, SZ0 - 1.7, std(0xe9e4da, 0.5));
+  const nicheLeds = [NY0 + 12.6, NY0 + 25.6, NY1 - 0.4].map(y => box(NX0 + 0.5, NX1 - 0.5, y - 0.1, y, SZ0 - ND + 0.2, SZ0 - ND + 0.6, M.led));
+  // marble curb and threshold, linear drain along the glass
+  // curbless: the floor tile runs through under the glass, linear drain along the niche wall
+  box(SX0 + 1, SX1 - 1, 0, 0.06, SZ0 + 0.75, SZ0 + 3.25, M.metal); for (let x = SX0 + 1.5; x < SX1 - 1.4; x += 1.5) box(x, x + 0.6, 0.05, 0.08, SZ0 + 0.95, SZ0 + 3.05, M.shadow);
+  box(DX0, DX1, 0, 0.5, -4.5, 0.25, M.marble);                          // threshold at the door
+  // glass: fixed panel and hinged door on GTW hardware
+  const gx = SX1 + 0.25, GDZ = 24;
+  box(gx - 0.2, gx + 0.2, 0.25, CH - 0.5, SZ0 + GDZ + 0.25, SZ1, M.glass).castShadow = false;
+  const gdoor = new THREE.Group(); gdoor.position.set(gx, 0, SZ0); scene.add(gdoor);
+  box(-0.2, 0.2, 0.5, CH - 0.5, 0.25, GDZ, M.glass, gdoor).castShadow = false;
+  [[1.5 + 10, 0.8], [CH - 12, 0.8]].forEach(([y]) => { box(-0.6, 0.6, y, y + 3, 0, 2.8, M.metal, gdoor); });
+  [[1.5 + 10], [CH - 12]].forEach(([y]) => box(gx - 0.6, gx + 0.6, y, y + 3, SZ0 + GDZ - 1.4, SZ0 + GDZ + 1.6, M.metal));
+  const hb = new THREE.Mesh(new THREE.CylinderGeometry(0.4, 0.4, 18, 16), M.metal); hb.position.set(1.6, 44, GDZ - 3); gdoor.add(hb);
+  [-7, 7].forEach(d => box(0.2, 1.6, 44 + d - 0.3, 44 + d + 0.3, GDZ - 3.3, GDZ - 2.7, M.metal, gdoor));
+  // fixtures: three MultiChoice valves on the left wall, slide bar and hand shower, 8" head on a 16" arm from the north wall
+  const metals = [];
+  const mm = (geo, pos, rot) => { const m = new THREE.Mesh(geo, M.metal); m.position.set(...pos); if (rot) m.rotation.set(...rot); m.castShadow = true; scene.add(m); return m; };
+  [46, 58, 70].forEach(z => {
+    mm(new THREE.CylinderGeometry(3.4, 3.4, 0.3, 40), [SX0 + 0.15, 42, z], [0, 0, Math.PI / 2]);
+    mm(new THREE.CylinderGeometry(1.1, 1.3, 1.6, 28), [SX0 + 1.0, 42, z], [0, 0, Math.PI / 2]);
+    mm(new THREE.BoxGeometry(0.5, 0.5, 3.4), [SX0 + 1.8, 42, z + 1.2]);
+  });
+  const SBX = 28;
+  mm(new THREE.CylinderGeometry(0.45, 0.45, 37, 20), [SBX, 59.5, SZ0 + 1.6]);
+  [41, 78].forEach(y => mm(new THREE.CylinderGeometry(0.8, 0.8, 1.6, 20), [SBX, y, SZ0 + 0.8], [Math.PI / 2, 0, 0]));
+  mm(new THREE.BoxGeometry(1.4, 2.2, 1.8), [SBX, 66, SZ0 + 2.2]);
+  mm(new THREE.CylinderGeometry(0.55, 0.45, 9, 20), [SBX, 70, SZ0 + 3.6], [0.25, 0, 0]);
+  mm(new THREE.CylinderGeometry(1.5, 1.4, 1.0, 28), [SBX, 75, SZ0 + 4.7], [0.25 + Math.PI / 2, 0, 0]);
+  mm(new THREE.CylinderGeometry(0.9, 0.9, 1.4, 20), [SBX - 4, 38, SZ0 + 0.7], [Math.PI / 2, 0, 0]);   // supply elbow
+  const hose = new THREE.CatmullRomCurve3([[SBX - 4, 38, SZ0 + 1.3], [SBX - 3, 31, SZ0 + 2.4], [SBX - 0.5, 33, SZ0 + 2.6], [SBX, 40, SZ0 + 3], [SBX, 62, SZ0 + 3.2]].map(p => new THREE.Vector3(...p)));
+  mm(new THREE.TubeGeometry(hose, 60, 0.28, 10, false), [0, 0, 0]);
+  const HX = 22.9, HY = 89.5;
+  mm(new THREE.CylinderGeometry(1.4, 1.4, 0.5, 28), [HX, HY, SZ0 + 0.25], [Math.PI / 2, 0, 0]);
+  mm(new THREE.CylinderGeometry(0.45, 0.45, 16, 20), [HX, HY, SZ0 + 8], [Math.PI / 2, 0, 0]);
+  mm(new THREE.CylinderGeometry(0.5, 0.5, 2.2, 16), [HX, HY - 1.1, SZ0 + 16]);
+  mm(new THREE.CylinderGeometry(4, 4, 0.7, 48), [HX, HY - 2.4, SZ0 + 16]);
+  const face = new THREE.Mesh(new THREE.CircleGeometry(3.7, 48), M.dark); face.rotation.x = Math.PI / 2; face.position.set(HX, HY - 2.76, SZ0 + 16); scene.add(face);
+
+  // ---------- open shelving in wire brushed white oak, facing the room, LED puck per shelf ----------
+  const LX0 = 13.5, LX1 = 38.75, LZ0 = 1.75, LZ1 = 22.5;
+  box(0, LX0, 0, CH, 0, 22.5, M.wall);                                  // display cabinet side, opens to the office
+  box(LX0, LX1, 0, 0.25, LZ0, LZ1, M.shadow);
+  box(LX0, LX1 - 0.25, 0.25, 4, LZ0 + 0.75, LZ1 - 0.75, M.wood);
+  box(LX0, LX1, 0.25, CH - 0.5, LZ0, LZ0 + 0.75, M.wood); box(LX0, LX1, 0.25, CH - 0.5, LZ1 - 0.75, LZ1, M.wood);
+  box(LX0, LX0 + 0.75, 4, CH - 0.5, LZ0 + 0.75, LZ1 - 0.75, M.wood);
+  box(LX0, LX1, CH - 3, CH - 0.5, LZ0, LZ1, M.wood);
+  box(LX0, LX1, 4, CH - 0.5, -0.01, LZ0, M.wall); box(LX1 - 0.25, LX1 + 0.01, 0.25, CH - 0.5, LZ0, LZ0 + 0.75, M.wood);
+  const shelfY = [4, 17, 30, 43, 56, 69, 82];
+  const pucks = [];
+  shelfY.forEach(y => {
+    box(LX0 + 0.75, LX1 - 0.5, y, y + 1, LZ0 + 0.75, LZ1 - 0.75, M.woodH);
+  });
+  shelfY.forEach((y, i) => { const top = i + 1 < shelfY.length ? shelfY[i + 1] : CH - 3; pin(LX1 - 6, top, (LZ0 + LZ1) / 2, top - y - 1, LX0 + 0.75); });
+  // linen closet doors: wire brushed oak to match the vanity, 3/4" face frame with a 1/4" reveal, recessed edge pull
+  const linenDoors = [];
+  [[0.5, 47.75], [48, CH - 0.75]].forEach(([y0, y1]) => {
+    const g = new THREE.Group(); g.position.set(LX1 + 0.75, 0, LZ0 + 0.87); scene.add(g); linenDoors.push(g);
+    const w = LZ1 - LZ0 - 1.74;
+    const py = y0 < 40 ? y1 - 7 : y0 + 2;
+    box(-0.75, 0, y0, y1, 0, w, M.wood, g); edgePull(0, 1, py + 4.75, w - 0.8, 1.6, 9.5, 'zmax', g);      // routed edge pull on the free edge, near the meeting rails
+  });
+  const shelfLights = [17, 43, 69].map(y => { const l = new THREE.PointLight(0xffd8a8, 0, 34, 1.8); l.position.set(LX1 - 6, y + 10, (LZ0 + LZ1) / 2); scene.add(l); return l; });
+  // towels and a few things on the shelves
+  [[5, 0], [18, 0], [31, 1]].forEach(([y, k]) => { for (let i = 0; i < 3; i++) box(LX0 + 2.5, LX1 - 3, y + 1 + i * 2.6, y + 3.5 + i * 2.6, LZ0 + 2 + k, LZ1 - 2 - k, M.towel); });
+  function vessel(prof, x, y, z, mat, s) { const g = new THREE.LatheGeometry(prof.map(p => new THREE.Vector2(p[0] * s, p[1] * s)), 32); const m = new THREE.Mesh(g, mat); m.position.set(x, y, z); m.castShadow = true; scene.add(m); return m; }
+  const vase = [[0, 0], [1.5, 0], [2.1, 1], [2.3, 3.2], [1.8, 5], [1.0, 6], [0.9, 7], [1.15, 7.3], [0, 7.3]];
+  const jar = [[0, 0], [2.2, 0], [2.4, 0.4], [2.4, 4.5], [2.0, 4.8], [2.0, 5.4], [0, 5.4]];
+  vessel(vase, 26, 44, 12, std(0xb3a48e, 0.7), 1.2); vessel(jar, 22, 57, 8, std(0xe8e2d8, 0.4), 1); vessel(jar, 28, 57, 15, std(0xe8e2d8, 0.4), 0.9); vessel(vase, 25, 70, 10, std(0x3a3430, 0.6), 1);
+
+  // ---------- pocket door: white shaker with a stepped detail, slides into the wall extension ----------
+  const doorG = new THREE.Group(); scene.add(doorG);
+  {
+    const W = DX1 - DX0, t = 1.75, s = 4.5, white = M.white, g = doorG, step = std(0xe4e2dc, 0.55), field = std(0xeeece7, 0.55);
+    box(s, W - s, s, DH - s, -0.5, 0.5, field, g);                                   // panel field, 3/8" back from the frame
+    box(0, s, 0.5, DH - 0.25, -t / 2, t / 2, white, g); box(W - s, W, 0.5, DH - 0.25, -t / 2, t / 2, white, g);   // stiles
+    box(s, W - s, 0.5, s, -t / 2, t / 2, white, g); box(s, W - s, DH - s, DH - 0.25, -t / 2, t / 2, white, g);     // rails
+    [-1, 1].forEach(side => {
+      const z0 = side * 0.5, z1 = side * 0.69, lo = Math.min(z0, z1), hi = Math.max(z0, z1), k = 0.5;
+      // stepped detail: a 1/2" step at mid depth between the frame and the panel
+      box(s, W - s, s, s + k, lo, hi, step, g); box(s, W - s, DH - s - k, DH - s, lo, hi, step, g);
+      box(s, s + k, s + k, DH - s - k, lo, hi, step, g); box(W - s - k, W - s, s + k, DH - s - k, lo, hi, step, g);
+      const z = side * (t / 2);
+      box(W - 2.6, W - 1.6, 34, 40, z, z + side * 0.04, M.metal, g); box(W - 2.4, W - 1.8, 34.4, 39.6, z + side * 0.04, z + side * 0.05, M.shadow, g);
+    });
+    box(W - 0.2, W, 30, 44, -0.6, 0.6, M.metal, g);
+  }
+  doorG.position.set(DX0, 0, -2.25);
+  // recessed shadow line at the opening, no casing
+  box(DX0 - 0.5, DX0, 0, DH + 0.5, -4.5, 0, M.shadow); box(DX1, DX1 + 0.5, 0, DH + 0.5, -4.5, 0, M.shadow); box(DX0 - 0.5, DX1 + 0.5, DH, DH + 0.5, -4.5, 0, M.shadow);
+
+  // ---------- vanity, 3' 6" with three U-shaped drawers, fluted integrated marble sink, 11" tower ----------
+  const VZ0 = 0.75, VZ1 = 42, TZ0 = 42, TZ1 = 53, VF = 80.75, CTX = 79.5, CY0 = 30, CY1 = 36;
+  box(VF + 0.75, RX, 0, 3.25, VZ0 + 0.5, VZ1 - 0.25, M.wood);              // kick to ground, sealed
+  box(VF + 0.75, RX, 3.25, CY0, VZ0, VZ1, M.wood);                          // carcass
+  box(VF, VF + 0.75, 3.25, CY0, VZ0, VZ0 + 0.75, M.wood); box(VF, VF + 0.75, 3.25, CY0, VZ1 - 0.75, VZ1, M.wood);   // 3/4" face frame stiles
+  const DR = [[4.0, 12.6], [12.85, 21.3], [21.55, 29.75]];
+  const drawers = [];
+  DR.forEach(([y0, y1], i) => {
+    box(VF - 0.01, VF + 0.01, y0 - 0.25, y1 + 0.25, VZ0 + 0.75, VZ1 - 0.75, M.shadow);
+    const g = new THREE.Group(); scene.add(g); drawers.push(g);
+    const zc = (VZ0 + VZ1) / 2;
+    box(VF - 0.75, VF, y0, y1, VZ0 + 1, VZ1 - 1, M.woodH, g); edgePull(VF - 0.75, -1, y1 - 0.5, zc, 12, 1.0, 'top', g);   // 12" routed edge pull centred on the top edge, per the elevation
+    box(VF, VF + 18, y0 + 0.75, y1 - 1, VZ0 + 1.75, VZ1 - 1.75, M.wood, g);
+  });
+  // counter: 6" fluted front, 1" radius flutes, integrated sink 18" x 16", 3" backsplash
+  const SK = [83.5, 97.5, 13, 29], SD = 5.2, LEDGE = 101.5;
+  box(CTX + 0.5, SK[0], CY0, CY1, VZ0, TZ1, M.marble); box(LEDGE, RX, CY0, CY1, VZ0, TZ1, M.marble);
+  box(SK[0], LEDGE, CY0, CY1, VZ0, SK[2], M.marble); box(SK[0], LEDGE, CY0, CY1, SK[3], TZ1, M.marble);
+  box(SK[1], LEDGE, CY0, CY1 - 1, SK[2], SK[3], M.marble);                    // the little shelf behind the bowl, 1" below the top
+  box(SK[0], SK[1], CY1 - SD - 0.75, CY1 - SD, SK[2], SK[3], M.marble);       // bowl floor, the bowl hangs below the slab
+  box(SK[0] - 0.75, SK[0], CY1 - SD - 0.75, CY0, SK[2], SK[3], M.marble); box(SK[1], SK[1] + 0.75, CY1 - SD - 0.75, CY0, SK[2], SK[3], M.marble);
+  box(SK[0], SK[1], CY1 - SD - 0.75, CY0, SK[2] - 0.75, SK[2], M.marble); box(SK[0], SK[1], CY1 - SD - 0.75, CY0, SK[3], SK[3] + 0.75, M.marble);
+  for (let z = VZ0 + 0.5; z < TZ1 - 0.4; z += 1.0) {
+    const f = new THREE.Mesh(new THREE.CylinderGeometry(0.5, 0.5, CY1 - CY0, 18, 1, false, Math.PI, Math.PI), M.flute); f.scale.x = 1.25; f.position.set(CTX + 0.5, (CY0 + CY1) / 2, z + 0.5); f.castShadow = f.receiveShadow = true; scene.add(f);
+    box(CTX + 0.38, CTX + 0.52, CY0, CY1, z - 0.05, z + 0.05, M.groove);
+  }
+  box(RX - 0.75, RX, CY1, CY1 + 3, VZ0, TZ1, M.marble);
+  const drain = new THREE.Mesh(new THREE.CylinderGeometry(0.9, 0.9, 0.1, 24), M.metal); drain.position.set(94, CY1 - SD + 0.05, 21); scene.add(drain);
+  // Brizo Litze single hole faucet on the shelf: knurled collar, squared gooseneck reaching over the bowl
+  {
+    const FX = 99.5, FZ = 21, fb = CY1 - 1, r = 1.1, H = 8.3, L = 5.6;
+    mm(new THREE.CylinderGeometry(0.95, 0.95, 0.25, 32), [FX, fb + 0.125, FZ]);
+    mm(new THREE.CylinderGeometry(0.72, 0.72, 1.5, 32), [FX, fb + 1.0, FZ]);
+    for (let i = 0; i < 6; i++) mm(new THREE.TorusGeometry(0.73, 0.04, 6, 32), [FX, fb + 0.45 + i * 0.22, FZ], [Math.PI / 2, 0, 0]);
+    const V = (x, y) => new THREE.Vector3(FX - x, fb + y, FZ), path = new THREE.CurvePath();
+    path.add(new THREE.LineCurve3(V(0, 1.7), V(0, H - r)));
+    path.add(new THREE.QuadraticBezierCurve3(V(0, H - r), V(0, H), V(r, H)));
+    path.add(new THREE.LineCurve3(V(r, H), V(L - r, H)));
+    path.add(new THREE.QuadraticBezierCurve3(V(L - r, H), V(L, H), V(L + 0.35, H - r)));
+    path.add(new THREE.LineCurve3(V(L + 0.35, H - r), V(L + 0.55, H - r - 0.7)));
+    mm(new THREE.TubeGeometry(path, 90, 0.48, 20, false), [0, 0, 0]);
+    mm(new THREE.CylinderGeometry(0.3, 0.3, 2.4, 14), [FX + 0.2, fb + 3.1, FZ + 1.2], [Math.PI / 2 - 0.3, 0, 0]);   // side lever
+  }
+  const nM = scene.children.length;
+  // mirror 26" x 48", rounded corners, metal frame
+  {
+    const rr = (w, h, r) => { const s = new THREE.Shape(); s.moveTo(-w / 2 + r, -h / 2); s.lineTo(w / 2 - r, -h / 2); s.quadraticCurveTo(w / 2, -h / 2, w / 2, -h / 2 + r); s.lineTo(w / 2, h / 2 - r); s.quadraticCurveTo(w / 2, h / 2, w / 2 - r, h / 2); s.lineTo(-w / 2 + r, h / 2); s.quadraticCurveTo(-w / 2, h / 2, -w / 2, h / 2 - r); s.lineTo(-w / 2, -h / 2 + r); s.quadraticCurveTo(-w / 2, -h / 2, -w / 2 + r, -h / 2); return s; };
+    const fr = rr(26, 48, 4); fr.holes.push(rr(24.5, 46.5, 3.3));
+    const fg = new THREE.ExtrudeGeometry(fr, { depth: 1, bevelEnabled: false, curveSegments: 16 });
+    const frame = new THREE.Mesh(fg, M.metal); frame.rotation.y = -Math.PI / 2; frame.position.set(RX - 0.01, 66, 21); scene.add(frame);
+    const mg = new THREE.ShapeGeometry(rr(24.6, 46.6, 3.3), 16); const mir = new THREE.Mesh(mg, M.mirror); mir.rotation.y = -Math.PI / 2; mir.position.set(RX - 0.6, 66, 21); scene.add(mir);
+  }
+  // Visual Comfort Remi 18" sconce (AMB 2020): 18" H x 6 1/2" W, 4 1/4" extension, 5" x 10" backplate, metal and warm walnut
+  const walnutM = new THREE.MeshStandardMaterial({ map: WOODS.walnut, roughness: 0.55, envMapIntensity: 0.4 });
+  const sconceLights = [4, 38].map(z => {
+    const cy = 66, x0 = RX - 1.25, x1 = RX - 4.25;
+    box(RX - 0.5, RX, cy - 5, cy + 5, z - 2.5, z + 2.5, M.metal);                                   // backplate
+    box(x0, RX - 0.5, cy - 1, cy + 1, z - 1, z + 1, M.metal);                                       // stem
+    box(x1, x0, cy + 8.6, cy + 9, z - 3.25, z + 3.25, M.metal); box(x1, x0, cy - 9, cy - 8.6, z - 3.25, z + 3.25, M.metal);   // caps
+    box(x1, x0, cy - 8.6, cy + 8.6, z - 3.25, z - 2.85, M.metal); box(x1, x0, cy - 8.6, cy + 8.6, z + 2.85, z + 3.25, M.metal); // side rails
+    box(x1 + 0.3, x0 - 0.3, cy - 8.6, cy + 8.6, z - 2.2, z + 2.2, walnutM);                       // walnut body
+    box(x1 + 0.1, x0 - 0.1, cy - 8.6, cy + 8.6, z - 2.85, z - 2.2, M.sconceGlass); box(x1 + 0.1, x0 - 0.1, cy - 8.6, cy + 8.6, z + 2.2, z + 2.85, M.sconceGlass);   // light slots
+    // the light the Remi throws onto the wall around it, up and down from the side slots
+    const wash = new THREE.Mesh(new THREE.PlaneGeometry(14, 36), addMat(RADIAL)); wash.rotation.y = -Math.PI / 2; wash.position.set(RX - 0.04, cy, z); wash.renderOrder = 2; scene.add(wash); glows.push(wash);
+    const l = new THREE.PointLight(0xffdcb0, 0, 90, 1.6); l.position.set(RX - 6, cy, z); scene.add(l); return l;
+  });
+  scene.children.slice(nM).forEach(o => wallR.add(o));
+  // tower: lower pull-out 1/4" proud of the vanity, upper cabinet on the counter aligned to it, full solid side panel with 1/4" reveal at the wall
+  const towerLow = new THREE.Group(), towerUpA = new THREE.Group(), towerUpB = new THREE.Group(); scene.add(towerLow, towerUpA, towerUpB);
+  box(VF + 0.5, RX, 0.25, CY0, TZ0, TZ1, M.wood);                                       // lower carcass and solid side
+  box(VF - 1, VF + 0.5, 0.25, CY0 - 0.25, TZ0 + 0.12, TZ1 - 0.12, M.wood, towerLow); edgePull(VF - 1, -1, 22.9, TZ0 + 0.12 + 0.8, 1.6, 9.5, 'zmin', towerLow);   // pull-out, edge pull on the vanity side near the top
+  [[8, 2], [17, 2], [25, 1]].forEach(([y, k]) => { box(VF + 1.5, RX - 2, y, y + 0.5, TZ0 + 1, TZ1 - 1, M.wood, towerLow); towerLow.add(vessel(jar, VF + 6 + k * 4, y + 0.5, (TZ0 + TZ1) / 2, std(0xe8e2d8, 0.4), 0.9)); });
+  const UX = 88.25, UY0 = CY1 + 0.25, UY1 = CH - 0.5, UYm = 66;
+  box(UX + 0.75, RX, UY0, UY1, TZ0, TZ0 + 0.75, M.wood); box(UX + 0.75, RX, UY0, UY1, TZ1 - 0.75, TZ1, M.wood);   // solid sides
+  box(RX - 0.5, RX, UY0, UY1, TZ0 + 0.75, TZ1 - 0.75, M.wood); box(UX + 0.75, RX, UY1 - 0.75, UY1, TZ0, TZ1, M.wood); box(UX + 0.75, RX, UY0, UY0 + 0.75, TZ0, TZ1, M.wood);
+  box(UX + 0.75, RX - 0.5, UYm, UYm + 0.75, TZ0 + 0.75, TZ1 - 0.75, M.wood);
+  const IW = TZ1 - TZ0 - 1.5, IZ0 = TZ0 + 0.75;
+  // lower section above the counter: pull-out with two shelves
+  box(UX, UX + 0.75, UY0 + 0.75, UYm - 0.12, TZ0 + 0.12, TZ1 - 0.12, M.wood, towerUpA); edgePull(UX, -1, 43.1, TZ0 + 0.12 + 0.8, 1.6, 9.5, 'zmin', towerUpA);   // edge pull on the vanity side near the bottom
+  [UY0 + 1, 52].forEach(y => box(UX + 0.75, RX - 1.5, y, y + 0.5, IZ0 + 0.25, IZ0 + IW - 0.25, M.wood, towerUpA));
+  box(UX + 0.75, RX - 1.5, UY0 + 1, UYm - 1, IZ0 + 0.25, IZ0 + 0.75, M.wood, towerUpA); box(UX + 0.75, RX - 1.5, UY0 + 1, UYm - 1, IZ0 + IW - 0.75, IZ0 + IW - 0.25, M.wood, towerUpA);
+  towerUpA.add(vessel(jar, UX + 6, UY0 + 1.5, (TZ0 + TZ1) / 2, std(0xe8e2d8, 0.4), 0.8)); towerUpA.add(vessel(vase, UX + 6, 52.5, (TZ0 + TZ1) / 2, std(0xb3a48e, 0.7), 0.8));
+  pin(UX + 6, UYm, (TZ0 + TZ1) / 2, UYm - 52.5, RX - 0.5); pin(UX + 6, 52, (TZ0 + TZ1) / 2, 52 - UY0 - 1.5, RX - 0.5, towerUpA);
+  // upper section: a door hinged on the toilet side, two shelves with pin lights
+  { const dw = TZ1 - TZ0 - 0.24; box(0, 0.75, UYm + 0.87, UY1 - 0.12, -dw, 0, M.wood, towerUpB); edgePull(0, -1, 72.4, -dw + 0.8, 1.6, 9.5, 'zmin', towerUpB); }   // edge pull on the free edge near the bottom
+  towerUpB.position.set(UX, 0, TZ1 - 0.12);
+  [78, 88].forEach(y => box(UX + 1, RX - 0.5, y, y + 0.5, IZ0, IZ0 + IW, M.wood));
+  pin(UX + 6, 78, (TZ0 + TZ1) / 2, 78 - UYm - 0.75, RX - 0.5); pin(UX + 6, 88, (TZ0 + TZ1) / 2, 10, RX - 0.5); pin(UX + 6, UY1 - 0.75, (TZ0 + TZ1) / 2, UY1 - 0.75 - 88.5, RX - 0.5);
+  vessel(jar, UX + 7, 78.5, (TZ0 + TZ1) / 2 - 2, std(0xe8e2d8, 0.4), 0.8); box(UX + 3, UX + 12, 66.75, 69, IZ0 + 1, IZ0 + IW - 1, M.towel); box(UX + 3, UX + 12, 69, 71.2, IZ0 + 1, IZ0 + IW - 1, M.towel);
+
+  // ---------- Toto Legato one piece, centred 15" past the tower ----------
+  {
+    const TZc = 68, g = new THREE.Group(); scene.add(g);
+    const base = new THREE.Mesh(new THREE.CylinderGeometry(7.2, 6.2, 14.5, 40), M.porcelain); base.scale.set(1.75, 1, 1); base.position.set(RX - 15.5, 7.25, TZc); g.add(base);
+    const rim = new THREE.Mesh(new THREE.CylinderGeometry(7.6, 7.4, 1.0, 48), M.porcelain); rim.scale.set(1.75, 1, 1); rim.position.set(RX - 15.5, 15, TZc); g.add(rim);
+    const lid = new THREE.Mesh(new THREE.CylinderGeometry(7.7, 7.7, 0.8, 48), M.porcelain); lid.scale.set(1.7, 1, 1); lid.position.set(RX - 16, 15.9, TZc); g.add(lid);
+    const tank = box(RX - 9, RX - 1.5, 13, 28.5, TZc - 9, TZc + 9, M.porcelain, g); box(RX - 9.3, RX - 1.2, 28.5, 29.4, TZc - 9.3, TZc + 9.3, M.porcelain, g);
+    mm(new THREE.BoxGeometry(0.5, 1.2, 2.4), [RX - 7, 26, TZc - 9.2]);
+    g.children.forEach(m => { m.castShadow = true; m.receiveShadow = true; });
+  }
+  // paper holder and towel bar
+  let n0 = scene.children.length;
+  mm(new THREE.CylinderGeometry(0.4, 0.4, 6, 16), [RX - 2.4, 26, 82], [Math.PI / 2, 0, 0]); mm(new THREE.BoxGeometry(0.6, 2.4, 1.0), [RX - 0.3, 26, 78.6]);
+  scene.children.slice(n0).forEach(o => wallR.add(o)); n0 = scene.children.length;
+  mm(new THREE.CylinderGeometry(0.4, 0.4, 24, 16), [60, 48, SZ1 - 3], [0, 0, Math.PI / 2]);
+  [48.3, 71.7].forEach(x => mm(new THREE.CylinderGeometry(0.5, 0.5, 3, 16), [x, 48, SZ1 - 1.5], [Math.PI / 2, 0, 0]));
+  box(50, 70, 31, 48.4, SZ1 - 4, SZ1 - 2.2, M.towel);
+  scene.children.slice(n0).forEach(o => wallS.add(o));
+
+  // ---------- light ----------
+  const hemi = new THREE.HemisphereLight(0xfffaf2, 0x8a8278, 0.5); scene.add(hemi);
+  const key = new THREE.DirectionalLight(0xfff6ea, 0.35); key.position.set(55, 300, 40); key.target.position.set(55, 0, 45); scene.add(key, key.target);
+  key.castShadow = true; key.shadow.mapSize.set(2048, 2048); key.shadow.bias = -0.0006; Object.assign(key.shadow.camera, { left: -70, right: 70, top: 70, bottom: -70, near: 100, far: 400 });
+
+  // ---------- options ----------
+  const state = { cut: 'auto', door: 'open', tower: 'closed', linen: 'closed', metal: 'nickel', wood: 'oak', marble: 'carrara', tile: 'white', lay: 'vert', floor: 'charcoal', fdir: 'across', light: 'day' };
+  const METALS = { nickel: [0xb9b6af, 0.32, 1], gold: [0xb8924f, 0.35, 1], black: [0x1d1d1d, 0.55, 0.4] };
+  const TILES = { white: 0xeeebe5, grey: 0xa9a6a0, sage: 0x9fac98, charcoal: 0x3d3d3d };
+  let doorT = 1, doorGoal = 1, towerT = 0, towerGoal = 0, linenT = 0, linenGoal = 0;
+  function pose() {
+    const e = t => t * t * (3 - 2 * t);
+    doorG.position.x = DX0 - (DX1 - DX0) * e(doorT);
+    const tt = e(towerT);
+    towerLow.position.x = -16 * tt; drawers[2].position.x = -10 * tt; drawers[1].position.x = -6 * tt;
+    towerUpA.position.x = -12 * tt; towerUpB.rotation.y = 1.75 * tt;
+    const lt = e(linenT); linenDoors.forEach(g => g.rotation.y = 1.7 * lt);
+  }
+  function apply() {
+    doorGoal = state.door === 'open' ? 1 : 0; towerGoal = state.tower === 'open' ? 1 : 0; linenGoal = state.linen === 'open' ? 1 : 0;
+    const mt = METALS[state.metal]; M.metal.color.copy(col(mt[0])); M.metal.roughness = mt[1]; M.metal.metalness = mt[2];
+    const w = WTEX[state.wood]; M.wood.map = w.v; M.woodH.map = w.h; M.pullWood.map = w.v; M.wood.needsUpdate = M.woodH.needsUpdate = M.pullWood.needsUpdate = true;
+    M.marble.map = M.flute.map = MARBLES[state.marble]; M.marble.needsUpdate = M.flute.needsUpdate = true;
+    tileMats.forEach(m => { const t = TILECAN[state.lay].clone(); t.needsUpdate = true; t.repeat.set(...m.userData.rep); m.map = t; m.color.copy(col(TILES[state.tile])); m.needsUpdate = true; });
+    { const t = FLOORS[state.floor].clone(); t.needsUpdate = true; t.center.set(0.5, 0.5);
+      if (state.fdir === 'turned') { t.rotation = Math.PI / 2; t.repeat.set(RZ / 48, RX / 36); } else { t.rotation = 0; t.repeat.set(RX / 48, RZ / 36); }
+      if (M.floor.map && M.floor.map !== FLOORS[state.floor]) M.floor.map.dispose(); M.floor.map = t; M.floor.needsUpdate = true; }
+    const eve = state.light === 'eve';
+    hemi.intensity = eve ? 0.12 : 0.5; key.intensity = eve ? 0.03 : 0.35;
+    pots.forEach(l => l.intensity = eve ? 0.04 : 0.22);
+    sconceLights.forEach(l => l.intensity = eve ? 1.1 : 0.45); shelfLights.forEach(l => l.intensity = eve ? 0.45 : 0.1);
+    glows.forEach(g => g.material.opacity = eve ? 1 : 0.35); nicheGlow.emissiveIntensity = eve ? 1.6 : 0.9; nicheLight.intensity = eve ? 0.9 : 0.45;
+    M.sconceGlass.emissiveIntensity = eve ? 1.8 : 1.1;
+    renderer.toneMappingExposure = eve ? 1.25 : 0.82;
+    scene.traverse(o => { const ms = o.material ? (Array.isArray(o.material) ? o.material : [o.material]) : []; ms.forEach(m => {
+      if (m.envMapIntensity === undefined) return; if (m.userData.env0 === undefined) m.userData.env0 = m.envMapIntensity;
+      m.envMapIntensity = m.userData.env0 * (eve ? (m.metalness > 0.5 ? 0.5 : 0.1) : 1); }); });
+  }
+  function setOpt(k, v) {
+    state[k] = v; const seg = document.querySelector(`.seg[data-opt="${k}"]`);
+    if (seg) seg.querySelectorAll('button').forEach(x => x.setAttribute('aria-pressed', x.dataset.val === v)); apply();
+  }
+  document.querySelectorAll('.seg[data-opt]').forEach(seg => seg.addEventListener('click', e => { const b = e.target.closest('button'); if (b) setOpt(seg.dataset.opt, b.dataset.val); }));
+
+  // ---------- cameras ----------
+  const cam = new THREE.PerspectiveCamera(60, 1, 0.5, 3000);
+  let controls, viewName = 'door';
+  const VIEWS = {
+    door: { label: 'From the doorway', pos: [56, 62, -34], tgt: [64, 46, 60], fov: 66 },
+    vanity: { label: 'Vanity and tower', pos: [44, 60, 34], tgt: [104, 50, 26], fov: 64 },
+    shower: { label: 'Shower', pos: [86, 60, 70], tgt: [14, 52, 58], fov: 64 },
+    niche: { label: 'Shower niche', pos: [26, 64, 66], tgt: [10, 58, 28], fov: 50 },
+    shelves: { label: 'Open shelving', pos: [86, 56, 24], tgt: [30, 48, 12], fov: 58 },
+    elev: { label: 'Vanity wall, straight on', pos: [40, 50, 30], tgt: [106, 50, 30], fov: 78 },
+    toilet: { label: 'Toilet wall', pos: [46, 58, 36], tgt: [104, 38, 72], fov: 62 },
+    over: { label: 'Overhead', pos: [52, 300, 140], tgt: [52, 20, 44], fov: 34 }
+  };
+  function size() { const w = vp.clientWidth, h = vp.clientHeight; renderer.setSize(w, h, false); cam.aspect = w / h; cam.updateProjectionMatrix(); }
+  function setView(name) {
+    const v = VIEWS[name] || VIEWS.door; viewName = name;
+    if (controls) controls.dispose();
+    cam.fov = v.fov; cam.position.set(...v.pos); cam.lookAt(...v.tgt); size();
+    controls = new THREE.OrbitControls(cam, renderer.domElement); controls.target.set(...v.tgt); controls.enableDamping = true; controls.dampingFactor = 0.08;
+    controls.screenSpacePanning = true; controls.minDistance = 5; controls.maxDistance = 600; controls.update();
+    document.getElementById('vlabel').textContent = v.label;
+    document.querySelectorAll('#views button').forEach(b => b.setAttribute('aria-pressed', b.dataset.v === name));
+  }
+  document.getElementById('views').addEventListener('click', e => { const b = e.target.closest('button'); if (b) setView(b.dataset.v); });
+  function cutaway() {
+    const p = cam.position;
+    wallL.visible = p.x > 0 && state.cut !== 'shower'; wallR.visible = p.x < RX && state.cut !== 'vanity'; wallS.visible = p.z < RZ && state.cut !== 'far'; wallN.visible = (p.z > -4.5 || state.door === 'open') && state.cut !== 'door';
+    ceil.visible = p.y < CH; reveals.visible = true;
+  }
+  new ResizeObserver(size).observe(vp);
+  apply(); pose(); setView('door');
+  // ---------- save image ----------
+  (function () {
+    const host = vp;
+    const btn = document.createElement('button');
+    btn.type = 'button'; btn.className = 'savebtn'; btn.textContent = 'Save image';
+    btn.setAttribute('aria-label', 'Save the current view as a PNG image');
+    const msg = document.createElement('div'); msg.className = 'savemsg'; msg.setAttribute('role', 'status'); msg.hidden = true;
+    host.appendChild(btn); host.appendChild(msg);
+    let timer = 0;
+    const say = t => { msg.textContent = t; msg.hidden = false; clearTimeout(timer); timer = setTimeout(() => { msg.hidden = true; }, 2800); };
+    const inViewer = !!(window.claude && window.claude.use);
+    let dl = null;
+    if (inViewer) { btn.hidden = true; window.claude.use('downloads').then(d => { dl = d; btn.hidden = !d; }).catch(() => {}); }
+    btn.addEventListener('click', () => {
+      const pr = renderer.getPixelRatio();
+      renderer.setPixelRatio(Math.max(2, pr)); (size)(); (() => { controls.update(); cutaway(); renderer.render(scene, cam); })();
+      renderer.domElement.toBlob(async blob => {
+        renderer.setPixelRatio(pr); (size)();
+        if (!blob) { say('Could not capture the view.'); return; }
+        const name = (() => ['Fabi-Bath', viewName, state.metal, state.wood, state.marble, 'tile-' + state.tile, state.lay, 'floor-' + state.floor + '-' + state.fdir, 'door-' + state.door, 'tower-' + state.tower, 'linen-' + state.linen].join('-') + (state.light === 'eve' ? '-evening' : ''))() + '.png';
+        if (dl) {
+          try { await dl.save({ filename: name, data: blob }); say('Image saved'); }
+          catch (e) {
+            const c = e && e.code;
+            if (c === 'declined') return;
+            if (c === 'rate_limited') say('A save is already open. Try again in a moment.');
+            else { say('Saving is not available here.'); if (c === 'unavailable' || c === 'not_granted' || c === 'capability_disabled' || c === 'capability_removed') btn.hidden = true; }
+          }
+        } else if (!inViewer) {
+          const a = document.createElement('a'); a.href = URL.createObjectURL(blob); a.download = name;
+          document.body.appendChild(a); a.click(); a.remove(); setTimeout(() => URL.revokeObjectURL(a.href), 4000); say('Image saved');
+        }
+      }, 'image/png');
+    });
+  })();
+
+  let last = performance.now();
+  (function loop(now) {
+    requestAnimationFrame(loop);
+    const dt = Math.min(0.05, ((now || performance.now()) - last) / 1000); last = now || performance.now();
+    let moved = false;
+    if (doorT !== doorGoal) { doorT = doorGoal > doorT ? Math.min(1, doorT + dt / 1.2) : Math.max(0, doorT - dt / 1.2); moved = true; }
+    if (towerT !== towerGoal) { towerT = towerGoal > towerT ? Math.min(1, towerT + dt / 1.2) : Math.max(0, towerT - dt / 1.2); moved = true; }
+    if (linenT !== linenGoal) { linenT = linenGoal > linenT ? Math.min(1, linenT + dt / 1.2) : Math.max(0, linenT - dt / 1.2); moved = true; }
+    if (moved) pose();
+    controls.update(); cutaway(); renderer.render(scene, cam);
+  })();
+  window.__still = function (name, w, h, opts) {
+    if (opts) { Object.assign(state, opts); apply(); }
+    setView(name); doorT = doorGoal; towerT = towerGoal; linenT = linenGoal; pose();
+    renderer.setPixelRatio(1); renderer.setSize(w, h, false); cam.aspect = w / h; cam.updateProjectionMatrix();
+    controls.update(); cutaway(); renderer.render(scene, cam); return renderer.domElement.toDataURL('image/jpeg', 0.9);
+  };
+})();
+</script>

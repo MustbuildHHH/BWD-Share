@@ -1,0 +1,795 @@
+<title>Randy's Bedroom</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Newsreader:opsz,wght@6..72,400;6..72,500&family=Figtree:wght@400;500;600&family=JetBrains+Mono:wght@400;500&display=swap">
+<style>
+/* Layout: one large room viewport with the view and option bar under it, a narrow notes column at the side; stacks on phones. */
+:root {
+  --bg: #e8e8e3;
+  --paper: #f3f3ef;
+  --ink: #23241f;
+  --ink-2: #5d5f55;
+  --line: #c9cac0;
+  --leather: #6e4430;
+  --f-display: "Newsreader", "Iowan Old Style", Georgia, serif;
+  --f-body: "Figtree", "Segoe UI", system-ui, sans-serif;
+  --f-mono: "JetBrains Mono", ui-monospace, Consolas, monospace;
+}
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) { --bg: #191a17; --paper: #22231f; --ink: #ecebe4; --ink-2: #a6a79b; --line: #3a3b34; --leather: #c88d6c; color-scheme: dark; }
+}
+:root[data-theme="dark"] { --bg: #191a17; --paper: #22231f; --ink: #ecebe4; --ink-2: #a6a79b; --line: #3a3b34; --leather: #c88d6c; color-scheme: dark; }
+* { box-sizing: border-box; }
+html, body { background: var(--bg); }
+body {
+  color: var(--ink); font-family: var(--f-body); font-size: 15px; line-height: 1.55;
+  padding-left: max(16px, env(safe-area-inset-left, 0px));
+  padding-right: max(16px, env(safe-area-inset-right, 0px));
+  padding-block: 20px 40px;
+}
+.wrap { max-width: 1400px; margin: 0 auto; display: grid; gap: 20px; }
+header { display: flex; flex-wrap: wrap; align-items: flex-end; justify-content: space-between; gap: 8px 24px; border-bottom: 1px solid var(--line); padding-bottom: 14px; }
+.eyebrow { font-family: var(--f-mono); font-size: 11px; letter-spacing: .12em; text-transform: uppercase; color: var(--ink-2); }
+h1 { font-family: var(--f-display); font-weight: 400; font-size: clamp(30px, 4.4vw, 46px); line-height: 1.05; margin: 4px 0 0; text-wrap: balance; }
+.sheet { font-family: var(--f-mono); font-size: 12px; color: var(--ink-2); text-align: right; }
+.grid { display: grid; grid-template-columns: minmax(0, 2.4fr) minmax(0, 1fr); gap: 20px; align-items: start; }
+@media (max-width: 960px) { .grid { grid-template-columns: minmax(0, 1fr); } .sheet { text-align: left; } }
+.stage { background: var(--paper); border: 1px solid var(--line); border-radius: 4px; overflow: hidden; display: grid; }
+.viewport { position: relative; height: clamp(400px, 70vh, 780px); touch-action: none; background: #1b1c1a; }
+.viewport canvas { display: block; width: 100%; height: 100%; outline: none; }
+.vlabel { position: absolute; left: 14px; top: 12px; font-family: var(--f-mono); font-size: 11px; letter-spacing: .1em; text-transform: uppercase; color: #d9d8cf; pointer-events: none; background: rgba(20,20,18,.55); padding: 4px 8px; border-radius: 3px; }
+.hint { position: absolute; right: 14px; bottom: 10px; font-size: 12px; color: #d9d8cf; pointer-events: none; background: rgba(20,20,18,.55); padding: 3px 8px; border-radius: 3px; }
+.controls { border-top: 1px solid var(--line); display: grid; gap: 12px; padding: 14px; }
+.row { display: flex; flex-wrap: wrap; gap: 8px 18px; align-items: center; }
+.row .k { font-family: var(--f-mono); font-size: 11px; letter-spacing: .1em; text-transform: uppercase; color: var(--ink-2); min-width: 64px; }
+.seg { display: flex; flex-wrap: wrap; gap: 4px; }
+.seg button { font: 500 13px/1 var(--f-body); color: var(--ink); background: transparent; border: 1px solid var(--line); border-radius: 3px; padding: 8px 11px; cursor: pointer; }
+.seg button:hover { border-color: var(--ink-2); }
+.seg button[aria-pressed="true"] { background: var(--ink); color: var(--paper); border-color: var(--ink); }
+.seg button:focus-visible { outline: 2px solid var(--leather); outline-offset: 2px; }
+aside { display: grid; gap: 18px; min-width: 0; }
+.block { border: 1px solid var(--line); background: var(--paper); border-radius: 4px; padding: 16px; display: grid; gap: 10px; min-width: 0; }
+h2 { font-family: var(--f-display); font-weight: 500; font-size: 21px; margin: 0; line-height: 1.2; }
+ul { margin: 0; padding-left: 18px; display: grid; gap: 6px; }
+table { width: 100%; border-collapse: collapse; font-variant-numeric: tabular-nums; }
+td { padding: 6px 0; border-top: 1px solid var(--line); vertical-align: top; }
+td:last-child { text-align: right; font-family: var(--f-mono); font-size: 13px; padding-left: 12px; }
+tr:first-child td { border-top: 0; }
+.small { font-size: 13px; color: var(--ink-2); margin: 0; }
+footer { font-size: 12px; color: var(--ink-2); border-top: 1px solid var(--line); padding-top: 12px; }
+.err { padding: 24px; color: #d9d8cf; }
+[hidden] { display: none !important; }
+.savebtn { position: absolute; top: 10px; right: 10px; z-index: 2; font: 500 13px/1 "Figtree", "Segoe UI", system-ui, sans-serif; padding: 8px 12px; border-radius: 3px; border: 1px solid rgba(31,32,28,.25); background: rgba(255,255,255,.94); color: #1f201c; cursor: pointer; }
+.savebtn:hover { background: #ffffff; border-color: rgba(31,32,28,.5); }
+.savebtn:focus-visible { outline: 2px solid #6e4430; outline-offset: 2px; }
+.savemsg { position: absolute; top: 48px; right: 10px; z-index: 2; font: 12px/1.3 "Figtree", system-ui, sans-serif; background: rgba(20,20,18,.8); color: #ffffff; padding: 5px 9px; border-radius: 3px; }
+</style>
+
+<div class="wrap">
+  <header>
+    <div>
+      <div class="eyebrow">Fabi residence · Canmore · Bedroom 207</div>
+      <h1>Randy’s bedroom</h1>
+    </div>
+    <div class="sheet">By William Design<br>Design review · Oct 2026 · Not for construction</div>
+  </header>
+
+  <div class="grid">
+    <section class="stage" aria-label="3D room model">
+      <div class="viewport" id="vp">
+        <div class="vlabel" id="vlabel">Tilted, from the window side</div>
+        <div class="hint">Drag to turn · scroll or pinch to zoom · right-drag to pan</div>
+      </div>
+      <div class="controls">
+        <div class="row"><span class="k">View</span>
+          <div class="seg" id="views">
+            <button data-v="tiltSW" aria-pressed="true">Tilted, window side</button>
+            <button data-v="tiltNE" aria-pressed="false">Tilted, built-ins</button>
+            <button data-v="over" aria-pressed="false">Overhead</button>
+            <button data-v="eyeBed" aria-pressed="false">Standing, bed wall</button>
+            <button data-v="eyeBuilt" aria-pressed="false">Standing, built-ins</button>
+          </div>
+        </div>
+        <div class="row"><span class="k">Light</span>
+          <div class="seg" data-opt="light">
+            <button data-val="day" aria-pressed="true">Daytime</button>
+            <button data-val="eve" aria-pressed="false">Evening</button>
+          </div>
+          <span class="k">Window</span>
+          <div class="seg" data-opt="jamb">
+            <button data-val="leather" aria-pressed="true">Leather-tone jamb</button>
+            <button data-val="black" aria-pressed="false">Black jamb</button>
+          </div>
+        </div>
+        <div class="row"><span class="k">Ceiling</span>
+          <div class="seg" data-opt="crown">
+            <button data-val="on" aria-pressed="true">Band, LED and cove</button>
+            <button data-val="off" aria-pressed="false">None</button>
+          </div>
+        </div>
+        <div class="row"><span class="k">Shelves</span>
+          <div class="seg" data-opt="shelf">
+            <button data-val="graphite" aria-pressed="true">Graphite</button>
+            <button data-val="oak" aria-pressed="false">Oak</button>
+          </div>
+          <span class="k">Tables</span>
+          <div class="seg" data-opt="finish">
+            <button data-val="reeded" aria-pressed="true">Reeded</button>
+            <button data-val="smooth" aria-pressed="false">Smooth</button>
+          </div>
+          <div class="seg" data-opt="top">
+            <button data-val="leather" aria-pressed="true">Leather top</button>
+            <button data-val="oak" aria-pressed="false">Oak top</button>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <aside>
+      <div class="block">
+        <h2>Room</h2>
+        <table>
+          <tr><td>Length</td><td>14′-11 ¾″</td></tr>
+          <tr><td>Width</td><td>11′-6″</td></tr>
+          <tr><td>Ceiling</td><td>9′-0″</td></tr>
+          <tr><td>Built-ins</td><td>87 ½″ × 32″ deep</td></tr>
+          <tr><td>Headboard</td><td>48″ high, wall to wall</td></tr>
+        </table>
+      </div>
+      <div class="block">
+        <h2>Bed wall</h2>
+        <ul>
+          <li>Two-layer leather headboard. The back layer is 48″ high with an oak cap, stands 1″ off the wall for an LED glow, and curves around the outside end of each nightstand.</li>
+          <li>The second layer is a 1″ leather layer, 44″ high, running the full length and wrapping the ends of the nightstands.</li>
+          <li>Both layers hang on a French cleat.</li>
+          <li>Painted panel trim above. A Kuzco Huron pendant in brushed gold hangs from the ceiling over each nightstand.</li>
+          <li>Pendant switch and an outlet with USB-C built into the headboard above each nightstand.</li>
+          <li>Upholstered bed floating on a recessed 1 ½″ base, upholstered footboard.</li>
+        </ul>
+      </div>
+      <div class="block">
+        <h2>Ceiling</h2>
+        <ul>
+          <li>Perimeter band of ¾″ plywood strapping and ½″ gypsum, dropped 1 3⁄16″, with a NISA-KRA trimless LED in its inner edge behind a ⅛″ reveal.</li>
+          <li>Fabi custom cove directly under the band, 3 1⁄16″ down from the ceiling overall. Stops square at the built-ins.</li>
+          <li>Pendant canopies mount to the band, 9″ off the bed wall.</li>
+        </ul>
+      </div>
+      <div class="block">
+        <h2>Built-ins</h2>
+        <ul>
+          <li>Lacquered graphite with brushed brass pulls and slim shaker fronts.</li>
+          <li>Hanging cabinets left and right with double doors. Closet lights switch on when the doors open, by pressure switch.</li>
+          <li>Open shelves in the centre with a hewn wood tongue and groove back and LED lights in the underside of each shelf. Shelves in graphite or oak.</li>
+          <li>Oak counter at 35″. Three rows of drawers below on a 4″ kick.</li>
+          <li>½″ shadow reveal at the ceiling.</li>
+        </ul>
+      </div>
+      <div class="block">
+        <h2>To confirm</h2>
+        <ul class="small">
+          <li>Window height assumed at 42″ to 90″ off the floor. Wood-lined jamb with a shadow gap, no casing.</li>
+          <li>Pendants hang 9″ off the bed wall, loop at 61 ½″ to 85 ½″ off the floor as drawn.</li>
+          <li>King mattress assumed, 76″ × 80″.</li>
+          <li>Lit closet rod in the hanging cabinets, to ask Krys.</li>
+          <li>Window jamb finish, leather tone or black.</li>
+                    <li>Finished ceiling height to be site measured after flooring.</li>
+          <li>Panel trim frames lowered to top out at 103″ so they clear the cove, which meets the wall at about 105″. Confirm the new frame height.</li>
+          <li>Band width taken as 14 ¾″ off the wall from the section. Band and cove assumed to run the full perimeter except the built-in wall.</li>
+        </ul>
+      </div>
+    </aside>
+  </div>
+  <footer>Dimensions in inches. Modelled from BWD drawings “Side table – Canmore” and “Bedroom – Canmore”.</footer>
+</div>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/three@0.128.0/examples/js/controls/OrbitControls.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/three@0.128.0/examples/js/environments/RoomEnvironment.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/three@0.128.0/examples/js/geometries/RoundedBoxGeometry.js"></script>
+<script>
+(function () {
+  const vp = document.getElementById('vp');
+  if (!window.THREE || !THREE.OrbitControls) { vp.innerHTML = '<p class="err">The 3D viewer could not load. Refresh the page to try again.</p>'; return; }
+
+  // ---------- geometry constants (inches, from the DXF) ----------
+  const W = 26.75, D = 20, H = 28;
+  const R0 = 10, A = (W - D) / 2;          // end radius, half straight length
+  const L = 4 * A + 2 * Math.PI * R0;       // perimeter at R0
+  const XL = W / 2 - 2.54;                  // drawer opening edge (x)
+  const UL = A + R0 * Math.asin((XL - A) / R0); // opening edge as perimeter length
+  const REV = 0.125;                        // reveal around drawer fronts
+
+  // perimeter position: u measured along R0 from the front centre, going toward +x
+  function pos(u, R) {
+    u = ((u % L) + L) % L;
+    if (u < A) return [u, R];
+    if (u < A + Math.PI * R0) { const f = (u - A) / R0; return [A + R * Math.sin(f), R * Math.cos(f)]; }
+    if (u < 3 * A + Math.PI * R0) return [A - (u - A - Math.PI * R0), -R];
+    if (u < 3 * A + 2 * Math.PI * R0) { const f = (u - 3 * A - Math.PI * R0) / R0; return [-A - R * Math.sin(f), -R * Math.cos(f)]; }
+    return [-A + (u - 3 * A - 2 * Math.PI * R0), R];
+  }
+  function nrm(u) { const a = pos(u, 1), b = pos(u, 0); const dx = a[0] - b[0], dz = a[1] - b[1]; const l = Math.hypot(dx, dz); return [dx / l, dz / l]; }
+
+  // a curved slab between two radii, from u0 to u1, y0 to y1
+  function slab(u0, u1, Rin, Rout, y0, y1, seg) {
+    seg = seg || Math.max(2, Math.ceil(Math.abs(u1 - u0) / 0.35));
+    const P = [], N = [], T = [];
+    const push = (v, n, t) => { P.push(v[0], v[1], v[2]); N.push(n[0], n[1], n[2]); T.push(t[0], t[1]); };
+    const tri = (a, b, c) => { push(a.p, a.n, a.t); push(b.p, b.n, b.t); push(c.p, c.n, c.t); };
+    const quad = (a, b, c, d) => { tri(a, b, c); tri(a, c, d); };
+    for (let i = 0; i < seg; i++) {
+      const ua = u0 + (u1 - u0) * i / seg, ub = u0 + (u1 - u0) * (i + 1) / seg;
+      const oa = pos(ua, Rout), ob = pos(ub, Rout), ia = pos(ua, Rin), ib = pos(ub, Rin);
+      const na = nrm(ua), nb = nrm(ub);
+      const v = (xz, y, n, t) => ({ p: [xz[0], y, xz[1]], n: n, t: t });
+      // outer
+      quad(v(oa, y0, [na[0], 0, na[1]], [ua, y0]), v(ob, y0, [nb[0], 0, nb[1]], [ub, y0]),
+           v(ob, y1, [nb[0], 0, nb[1]], [ub, y1]), v(oa, y1, [na[0], 0, na[1]], [ua, y1]));
+      // inner
+      tri(v(ia, y0, [-na[0], 0, -na[1]], [ua, y0]), v(ib, y1, [-nb[0], 0, -nb[1]], [ub, y1]), v(ib, y0, [-nb[0], 0, -nb[1]], [ub, y0]));
+      tri(v(ia, y0, [-na[0], 0, -na[1]], [ua, y0]), v(ia, y1, [-na[0], 0, -na[1]], [ua, y1]), v(ib, y1, [-nb[0], 0, -nb[1]], [ub, y1]));
+      // top
+      quad(v(oa, y1, [0, 1, 0], [oa[0], oa[1]]), v(ob, y1, [0, 1, 0], [ob[0], ob[1]]),
+           v(ib, y1, [0, 1, 0], [ib[0], ib[1]]), v(ia, y1, [0, 1, 0], [ia[0], ia[1]]));
+      // bottom
+      quad(v(oa, y0, [0, -1, 0], [oa[0], oa[1]]), v(ia, y0, [0, -1, 0], [ia[0], ia[1]]),
+           v(ib, y0, [0, -1, 0], [ib[0], ib[1]]), v(ob, y0, [0, -1, 0], [ob[0], ob[1]]));
+    }
+    // end caps
+    const capAt = (u, sgn) => {
+      const o = pos(u, Rout), i = pos(u, Rin), n = nrm(u); const t = [n[1] * sgn, 0, -n[0] * sgn]; // along the curve, facing away from the slab
+      const v = (xz, y) => ({ p: [xz[0], y, xz[1]], n: t, t: [Math.hypot(xz[0] - o[0], xz[1] - o[1]), y] });
+      if (sgn < 0) quad(v(i, y0), v(o, y0), v(o, y1), v(i, y1));
+      else quad(v(o, y0), v(i, y0), v(i, y1), v(o, y1));
+    };
+    if (Math.abs(u1 - u0) < L - 1e-6) { capAt(u0, -1); capAt(u1, 1); }
+    const g = new THREE.BufferGeometry(); g.userData.rin = Rin;
+    g.setAttribute('position', new THREE.Float32BufferAttribute(P, 3));
+    g.setAttribute('normal', new THREE.Float32BufferAttribute(N, 3));
+    g.setAttribute('uv', new THREE.Float32BufferAttribute(T, 2));
+    return g;
+  }
+  function stadiumShape(R, flipZ) {
+    const s = new THREE.Shape(); const n = 160;
+    for (let i = 0; i <= n; i++) { const p = pos(L * i / n, R); const x = p[0], y = flipZ ? -p[1] : p[1]; i ? s.lineTo(x, y) : s.moveTo(x, y); }
+    return s;
+  }
+
+  // ---------- textures ----------
+  function rnd(seed) { let s = seed; return () => (s = (s * 16807) % 2147483647) / 2147483647; }
+  function oakCanvas(reeded, bump) {
+    const w = 512, h = 1024, c = document.createElement('canvas'); c.width = w; c.height = h;
+    const g = c.getContext('2d'); const r = rnd(reeded ? 7 : 11);
+    g.fillStyle = bump ? '#808080' : '#a48c70'; g.fillRect(0, 0, w, h);
+    if (!bump) {
+      for (let i = 0; i < 260; i++) {
+        let x = r() * w; const dark = r() < 0.6; const a = 0.04 + r() * 0.1;
+        g.strokeStyle = dark ? `rgba(92,62,32,${a * 1.6})` : `rgba(226,204,165,${a})`;
+        g.lineWidth = 0.6 + r() * 2.4; g.beginPath(); g.moveTo(x, 0);
+        for (let y = 0; y <= h; y += 32) { x += (r() - 0.5) * 2.2; g.lineTo(x, y); }
+        g.stroke();
+      }
+      for (let i = 0; i < 40; i++) { // ray fleck typical of quartered oak
+        g.fillStyle = `rgba(235,220,190,${0.08 + r() * 0.1})`;
+        g.fillRect(r() * w, r() * h, 2 + r() * 5, 10 + r() * 40);
+      }
+    }
+    if (reeded) {
+      const n = 8, p = w / n;
+      for (let k = 0; k < n; k++) for (let x = 0; x < p; x++) {
+        const t = Math.cos((x / p) * Math.PI * 2);   // -1 groove edges, +1 crown
+        if (bump) { const v = Math.round(128 + 110 * Math.pow((1 - t) / 2, 0.6) * -1 + 55); g.fillStyle = `rgb(${v},${v},${v})`; }
+        else g.fillStyle = t < 0 ? `rgba(70,50,28,${0.16 * -t})` : `rgba(255,245,225,${0.07 * t})`;
+        g.fillRect(k * p + x, 0, 1, h);
+      }
+    }
+    return c;
+  }
+  function tex(canvas, rx, ry, srgb) {
+    const t = new THREE.CanvasTexture(canvas); t.wrapS = t.wrapT = THREE.RepeatWrapping;
+    t.repeat.set(rx, ry); if (srgb) t.encoding = THREE.sRGBEncoding; t.anisotropy = 8; return t;
+  }
+  const reedPeriod = 3;   // texture spans 3" = 8 reeds of 3/8"
+  const mapReed = tex(oakCanvas(true, false), 1 / reedPeriod, 1 / 30, true);
+  const bumpReed = tex(oakCanvas(true, true), 1 / reedPeriod, 1 / 30, false);
+  const mapSmooth = tex(oakCanvas(false, false), 1 / 9, 1 / 30, true);
+  const mapTop = tex(oakCanvas(false, false), 1 / 30, 1 / 9, true); mapTop.center.set(.5, .5); mapTop.rotation = Math.PI / 2;
+
+  const M = {
+    reed: new THREE.MeshStandardMaterial({ map: mapReed, bumpMap: bumpReed, bumpScale: 0.06, roughness: 0.62, metalness: 0, envMapIntensity: 0.35 }),
+    smooth: new THREE.MeshStandardMaterial({ map: mapSmooth, roughness: 0.58, metalness: 0, envMapIntensity: 0.35 }),
+    top: new THREE.MeshStandardMaterial({ map: mapTop, roughness: 0.5, metalness: 0, envMapIntensity: 0.35 }),
+    base: new THREE.MeshStandardMaterial({ color: 0x1e1814, roughness: 0.9, envMapIntensity: 0.2 }),
+    shadow: new THREE.MeshStandardMaterial({ color: 0x14100c, roughness: 1 }),
+    brass: new THREE.MeshStandardMaterial({ color: 0x8f6a2c, metalness: 1, roughness: 0.42 }),
+    woodPull: new THREE.MeshStandardMaterial({ map: mapSmooth, color: 0xd8c4a0, roughness: 0.5 })
+  };
+
+
+  // ---------- helpers ----------
+  const col = h => new THREE.Color(h).convertSRGBToLinear();
+  const std = (h, r, extra) => new THREE.MeshStandardMaterial(Object.assign({ color: col(h), roughness: r, envMapIntensity: 0.5 }, extra || {}));
+  // plan coordinates: px = along the room from the built-in wall, py = across from the window wall. World: X = px, Z = -py.
+  function box(px0, px1, py0, py1, y0, y1, mat, parent) {
+    const m = new THREE.Mesh(new THREE.BoxGeometry(px1 - px0, y1 - y0, py1 - py0), mat);
+    m.position.set((px0 + px1) / 2, (y0 + y1) / 2, -(py0 + py1) / 2);
+    m.castShadow = m.receiveShadow = true; (parent || scene).add(m); return m;
+  }
+  function rbox(px0, px1, py0, py1, y0, y1, r, mat, parent) {
+    const G = THREE.RoundedBoxGeometry || null;
+    const g = G ? new G(px1 - px0, y1 - y0, py1 - py0, 3, r) : new THREE.BoxGeometry(px1 - px0, y1 - y0, py1 - py0);
+    const m = new THREE.Mesh(g, mat); m.position.set((px0 + px1) / 2, (y0 + y1) / 2, -(py0 + py1) / 2);
+    m.castShadow = m.receiveShadow = true; (parent || scene).add(m); return m;
+  }
+  function canvasTex(w, h, draw, rx, ry, srgb) {
+    const c = document.createElement('canvas'); c.width = w; c.height = h; draw(c.getContext('2d'), w, h);
+    const t = new THREE.CanvasTexture(c); t.wrapS = t.wrapT = THREE.RepeatWrapping; t.repeat.set(rx, ry);
+    if (srgb) t.encoding = THREE.sRGBEncoding; t.anisotropy = 8; return t;
+  }
+
+  // ---------- materials ----------
+  const R = rnd(21);
+  const carpetMap = canvasTex(256, 256, (g, w, h) => { g.fillStyle = '#5a5a5c'; g.fillRect(0, 0, w, h);
+    for (let i = 0; i < 9000; i++) { const v = 70 + R() * 50 | 0; g.fillStyle = `rgba(${v},${v},${v + 2},0.5)`; g.fillRect(R() * w, R() * h, 1.5, 1.5); } }, 1 / 24, 1 / 24, true);
+  // hewn tongue and groove: 4" boards, each its own tone, with adze marks
+  const hewn = (bump) => (g, w, h) => {
+    const bh = 32;
+    for (let y = 0; y < h; y += bh) {
+      const t = R(); g.fillStyle = bump ? '#909090' : `rgb(${150 + t * 40 | 0},${132 + t * 34 | 0},${108 + t * 30 | 0})`; g.fillRect(0, y, w, bh);
+      for (let i = 0; i < 26; i++) { const x = R() * w, l = 10 + R() * 26, d = bump ? 60 + R() * 40 | 0 : 0;
+        g.fillStyle = bump ? `rgb(${d},${d},${d})` : `rgba(70,52,34,${0.08 + R() * 0.14})`;
+        g.beginPath(); g.ellipse(x, y + 4 + R() * (bh - 8), l, 2 + R() * 3, 0, 0, 7); g.fill(); }
+      for (let i = 0; i < 6; i++) { g.strokeStyle = bump ? 'rgba(70,70,70,.6)' : 'rgba(60,44,28,.25)'; g.lineWidth = 1; let yy = y + R() * bh; g.beginPath(); g.moveTo(0, yy); for (let x = 0; x <= w; x += 32) { yy += (R() - .5) * 1.5; g.lineTo(x, yy); } g.stroke(); }
+      g.fillStyle = bump ? '#202020' : 'rgba(35,25,15,.8)'; g.fillRect(0, y, w, 2);
+    }
+  };
+  const tgMap = canvasTex(256, 256, hewn(false), 1 / 24, 1 / 32, true);
+  const tgBump = canvasTex(256, 256, hewn(true), 1 / 24, 1 / 32, false);
+  const leatherBump = canvasTex(256, 256, (g, w, h) => { g.fillStyle = '#808080'; g.fillRect(0, 0, w, h);
+    for (let i = 0; i < 2600; i++) { const v = 90 + R() * 80 | 0; g.fillStyle = `rgb(${v},${v},${v})`; g.beginPath(); g.arc(R() * w, R() * h, .6 + R() * 1.6, 0, 7); g.fill(); } }, 1 / 6, 1 / 6, false);
+
+  const MAT = {
+    wall: std(0xe6e1d8, 0.92), ceiling: std(0xefece6, 0.95), trim: std(0xece8e0, 0.7),
+    poche: new THREE.MeshBasicMaterial({ color: col(0x2b2a27) }),
+    base: std(0x3b2a20, 0.55), carpet: new THREE.MeshStandardMaterial({ map: carpetMap, roughness: 1, envMapIntensity: 0.2 }),
+    graphite: std(0x34363a, 0.32, { envMapIntensity: 0.85 }), graphitePanel: std(0x2a2b2e, 0.4, { envMapIntensity: 0.6 }), graphiteDeep: std(0x1d1e1f, 0.6),
+    oak: M.smooth, tg: new THREE.MeshStandardMaterial({ map: tgMap, bumpMap: tgBump, bumpScale: 0.15, roughness: 0.85, envMapIntensity: 0.3 }),
+    leather: std(0x3e2419, 0.5, { bumpMap: leatherBump, bumpScale: 0.02, envMapIntensity: 0.35 }),
+    leatherDark: std(0x2e1a12, 0.55, { bumpMap: leatherBump, bumpScale: 0.02 }),
+    linen: std(0xe9e6e0, 0.95), duvet: std(0xd8d4cc, 0.95), throwM: std(0x8a7a68, 0.95), pillowGrey: std(0xc2bdb4, 0.95),
+    brass: new THREE.MeshStandardMaterial({ color: col(0xb08a45), metalness: 1, roughness: 0.38 }),
+    glass: new THREE.MeshStandardMaterial({ color: col(0xf4f1ea), emissive: col(0xffd9a0), emissiveIntensity: 0.25, roughness: 0.05, metalness: 0.1, transparent: true, opacity: 0.45, side: THREE.DoubleSide }),
+    led: new THREE.MeshBasicMaterial({ color: col(0xffd7a0) }),
+    window: new THREE.MeshBasicMaterial({ color: col(0xdfe8ee) }),
+    frameWhite: std(0xf2f1ec, 0.5), door: std(0xe9e5dd, 0.6), jamb: std(0x6b4b33, 0.75), jambWin: std(0x4a2e22, 0.6),
+    ceramic: std(0x9b8a73, 0.7), ceramicDark: std(0x2a2725, 0.6)
+  };
+
+  // ---------- renderer and scene ----------
+  const renderer = new THREE.WebGLRenderer({ antialias: true, preserveDrawingBuffer: true });
+  renderer.setPixelRatio(Math.min(window.devicePixelRatio || 1, 2));
+  renderer.outputEncoding = THREE.sRGBEncoding; renderer.toneMapping = THREE.ACESFilmicToneMapping; renderer.toneMappingExposure = 1.0;
+  renderer.shadowMap.enabled = true; renderer.shadowMap.type = THREE.PCFSoftShadowMap;
+  renderer.setClearColor(col(0x1b1c1a));
+  vp.prepend(renderer.domElement); renderer.domElement.tabIndex = 0;
+  renderer.domElement.setAttribute('aria-label', 'Interactive 3D model of Randy’s bedroom');
+  const scene = new THREE.Scene();
+  if (THREE.RoomEnvironment) { const pm = new THREE.PMREMGenerator(renderer); scene.environment = pm.fromScene(new THREE.RoomEnvironment(), 0.04).texture; }
+
+  const RL = 179.75, RW = 138, CH = 108, T = 5; // room length, width, ceiling, wall thickness
+
+  // ---------- floor ----------
+  [[32, RL, 0, RW], [0, 32, 0, 87.5]].forEach(([x0, x1, y0, y1]) => {
+    const f = new THREE.Mesh(new THREE.PlaneGeometry(x1 - x0, y1 - y0), MAT.carpet);
+    f.rotation.x = -Math.PI / 2; f.position.set((x0 + x1) / 2, 0, -(y0 + y1) / 2); f.receiveShadow = true; scene.add(f);
+  });
+
+  // ---------- walls (each group hides when the camera is behind it) ----------
+  const walls = [];
+  function wallGroup(normal, center) { const g = new THREE.Group(); g.userData = { n: new THREE.Vector3(...normal), c: new THREE.Vector3(...center) }; scene.add(g); walls.push(g); return g; }
+  function wallBox(g, px0, px1, py0, py1, y0, y1) {
+    const mats = [MAT.wall, MAT.wall, MAT.poche, MAT.wall, MAT.wall, MAT.wall];
+    const m = new THREE.Mesh(new THREE.BoxGeometry(px1 - px0, y1 - y0, py1 - py0), mats);
+    m.position.set((px0 + px1) / 2, (y0 + y1) / 2, -(py0 + py1) / 2); m.castShadow = m.receiveShadow = true; g.add(m); return m;
+  }
+  const BB = 5.5; // baseboard height
+  // west wall behind the built-in alcove, and the short return wall
+  const wW = wallGroup([1, 0, 0], [0, 54, -44]);
+  wallBox(wW, -T, 0, -T, 87.5 + T, 0, CH);
+  const wW2 = wallGroup([1, 0, 0], [32, 54, -113]);
+  const DY0 = 98, DY1 = 131.5;  // entry door opening, 6 1/2" off the north wall
+  wallBox(wW2, 32 - T, 32, 87.5, DY0, 0, CH); wallBox(wW2, 32 - T, 32, DY1, RW + T, 0, CH); wallBox(wW2, 32 - T, 32, DY0, DY1, 84, CH);
+  box(32, 32.75, 87.5, DY0 - 0.75, 0, BB, MAT.base, wW2); box(32, 32.75, DY1 + 0.75, RW, 0, BB, MAT.base, wW2);
+  box(28.25, 30, DY0 + 0.75, DY1 - 0.75, 0, 83.5, MAT.door, wW2);                // door leaf
+  box(27, 32, DY0, DY0 + 0.75, 0, 84, MAT.jamb, wW2); box(27, 32, DY1 - 0.75, DY1, 0, 84, MAT.jamb, wW2); box(27, 32, DY0, DY1, 84, 84.75, MAT.jamb, wW2);
+  const knob = new THREE.Mesh(new THREE.SphereGeometry(1.1, 20, 12), MAT.brass); knob.position.set(30.9, 36, -(DY0 + 3.5)); wW2.add(knob);
+  const wAl = wallGroup([0, 0, 1], [16, 54, -87.5]);
+  wallBox(wAl, -T, 32, 87.5, 87.5 + T, 0, CH);
+  // north wall
+  const wN = wallGroup([0, 0, 1], [RL / 2, 54, -RW]);
+  wallBox(wN, 32 - T, RL + T, RW, RW + T, 0, CH);
+  box(32, RL, RW - 0.75, RW, 0, BB, MAT.base, wN);
+  // east (bed) wall
+  const wE = wallGroup([-1, 0, 0], [RL, 54, -RW / 2]);
+  wallBox(wE, RL, RL + T, -T, RW + T, 0, CH);
+  // south wall with the window
+  const wS = wallGroup([0, 0, -1], [RL / 2, 54, 0]);
+  const WX0 = 59, WX1 = 119, WY0 = 42, WY1 = 90;
+  wallBox(wS, -T, WX0, -T, 0, 0, CH); wallBox(wS, WX1, RL + T, -T, 0, 0, CH); wallBox(wS, WX0, WX1, -T, 0, 0, WY0); wallBox(wS, WX0, WX1, -T, 0, WY1, CH);
+  box(32.75, RL, 0, 0.75, 0, BB, MAT.base, wS); box(0, 32, 0, 0.75, 0, BB, MAT.base, wS);
+  box(WX0, WX1, -T, -T + 2, WY0, WY0 + 2, MAT.frameWhite, wS); box(WX0, WX1, -T, -T + 2, WY1 - 2, WY1, MAT.frameWhite, wS);
+  box(WX0, WX0 + 2, -T, -T + 2, WY0, WY1, MAT.frameWhite, wS); box(WX1 - 2, WX1, -T, -T + 2, WY0, WY1, MAT.frameWhite, wS);
+  box((WX0 + WX1) / 2 - 1, (WX0 + WX1) / 2 + 1, -T, -T + 2, WY0, WY1, MAT.frameWhite, wS);
+  const glass = box(WX0, WX1, -T - 0.2, -T, WY0, WY1, MAT.window, wS); glass.castShadow = false;
+  // wood-lined window jamb, no casing, with a 1/2" shadow gap to the drywall
+  const jambWin = MAT.jambWin;
+  box(WX0 + 0.5, WX0 + 1.25, -T + 2, -0.25, WY0 + 0.5, WY1 - 0.5, jambWin, wS); box(WX1 - 1.25, WX1 - 0.5, -T + 2, -0.25, WY0 + 0.5, WY1 - 0.5, jambWin, wS);
+  box(WX0 + 0.5, WX1 - 0.5, -T + 2, -0.25, WY1 - 1.25, WY1 - 0.5, jambWin, wS); box(WX0 + 0.5, WX1 - 0.5, -T + 2, -0.25, WY0 + 0.5, WY0 + 1.25, jambWin, wS);
+  box(WX0, WX0 + 0.5, -T + 2, -0.6, WY0, WY1, M.shadow, wS); box(WX1 - 0.5, WX1, -T + 2, -0.6, WY0, WY1, M.shadow, wS);
+  box(WX0, WX1, -T + 2, -0.6, WY1 - 0.5, WY1, M.shadow, wS); box(WX0, WX1, -T + 2, -0.6, WY0, WY0 + 0.5, M.shadow, wS);
+  // ceiling
+  const ceil = new THREE.Mesh(new THREE.PlaneGeometry(RL + 2 * T, RW + 2 * T), MAT.ceiling);
+  ceil.rotation.x = Math.PI / 2; ceil.position.set(RL / 2, CH, -RW / 2); scene.add(ceil);
+
+  // ---------- Fabi custom cove (crown) ----------
+  // Profile in inches: u = out from the wall, v = down from the ceiling. From the BWD detail:
+  // 1 x 6 1/4" poplar at a 75/15 spring, elliptical cove 11 1/2" x 3" (semi-axes 5 3/4" and 1 1/2"),
+  // 6" along the ceiling, 1 7/8" down the wall, 1/2" flat at the bottom edge, 3 3/4" of the back face left.
+  const COVE = (() => {
+    const cx = 6.25, cy = 1.875, a = 5.75, b = 1.5, n = 40, s15 = Math.sin(Math.PI / 12), c15 = Math.cos(Math.PI / 12);
+    const t0 = Math.asin((cx - 6.0) / a);
+    const pts = [[0, 3.75 * s15], [0, cy], [cx - a, cy]];
+    for (let i = 1; i <= n; i++) { const t = Math.PI / 2 - (Math.PI / 2 - t0) * i / n; pts.push([cx - a * Math.sin(t), cy - b * Math.cos(t)]); }
+    pts.push([6.0, 0], [3.75 * c15, 0]);
+    return pts;
+  })();
+  // one straight run along a wall. p0: wall-surface start point at the ceiling line (x, z), dir: unit vector along the wall,
+  // inward: unit vector into the room, L: length along the wall, ends: 'in' (inside mitre), 'out' (outside mitre) or 'sq'.
+  function coveRun(p0, dir, inward, L, startEnd, endEnd, ceilY, mat, parent) {
+    const sAt = (u, which) => {
+      if (which === 0) return startEnd === 'in' ? u : startEnd === 'out' ? -u : 0;
+      return endEnd === 'in' ? L - u : endEnd === 'out' ? L + u : L;
+    };
+    const P = (u, v, s) => [p0[0] + dir[0] * s + inward[0] * u, ceilY - v, p0[1] + dir[1] * s + inward[1] * u];
+    const pos = [], n = COVE.length;
+    const quad = (a, b, c, d) => pos.push(...a, ...b, ...c, ...a, ...c, ...d);
+    for (let i = 0; i < n; i++) {
+      const [u0, v0] = COVE[i], [u1, v1] = COVE[(i + 1) % n];
+      quad(P(u0, v0, sAt(u0, 0)), P(u1, v1, sAt(u1, 0)), P(u1, v1, sAt(u1, 1)), P(u0, v0, sAt(u0, 1)));
+    }
+    const tris = THREE.ShapeUtils.triangulateShape(COVE.map(p => new THREE.Vector2(p[0], p[1])), []);
+    tris.forEach(([i, j, k]) => {
+      [0, 1].forEach(w => { const T = [i, j, k].map(q => P(COVE[q][0], COVE[q][1], sAt(COVE[q][0], w))); pos.push(...T[0], ...T[1], ...T[2]); });
+    });
+    const g = new THREE.BufferGeometry(); g.setAttribute('position', new THREE.Float32BufferAttribute(pos, 3)); g.computeVertexNormals();
+    const m = new THREE.Mesh(g, mat); m.castShadow = m.receiveShadow = true; (parent || scene).add(m); return m;
+  }
+
+  const crownMat = new THREE.MeshStandardMaterial({ color: col(0xefece6), roughness: 0.8, side: THREE.DoubleSide, envMapIntensity: 0.4 });
+  // perimeter ceiling detail, current BWD section: band of 3/4" plywood strapping (11/16" actual) + 1/2" gypsum, dropped 1 3/16",
+  // NISA-KRA trimless LED at its inner edge with a 1/8" reveal, custom cove directly under the band. 3 1/16" overall to the cove bottom.
+  const BAND = 14.75, POP = 0, YB = CH - 1.1875, YP = YB;
+  const ceilItems = [];
+  const bandMat = MAT.ceiling, popMat = new THREE.MeshStandardMaterial({ color: col(0xf2efe9), roughness: 0.7, envMapIntensity: 0.4 });
+  function bandRun(g, px0, px1, py0, py1, ppx0, ppx1, ppy0, ppy1, led) {
+    ceilItems.push(box(px0, px1, py0, py1, YB, CH, bandMat, g));
+    const l = box(...led, MAT.led, g); l.castShadow = false; ceilItems.push(l);
+  }
+  bandRun(wN, 32, RL, RW - BAND, RW, 32, RL, RW - POP, RW, [32 + BAND, RL - BAND, RW - BAND - 0.06, RW - BAND, YB + 0.05, YB + 0.3]);
+  bandRun(wE, RL - BAND, RL, 0, RW, RL - POP, RL, 0, RW, [RL - BAND - 0.06, RL - BAND, BAND, RW - BAND, YB + 0.05, YB + 0.3]);
+  bandRun(wS, 32, RL, 0, BAND, 32, RL, 0, POP, [32, RL - BAND, BAND, BAND + 0.06, YB + 0.05, YB + 0.3]);
+  bandRun(wW2, 32, 32 + BAND, 87.5, RW, 32, 32 + POP, 87.5, RW, [32 + BAND, 32 + BAND + 0.06, 87.5, RW - BAND, YB + 0.05, YB + 0.3]);
+  // the LED washes the main ceiling just inside the band
+  const washTex = canvasTex(4, 64, (g, w, h) => { const gr = g.createLinearGradient(0, 0, 0, h); gr.addColorStop(0, 'rgba(255,214,160,0.75)'); gr.addColorStop(1, 'rgba(255,214,160,0)'); g.fillStyle = gr; g.fillRect(0, 0, w, h); }, 1, 1, true);
+  washTex.wrapS = washTex.wrapT = THREE.ClampToEdgeWrapping;
+  const washMat = new THREE.MeshBasicMaterial({ map: washTex, transparent: true, depthWrite: false, blending: THREE.AdditiveBlending });
+  function wash(cx, cz, len, rotY, g) {
+    const m = new THREE.Mesh(new THREE.PlaneGeometry(len, 14), washMat); m.rotation.set(Math.PI / 2, 0, rotY, 'YXZ');
+    m.position.set(cx, CH - 0.02, cz); g.add(m); ceilItems.push(m); return m;
+  }
+  const washes = [
+    wash((48 + RL - BAND) / 2, -(RW - BAND - 7), RL - BAND - 48, Math.PI, wN),
+    wash(RL - BAND - 7, -RW / 2, RW - 2 * BAND, Math.PI / 2, wE),
+    wash((32 + RL - BAND) / 2, -(BAND + 7), RL - BAND - 32, 0, wS),
+    wash(32 + BAND + 7, -(87.5 + RW - BAND) / 2, RW - BAND - 87.5, -Math.PI / 2, wW2)
+  ];
+  const crowns = [
+    coveRun([32, -RW], [1, 0], [0, 1], RL - 32, 'in', 'in', YP, crownMat, wN),
+    coveRun([RL, -RW], [0, 1], [-1, 0], RW, 'in', 'in', YP, crownMat, wE),
+    coveRun([RL, 0], [-1, 0], [0, -1], RL - 32, 'in', 'sq', YP, crownMat, wS),
+    coveRun([32, -87.5], [0, -1], [1, 0], RW - 87.5, 'sq', 'in', YP, crownMat, wW2)
+  ];
+  ceilItems.push(...crowns);
+
+  // ---------- bed wall: panel trim and sconces ----------
+  function frame(g, py0, py1, y0, y1, w, proud) {
+    const x0 = RL - proud;
+    box(x0, RL, py0, py1, y1 - w, y1, MAT.trim, g); box(x0, RL, py0, py1, y0, y0 + w, MAT.trim, g);
+    box(x0, RL, py0, py0 + w, y0, y1, MAT.trim, g); box(x0, RL, py1 - w, py1, y0, y1, MAT.trim, g);
+  }
+  [[3, 28.5], [32.5, 105.5], [109.5, 135]].forEach(([a, b]) => { frame(wE, a, b, 49.5, 103, 1.5, 0.75); frame(wE, a + 3, b - 3, 52.5, 100, 0.75, 0.5); });
+  const sconceLights = [];
+  // Kuzco Huron PD95108 pendants, brushed gold, positioned from the BWD bed wall elevation.
+  // Loop 8 1/4" wide x 24" high in a 1" profile; metal over the top and down one side, frosted acrylic tube for the rest.
+  // Loop 61 1/2" to 85 1/2" off the floor, 8 3/4" rigid stem, cord to a 4 3/4" x 1 3/8" canopy.
+  const MAT_GOLD = new THREE.MeshStandardMaterial({ color: col(0xb5925a), metalness: 1, roughness: 0.45 });
+  const MAT_FROST = new THREE.MeshStandardMaterial({ color: col(0xf6f2ea), emissive: col(0xffe2b8), emissiveIntensity: 0.35, roughness: 0.6 });
+  const MAT_CORD = new THREE.MeshStandardMaterial({ color: col(0x151515), roughness: 0.6 });
+  [122.25, 15.75].forEach(py => {
+    const px = RL - 9, r = 3.56, yb = 65.6, yt = 81.55, ySplit = 75.1;   // centreline radius and arc centres
+    const P = (s_, y) => new THREE.Vector3(px, y, -(py + s_));          // s_ along the wall: + is left as seen from the room
+    const arc = (cy, a0, a1, n) => { const out = []; for (let i = 0; i <= n; i++) { const a = a0 + (a1 - a0) * i / n; out.push(P(r * Math.cos(a), cy + r * Math.sin(a))); } return out; };
+    const line = (s_, y0, y1, n) => { const out = []; for (let i = 0; i <= n; i++) out.push(P(s_, y0 + (y1 - y0) * i / n)); return out; };
+    const tube = (pts, mat) => { const m = new THREE.Mesh(new THREE.TubeGeometry(new THREE.CatmullRomCurve3(pts, false, 'centripetal'), pts.length * 2, 0.5, 16, false), mat); m.castShadow = true; scene.add(m); };
+    tube([...line(r, ySplit, yt, 6), ...arc(yt, 0, Math.PI, 32).slice(1)], MAT_GOLD);
+    tube([...line(-r, yt, yb, 10), ...arc(yb, Math.PI, 2 * Math.PI, 32).slice(1), ...line(r, yb, ySplit, 6).slice(1)], MAT_FROST);
+    [P(r, ySplit), P(-r, yt)].forEach(p => { const c = new THREE.Mesh(new THREE.SphereGeometry(0.5, 16, 10), MAT_GOLD); c.position.copy(p); scene.add(c); });
+    const stem = new THREE.Mesh(new THREE.CylinderGeometry(0.18, 0.18, 8.75, 10), MAT_GOLD); stem.position.set(px, 85.1 + 4.375, -py); scene.add(stem);
+    const cTop = YB - 1.375; const cord = new THREE.Mesh(new THREE.CylinderGeometry(0.08, 0.08, cTop - 93.85, 8), MAT_CORD); cord.position.set(px, (93.85 + cTop) / 2, -py); scene.add(cord);
+    const can = new THREE.Mesh(new THREE.CylinderGeometry(2.375, 2.375, 1.375, 40), MAT_GOLD); can.position.set(px, YB - 0.69, -py); scene.add(can);
+    const L1 = new THREE.PointLight(0xffd6a6, 0, 110, 1.5); L1.position.set(px - 2, 73, -py); scene.add(L1); sconceLights.push(L1);
+  });
+
+  // ---------- headboard: two layers, from the BWD plan ----------
+  // Back layer: 2" thick, 48" high, held 1" off the wall for the LED glow, wrapping both nightstands on an 11" to 13" radius.
+  // Front layer: 1" upholstered pad, 44" high, the width of the bed.
+  const HB = new THREE.Group(); scene.add(HB);
+  const NSX = RL - 14, NSN = 121.38, NSS = 16.62;            // nightstand centres
+  const D2R = Math.PI / 180, SWEEP = 75 * D2R;
+  function layer(rIn, rOut, sweep, y0, y1, mats) {
+    const cN = NSN + A, cS = NSS - A, n = 48, s = new THREE.Shape(), pts = [];
+    for (let i = 0; i <= n; i++) { const a = -sweep + sweep * i / n; pts.push([NSX + rOut * Math.cos(a), cS + rOut * Math.sin(a)]); }
+    for (let i = 0; i <= n; i++) { const a = sweep * i / n; pts.push([NSX + rOut * Math.cos(a), cN + rOut * Math.sin(a)]); }
+    for (let i = n; i >= 0; i--) { const a = sweep * i / n; pts.push([NSX + rIn * Math.cos(a), cN + rIn * Math.sin(a)]); }
+    for (let i = n; i >= 0; i--) { const a = -sweep + sweep * i / n; pts.push([NSX + rIn * Math.cos(a), cS + rIn * Math.sin(a)]); }
+    pts.forEach((p, i) => i ? s.lineTo(...p) : s.moveTo(...p));
+    const g = new THREE.ExtrudeGeometry(s, { depth: y1 - y0, bevelEnabled: false, curveSegments: 48 }); g.rotateX(-Math.PI / 2); g.translate(0, y0, 0);
+    const m = new THREE.Mesh(g, mats); m.castShadow = m.receiveShadow = true; HB.add(m); return m;
+  }
+  const backLayer = (y0, y1, mats) => layer(11, 13, SWEEP, y0, y1, mats);
+  backLayer(0, 1.5, [MAT.oak, MAT.oak]);                     // oak base band
+  backLayer(1.5, 47.25, [MAT.leather, MAT.leather]);         // leather
+  backLayer(47.25, 48, [MAT.oak, MAT.oak]);                  // oak top cap
+  // second layer: 1" leather, 44" high, full length, hugging the nightstand ends to about 62 degrees
+  layer(10, 11, 62 * D2R, 0, 44, [MAT.leatherDark, MAT.leatherDark]);
+  box(RL - 1, RL - 0.5, NSS - A, NSN + A, 6, 42, M.base, HB);        // standoff cleat, hidden behind
+  // two-gang plates in the back layer above each nightstand: pendant switch and a duplex outlet with USB-C
+  const plateM = MAT.brass, devM = std(0xf1eee7, 0.4), slotM = std(0x1c1c1c, 0.8);
+  [NSN, NSS].forEach(c => {
+    const f = RL - 4;  // face of the second layer
+    box(f - 0.25, f, c - 2.25, c + 2.25, 31.25, 35.75, plateM, HB);
+    box(f - 0.4, f - 0.25, c + 0.25, c + 1.65, 31.85, 35.15, devM, HB);                  // rocker switch
+    box(f - 0.4, f - 0.25, c - 1.65, c - 0.25, 31.85, 35.15, devM, HB);                  // outlet face
+    [[32.7, 33.4], [34.0, 34.7]].forEach(([y0, y1]) => { box(f - 0.42, f - 0.4, c - 1.25, c - 1.05, y0, y1, slotM, HB); box(f - 0.42, f - 0.4, c - 0.85, c - 0.65, y0, y1, slotM, HB); });
+    box(f - 0.42, f - 0.4, c - 1.15, c - 0.75, 32.2, 32.4, slotM, HB);                  // USB-C
+  });
+  const ledStrip = box(RL - 0.9, RL - 0.4, NSS - A, NSN + A, 47.2, 47.5, MAT.led, HB); ledStrip.castShadow = false;
+  const glowTex = canvasTex(4, 128, (g, w, h) => { const gr = g.createLinearGradient(0, h, 0, 0); gr.addColorStop(0, 'rgba(255,200,140,0.85)'); gr.addColorStop(1, 'rgba(255,200,140,0)'); g.fillStyle = gr; g.fillRect(0, 0, w, h); }, 1, 1, true);
+  glowTex.wrapS = glowTex.wrapT = THREE.ClampToEdgeWrapping;
+  const glow = new THREE.Mesh(new THREE.PlaneGeometry(NSN - NSS + 2 * A, 16), new THREE.MeshBasicMaterial({ map: glowTex, transparent: true, depthWrite: false, blending: THREE.AdditiveBlending }));
+  glow.rotation.y = -Math.PI / 2; glow.position.set(RL - 0.05, 56, -(NSN + NSS) / 2); HB.add(glow);
+  const ledLights = [24, 69, 114].map(py => { const l = new THREE.PointLight(0xffc98a, 0, 60, 1.8); l.position.set(RL - 1, 50, -py); scene.add(l); return l; });
+  const NS = [{ px: NSX, py: NSN }, { px: NSX, py: NSS }];
+
+  // ---------- nightstands ----------
+  const nsParts = { body: [], fronts: [], oakTop: [], leatherTop: [] };
+  const pullProf = [[0, 0], [1.25, 0], [1.25, .07], [1.12, .14], [.42, .2], [.3, .38], [.33, .5], [.62, .62], [.94, .76], [1.0, .88], [.9, 1.0], [.5, 1.08], [0, 1.1]].map(p => new THREE.Vector2(p[0], p[1]));
+  const pullG = new THREE.LatheGeometry(pullProf, 40); pullG.rotateX(Math.PI / 2);
+  const nsTopG = (() => { const g = new THREE.ShapeGeometry(stadiumShape(10, true), 160); g.rotateX(-Math.PI / 2); g.translate(0, 28.001, 0); return g; })();
+  const nsLeatherG = (() => { const g = new THREE.ShapeGeometry(stadiumShape(9, true), 160); g.rotateX(-Math.PI / 2); g.translate(0, 27.9, 0); return g; })();
+  const nsBotG = (() => { const g = new THREE.ShapeGeometry(stadiumShape(10, false), 160); g.rotateX(Math.PI / 2); g.translate(0, 1.5, 0); return g; })();
+  const nsG = {
+    body: [slab(UL, L - UL, 9, 10, 1.5, 28), slab(-UL, UL, 9, 10, 1.5, 3), slab(-UL, UL, 9, 10, 16.5, 18), slab(-UL, UL, 9, 10, 26.5, 28)],
+    fronts: [slab(-UL + REV, UL - REV, 9, 10, 3 + REV, 16.5 - REV), slab(-UL + REV, UL - REV, 9, 10, 18 + REV, 26.5 - REV)],
+    reveals: [[3, 3 + REV], [16.5 - REV, 16.5], [18, 18 + REV], [26.5 - REV, 26.5]].map(([a, b]) => slab(-UL, UL, 9.9, 9.96, a, b))
+      .concat([[3, 16.5], [18, 26.5]].flatMap(([a, b]) => [slab(-UL, -UL + REV, 9.9, 9.96, a, b, 2), slab(UL - REV, UL, 9.9, 9.96, a, b, 2)])),
+    toe: slab(0, L, 7, 8, 0, 1.5, 160)
+  };
+  NS.forEach(({ px, py }) => {
+    const g = new THREE.Group(); g.position.set(px, 0, -py); g.rotation.y = -Math.PI / 2; scene.add(g);
+    const add = (geo, mat) => { const m = new THREE.Mesh(geo, mat); m.castShadow = m.receiveShadow = true; g.add(m); return m; };
+    nsG.body.forEach(b => nsParts.body.push(add(b, M.reed)));
+    nsG.fronts.forEach(b => nsParts.fronts.push(add(b, M.reed)));
+    nsG.reveals.forEach(b => add(b, M.shadow));
+    add(nsG.toe, M.base); add(nsBotG, M.base);
+    nsParts.oakTop.push(add(nsTopG, M.top)); nsParts.leatherTop.push(add(nsLeatherG, MAT.leather));
+    [9.75, 22.25].forEach(y => { const p = add(pullG, MAT.brass); p.position.set(0, y, 10); });
+  });
+
+  // ---------- bed ----------
+  const BX0 = 92.75, BX1 = RL - 3, BY0 = 30.5, BY1 = 107.5;
+  box(BX0 + 2, BX1 - 2, BY0 + 2, BY1 - 2, 0, 1.5, M.base);                       // recessed float base
+  rbox(BX0, BX1, BY0, BY1, 1.5, 17, 0.6, MAT.leatherDark);                         // upholstered rail
+  rbox(BX0, BX0 + 3.5, BY0, BY1, 1.5, 24, 1, MAT.leatherDark);                     // footboard
+  box(BX0 - 0.05, BX0 + 0.3, BY0 + 3, BY1 - 3, 9, 9.6, M.shadow);                   // shadow line in the footboard
+  rbox(BX0 + 4, BX1 - 1, BY0 + 1.5, BY1 - 1.5, 15, 27, 2.5, MAT.linen);            // mattress
+  rbox(BX0 + 3.6, BX1 - 22, BY0 + 0.4, BY1 - 0.4, 22, 29.4, 3, MAT.duvet);         // duvet
+  rbox(BX0 + 3.6, BX1 - 22, BY0 + 0.2, BY1 - 0.2, 20, 29.2, 3, MAT.duvet).scale.set(1, 1, 1);
+  rbox(BX0 + 6, BX0 + 26, BY0 - 0.6, BY1 + 0.6, 18, 30.2, 2, MAT.throwM);          // throw across the foot
+  function pillow(px, py0, py1, h, t, lean, mat) {
+    const m = rbox(px - t / 2, px + t / 2, py0, py1, 27, 27 + h, Math.min(3, t / 2 - 0.1), mat);
+    m.rotation.z = -lean; m.position.y = 27 + h / 2 - 1.5; return m;
+  }
+  pillow(BX1 - 5, BY0 + 4, BY0 + 37, 22, 7, 0.28, MAT.pillowGrey); pillow(BX1 - 5, BY1 - 37, BY1 - 4, 22, 7, 0.28, MAT.pillowGrey);
+  pillow(BX1 - 12, BY0 + 6, BY0 + 34, 16, 6, 0.42, MAT.linen); pillow(BX1 - 12, BY1 - 34, BY1 - 6, 16, 6, 0.42, MAT.linen);
+  pillow(BX1 - 18, 58, 80, 12, 5, 0.5, MAT.throwM);
+
+  // ---------- built-ins (west alcove, faces east) ----------
+  // local u runs along the wall (py 0 to 87.5), w is depth from the back wall (px)
+  const BI = new THREE.Group(); scene.add(BI);
+  const B = (u0, u1, v0, v1, w0, w1, mat) => box(w0, w1, u0, u1, v0, v1, mat, BI);
+  // slim shaker: 1/2" frame, panel set back 3/8", 1/8" reveal around each front (per BWD elevation)
+  function shakerFront(u0, u1, v0, v1, wFace) {
+    const fw = 0.5, d = 0.75;
+    B(u0 - 0.125, u1 + 0.125, v0 - 0.125, v1 + 0.125, wFace - 0.02, wFace + 0.01, M.shadow);
+    B(u0 + fw, u1 - fw, v0 + fw, v1 - fw, wFace, wFace + 0.375, MAT.graphitePanel);
+    B(u0, u1, v1 - fw, v1, wFace, wFace + d, MAT.graphite); B(u0, u1, v0, v0 + fw, wFace, wFace + d, MAT.graphite);
+    B(u0, u0 + fw, v0 + fw, v1 - fw, wFace, wFace + d, MAT.graphite); B(u1 - fw, u1, v0 + fw, v1 - fw, wFace, wFace + d, MAT.graphite);
+  }
+  function barH(uc, v, w, len) {
+    const c = new THREE.Mesh(new THREE.CylinderGeometry(0.25, 0.25, len, 14), MAT.brass); c.rotation.x = Math.PI / 2; c.position.set(w + 1.3, v, -uc); BI.add(c);
+    [-1, 1].forEach(s => { const p = new THREE.Mesh(new THREE.CylinderGeometry(0.18, 0.18, 1.2, 10), MAT.brass); p.rotation.z = Math.PI / 2; p.position.set(w + 0.7, v, -(uc + s * (len / 2 - 0.6))); BI.add(p); });
+  }
+  function barV(u, v0, v1, w) {
+    const c = new THREE.Mesh(new THREE.CylinderGeometry(0.25, 0.25, v1 - v0, 14), MAT.brass); c.position.set(w + 1.3, (v0 + v1) / 2, -u); BI.add(c);
+    [v0 + 0.6, v1 - 0.6].forEach(v => { const p = new THREE.Mesh(new THREE.CylinderGeometry(0.18, 0.18, 1.2, 10), MAT.brass); p.rotation.z = Math.PI / 2; p.position.set(w + 0.7, v, -u); BI.add(p); });
+  }
+  const COLS = [[1.75, 30.5], [32.25, 55.25], [57, 85.75]];
+  B(0.5, 87, 0, 4, 0, 28, MAT.graphiteDeep);                       // 4" kick
+  B(0, 87.5, 4, 33.5, 0, 31, MAT.graphite);                        // base cabinet
+  const ROWS = [[4.75, 15.06], [15.81, 26.13], [26.88, 33.25]];
+  COLS.forEach(([u0, u1]) => ROWS.forEach(([v0, v1], i) => { shakerFront(u0 + 0.06, u1 - 0.06, v0, v1, 31); barH((u0 + u1) / 2, (v0 + v1) / 2, 31.375, 8); }));
+  B(0, 87.5, 33.5, 35, 0, 32.5, MAT.oak);                          // oak counter
+  B(0, 32.25, 35, 107.5, 0, 26.5, MAT.graphite);                    // left hanging cabinet
+  B(55.25, 87.5, 35, 107.5, 0, 26.5, MAT.graphite);                 // right hanging cabinet
+  [[1.75, 16.06], [16.19, 30.5], [57, 71.31], [71.44, 85.75]].forEach(([u0, u1], i) => {
+    shakerFront(u0, u1, 36.6, 105.9, 26.5);
+    barV(i % 2 === 0 ? u1 - 1.8 : u0 + 1.8, 38.3, 44.6, 26.875);
+  });
+  // centre: open shelves over three drawers
+  B(32.25, 55.25, 35, 107.5, 0, 0.75, MAT.tg);
+  B(32.25, 55.25, 104, 107.5, 0.75, 26.5, MAT.graphite);
+  B(32.25, 55.25, 35, 56.5, 0.75, 26.5, MAT.graphite);
+  const shelves = [B(32.25, 55.25, 56.5, 57.5, 0.75, 26.5, MAT.graphite)];
+  const shelfLeds = [];
+  [69.5, 82, 94.5].forEach(v => shelves.push(B(32.25, 55.25, v, v + 1, 0.75, 25.5, MAT.graphite)));
+  [69.5, 82, 94.5, 104].forEach(v => { const s = B(33, 54.5, v - 0.2, v, 22, 23, MAT.led); s.castShadow = false; shelfLeds.push(s); });
+  [[36.1, 42.5], [43.2, 49.6], [50.3, 56.4]].forEach(([v0, v1]) => { shakerFront(32.75, 54.75, v0, v1, 26.5); barH(43.75, (v0 + v1) / 2, 26.875, 6); });
+  const shelfLights = [63, 88].map(v => { const l = new THREE.PointLight(0xffd29a, 0, 40, 1.8); l.position.set(18, v + 4, -43.75); scene.add(l); return l; });
+  // a few pieces on the shelves
+  function vessel(prof, u, v, w, mat, s) { const g = new THREE.LatheGeometry(prof.map(p => new THREE.Vector2(p[0] * s, p[1] * s)), 32); const m = new THREE.Mesh(g, mat); m.position.set(w, v, -u); m.castShadow = true; BI.add(m); }
+  const bowl = [[0, 0], [2, 0], [3.4, 0.6], [4.4, 1.8], [4.8, 2.6], [4.6, 2.7], [3.9, 1.7], [0, 0.9]];
+  const vase = [[0, 0], [1.8, 0], [2.4, 1.2], [2.6, 3.6], [2.1, 5.6], [1.2, 6.8], [1.0, 7.8], [1.3, 8.2], [0, 8.2]];
+  vessel(bowl, 42, 95.5, 12, MAT.ceramic, 1); vessel(vase, 40, 70.5, 11, MAT.ceramic, 1.1); vessel(bowl, 45, 83, 13, MAT.ceramicDark, 0.85); vessel(bowl, 43, 57.5, 13, MAT.ceramic, 1);
+  B(46, 47.6, 70.5, 79.5, 6, 14, std(0xb9ad98, 0.8)); B(47.7, 49.3, 70.5, 79, 6, 14, std(0x6e5d4b, 0.8)); B(49.4, 50.6, 70.5, 78, 6, 14, std(0xd8d0c2, 0.8));
+
+  // ---------- lights ----------
+  const hemi = new THREE.HemisphereLight(0xfff6ea, 0x3a342c, 0.45); scene.add(hemi);
+  const sun = new THREE.DirectionalLight(0xfff2de, 1.25);
+  sun.position.set(70, 200, 200); sun.target.position.set(105, 0, -70); scene.add(sun, sun.target);
+  sun.castShadow = true; sun.shadow.mapSize.set(2048, 2048); sun.shadow.bias = -0.0005; sun.shadow.radius = 4;
+  Object.assign(sun.shadow.camera, { left: -170, right: 170, top: 170, bottom: -170, near: 10, far: 600 });
+  const fillA = new THREE.PointLight(0xfff0dc, 0.35, 260, 1.2); fillA.position.set(60, 100, -70); scene.add(fillA);
+  const fillB = new THREE.PointLight(0xfff0dc, 0.35, 260, 1.2); fillB.position.set(135, 100, -70); scene.add(fillB);
+
+  // ---------- options ----------
+  const state = { light: 'day', finish: 'reeded', top: 'leather', jamb: 'leather', shelf: 'graphite', crown: 'on' };
+  function apply() {
+    const day = state.light === 'day';
+    sun.intensity = day ? 0.95 : 0; hemi.intensity = day ? 0.3 : 0.08;
+    fillA.intensity = fillB.intensity = day ? 0.22 : 0.08;
+    sconceLights.forEach(l => l.intensity = day ? 0.2 : 0.8);
+    ledLights.forEach(l => l.intensity = day ? 0.15 : 0.6);
+    shelfLights.forEach(l => l.intensity = day ? 0.2 : 0.55);
+    glow.material.opacity = day ? 0.45 : 1;
+    MAT.window.color.copy(day ? col(0xe6eef3) : col(0x26303c));
+    renderer.toneMappingExposure = day ? 0.9 : 1.1;
+    shelves.forEach(m => m.material = state.shelf === 'oak' ? MAT.oak : MAT.graphite);
+    MAT.jambWin.color.copy(state.jamb === 'black' ? col(0x161616) : col(0x4a2e22));
+    const mt = state.finish === 'reeded' ? M.reed : M.smooth;
+    nsParts.body.concat(nsParts.fronts).forEach(m => m.material = mt);
+    nsParts.leatherTop.forEach(m => m.visible = state.top === 'leather');
+    nsParts.oakTop.forEach(m => m.visible = state.top !== 'leather');
+  }
+  document.querySelectorAll('.seg[data-opt]').forEach(seg => seg.addEventListener('click', e => {
+    const b = e.target.closest('button'); if (!b) return; state[seg.dataset.opt] = b.dataset.val;
+    seg.querySelectorAll('button').forEach(x => x.setAttribute('aria-pressed', x === b)); apply();
+  }));
+
+  // ---------- cameras ----------
+  const persp = new THREE.PerspectiveCamera(38, 1, 1, 3000);
+  const ortho = new THREE.OrthographicCamera(-1, 1, 1, -1, -2000, 2000);
+  let cam = persp, controls = null;
+  const C = [RL / 2, 30, -RW / 2];
+  const VIEWS = {
+    tiltSW: { label: 'Tilted, from the window side', type: 'p', fov: 36, pos: [60, 250, 215], tgt: [RL / 2 + 12, 22, -RW / 2] },
+    tiltNE: { label: 'Tilted, toward the built-ins', type: 'p', fov: 36, pos: [C[0] + 230, 260, C[2] - 230], tgt: [RL / 2 - 25, 22, -RW / 2 + 10] },
+    over:   { label: 'Overhead', type: 'o', pos: [RL / 2, 900, -RW / 2 + 0.01], tgt: [RL / 2, 0, -RW / 2], half: 80 },
+    eyeBed: { label: 'Standing at the built-ins, looking at the bed wall', type: 'p', fov: 58, pos: [36, 62, -96], tgt: [RL, 44, -RW / 2] },
+    crownCorner: { label: 'Cove at the bed wall corner', type: 'p', fov: 45, pos: [128, 74, -92], tgt: [RL, 100, -RW + 8] },
+    eyeBuilt: { label: 'Standing by the window, looking at the built-ins', type: 'p', fov: 62, pos: [128, 62, -18], tgt: [10, 58, -58] }
+  };
+  function size() {
+    const w = vp.clientWidth, h = vp.clientHeight; renderer.setSize(w, h, false);
+    persp.aspect = w / h; persp.updateProjectionMatrix();
+    const asp = w / h, half = ortho.userData.half || 80, hh = Math.max(half, (RL / 2 + 14) / asp);
+    ortho.left = -hh * asp; ortho.right = hh * asp; ortho.top = hh; ortho.bottom = -hh; ortho.updateProjectionMatrix();
+  }
+  let viewName = 'tiltSW';
+  function setView(name) {
+    const v = VIEWS[name] || VIEWS.tiltSW; viewName = name;
+    if (controls) controls.dispose();
+    cam = v.type === 'p' ? persp : ortho;
+    if (v.type === 'p') { persp.fov = v.fov; } else { ortho.userData.half = v.half; ortho.zoom = 1; }
+    cam.position.set(...v.pos); cam.up.set(0, 1, 0); cam.lookAt(...v.tgt); size();
+    controls = new THREE.OrbitControls(cam, renderer.domElement);
+    controls.target.set(...v.tgt); controls.enableDamping = true; controls.dampingFactor = 0.08;
+    controls.screenSpacePanning = true; controls.minDistance = 5; controls.maxDistance = 900; controls.minZoom = 0.5; controls.maxZoom = 6;
+    controls.update();
+    document.getElementById('vlabel').textContent = v.label;
+    document.querySelectorAll('#views button').forEach(b => b.setAttribute('aria-pressed', b.dataset.v === name));
+  }
+  document.getElementById('views').addEventListener('click', e => { const b = e.target.closest('button'); if (b) setView(b.dataset.v); });
+
+  // walls between the camera and the room are hidden, so the room reads like a cutaway
+  const tmp = new THREE.Vector3();
+  function cutaway() {
+    walls.forEach(g => { tmp.copy(cam.position).sub(g.userData.c); g.visible = tmp.dot(g.userData.n) > -2; });
+    ceil.visible = cam.position.y < CH - 1;
+    const showCeil = state.crown === 'on' && (viewName !== 'over' || cam.position.y < CH);
+    ceilItems.forEach(m => m.visible = showCeil);
+  }
+
+  new ResizeObserver(size).observe(vp);
+  apply();
+  const h0 = (location.hash || '').slice(1); setView(VIEWS[h0] ? h0 : 'tiltSW');
+  // ---------- save image ----------
+  (function () {
+    const host = vp;
+    const btn = document.createElement('button');
+    btn.type = 'button'; btn.className = 'savebtn'; btn.textContent = 'Save image';
+    btn.setAttribute('aria-label', 'Save the current view as a PNG image');
+    const msg = document.createElement('div'); msg.className = 'savemsg'; msg.setAttribute('role', 'status'); msg.hidden = true;
+    host.appendChild(btn); host.appendChild(msg);
+    let timer = 0;
+    const say = t => { msg.textContent = t; msg.hidden = false; clearTimeout(timer); timer = setTimeout(() => { msg.hidden = true; }, 2800); };
+    const inViewer = !!(window.claude && window.claude.use);
+    let dl = null;
+    if (inViewer) { btn.hidden = true; window.claude.use('downloads').then(d => { dl = d; btn.hidden = !d; }).catch(() => {}); }
+    btn.addEventListener('click', () => {
+      const pr = renderer.getPixelRatio();
+      renderer.setPixelRatio(Math.max(2, pr)); (size)(); (() => { controls.update(); cutaway(); renderer.render(scene, cam); })();
+      renderer.domElement.toBlob(async blob => {
+        renderer.setPixelRatio(pr); (size)();
+        if (!blob) { say('Could not capture the view.'); return; }
+        const name = (() => 'Randys-Bedroom-' + document.getElementById('vlabel').textContent.trim().replace(/[^A-Za-z0-9]+/g, '-').replace(/^-|-$/g, ''))() + '.png';
+        if (dl) {
+          try { await dl.save({ filename: name, data: blob }); say('Image saved'); }
+          catch (e) {
+            const c = e && e.code;
+            if (c === 'declined') return;
+            if (c === 'rate_limited') say('A save is already open. Try again in a moment.');
+            else { say('Saving is not available here.'); if (c === 'unavailable' || c === 'not_granted' || c === 'capability_disabled' || c === 'capability_removed') btn.hidden = true; }
+          }
+        } else if (!inViewer) {
+          const a = document.createElement('a'); a.href = URL.createObjectURL(blob); a.download = name;
+          document.body.appendChild(a); a.click(); a.remove(); setTimeout(() => URL.revokeObjectURL(a.href), 4000); say('Image saved');
+        }
+      }, 'image/png');
+    });
+  })();
+  (function loop() { requestAnimationFrame(loop); controls.update(); cutaway(); renderer.render(scene, cam); })();
+
+  window.__still = function (name, w, h, opts) {
+    if (opts) { Object.assign(state, opts); apply(); }
+    setView(name); renderer.setPixelRatio(1); renderer.setSize(w, h, false);
+    persp.aspect = w / h; persp.updateProjectionMatrix();
+    const asp = w / h, half = ortho.userData.half || 80, hh = Math.max(half, (RL / 2 + 14) / asp);
+    ortho.left = -hh * asp; ortho.right = hh * asp; ortho.top = hh; ortho.bottom = -hh; ortho.updateProjectionMatrix();
+    controls.update(); cutaway(); renderer.render(scene, cam);
+    return renderer.domElement.toDataURL('image/jpeg', 0.9);
+  };
+})();
+</script>
