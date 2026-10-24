@@ -213,6 +213,7 @@ wall([355,184.5,726,204.8]);
 wall([540,346,744,352],[[590,630,0,84,'d'],[660,700,0,84,'d']]);
 wall([645,205,651,346],[[305,340,0,84,'d']]);
 wall([717.75,205,724.25,346]);
+wall([541.75,204.8,546.5,300]);
 wall([649,236.4,718,238.2],[[649,718,0,84,'g']]);
 /* Gym, shower, toilet, sauna */
 wall([743.75,348,748,428]);wall([726,346.75,750,351.25]);
@@ -233,7 +234,7 @@ wall([553.8,606,560.5,665]);wall([612.2,606,619,665]);wall([553.8,603.2,619,611.
 /* Display unit niche: walls on both sides (William, 22 Oct) */
 wall([619,600,648,606]);
 /* Stair */
-wall([541.5,430,546,526]);wall([667.5,430,674,526]);
+wall([541.5,430,546,526]);
 (function(){
   /* As read from the plan arrow: starts at the north end (y 526), runs south, turns west at the landing. Rise 7 1/2", run 11". Approximate until a section is seen. */
   const R=7.5,TT=11;
@@ -244,6 +245,10 @@ wall([541.5,430,546,526]);wall([667.5,430,674,526]);
   stp(612,430,667,449,R*8,'');
   for(let k=1;k<=6;k++)stp(612-10.8*k,430,612-10.8*(k-1),470,R*(8+k),'E');
   scene.add(boxMesh(541.5,430,547,470,0,R*15,mBlock));
+  {const zn=y=>R+R*(526-y)/TT,sh=new THREE.Shape(),pts=[[526,BASE],[526,zn(526)+1.5],[449,zn(449)+1.5],[430,zn(449)+1.5],[430,BASE]];
+    sh.moveTo((pts[0][0]-CY)*IN,pts[0][1]*IN);pts.slice(1).forEach(q=>sh.lineTo((q[0]-CY)*IN,q[1]*IN));
+    const g=new THREE.ExtrudeGeometry(sh,{depth:6.5*IN,bevelEnabled:false});g.rotateY(Math.PI/2);g.translate((667.5-CX)*IN,0,0);
+    const kw=new THREE.Mesh(g,mWall);kw.add(new THREE.LineSegments(new THREE.EdgesGeometry(g),mEdge));scene.add(kw)}
   /* open-side rail along the straight flight (x 624.5), landing and turn run (y 468.5), with a wall rail on the east wall */
   const zs=y=>R+R*(526-y)/TT, zt=x=>R*8+R*(612-x)/10.8;
   const post=(x,y,z0,z1,w)=>scene.add(boxMesh(x-w/2,y-w/2,x+w/2,y+w/2,z0,z1,mBal,false));
@@ -311,32 +316,31 @@ function shelving(x1,y1,x2,y2,z0,z1,n,face,key,stop){
 const TAGS=[];
 function tag(n,x,y,z,a){TAGS.push({n,a,p:W3(x,y,z)})}
 
-/* 1 Display cabinet beside the elevator, 4'-10 5/8" along the shaft wall */
-shelving(620,606,648,664.6,0,96,5,'E','lam2',1);front('E',620,606,648,664.6,4,92,2,1,'glass',1);tag(1,634,636,102,'hall');
-/* 2 Projection wall 14'-7 1/2" x 9', curved marble slab, floating stone shelf */
+/* 1 Display cabinet beside the elevator, 4'-10 5/8" along the shaft wall, floor to ceiling (William, 24 Oct) */
+shelving(620,606,648,664.6,0,120,6,'E','lam2',1);front('E',620,606,648,664.6,4,116,2,2,'glass',1);tag(1,634,636,124,'hall');
+/* 2 Projection wall 14'-7 1/2" x 9', as drawn on ID.101: flat furred face 1" off the wall, quarter-circle corners (about 11 1/2" radius) meeting the
+   ends of the flanking cabinets, never past their fronts. Marble hearth 15" high, 10" proud of the face (William, 24 Oct) */
 (function(){
-  const XB=984,Y0=722,Y1=897.5,YM=(Y0+Y1)/2,HF=(Y1-Y0)/2,DE=17.5,DM=4;
-  const d=y=>DM+(DE-DM)*Math.pow(Math.abs((y-YM)/HF),3.2);            /* thin flat wall (4") across the middle, flaring out at both ends to meet the flanking cabinet fronts (17 1/2") */
-  const N=28,ys=[];for(let i=0;i<=N;i++)ys.push(Y0+(Y1-Y0)*i/N);
+  const XB=984,Y0=722,Y1=899,DM=1,RC=11.5,XF=XB-DM,CXA=XF-RC,NA=10;
+  const P=[];
+  for(let i=0;i<=NA;i++){const a=Math.PI/2*i/NA;P.push([CXA+RC*Math.sin(a),Y0+RC-RC*Math.cos(a)])}
+  for(let i=0;i<=NA;i++){const a=Math.PI/2+Math.PI/2*i/NA;P.push([CXA+RC*Math.sin(a),Y1-RC-RC*Math.cos(a)])}
+  const NRM=P.map((p,i)=>{const a=P[Math.max(0,i-1)],b=P[Math.min(P.length-1,i+1)];const tx=b[0]-a[0],ty=b[1]-a[1],l=Math.hypot(tx,ty);return [-ty/l,tx/l]});
+  const off=o=>P.map((p,i)=>[p[0]+NRM[i][0]*o,p[1]+NRM[i][1]*o]);
   const sx=x=>(x-CX)*IN,sy=y=>(y-CY)*IN;
-  function solid(shape,z0,z1,mat,edges){
-    const g=new THREE.ExtrudeGeometry(shape,{depth:(z1-z0)*IN,bevelEnabled:false});g.rotateX(-Math.PI/2);g.translate(0,z0*IN,0);
+  function solid(pts,z0,z1,mat,edges){
+    const sh=new THREE.Shape();sh.moveTo(sx(pts[0][0]),sy(pts[0][1]));pts.slice(1).forEach(q=>sh.lineTo(sx(q[0]),sy(q[1])));
+    const g=new THREE.ExtrudeGeometry(sh,{depth:(z1-z0)*IN,bevelEnabled:false});g.rotateX(-Math.PI/2);g.translate(0,z0*IN,0);
     const m=new THREE.Mesh(g,mat);if(edges)m.add(new THREE.LineSegments(new THREE.EdgesGeometry(g,40),mEdge));
     m.userData.stop=2;scene.add(m);PICK.push(m);return m}
-  function band(o0,o1,z0,z1,mat,edges){                    /* strip standing o0..o1 inches proud of the furred face */
-    const sh=new THREE.Shape();sh.moveTo(sx(XB-d(ys[0])-o1),sy(ys[0]));
-    for(let i=0;i<=N;i++)sh.lineTo(sx(XB-d(ys[i])-o1),sy(ys[i]));
-    for(let i=N;i>=0;i--)sh.lineTo(sx(XB-d(ys[i])-o0),sy(ys[i]));
-    return solid(sh,z0,z1,mat,edges)}
+  const band=(o0,o1,z0,z1,mat,edges)=>solid(off(o1).concat(off(o0).reverse()),z0,z1,mat,edges);   /* strip standing o0..o1 inches proud of the face */
   const t=BASEMAT.st2.t.clone();t.needsUpdate=true;t.repeat.set(1.5,.6);const mSlab=new THREE.MeshLambertMaterial({map:t});
   const mFur=new THREE.MeshLambertMaterial({color:0xf4f2ed});
-  const body=new THREE.Shape();body.moveTo(sx(XB),sy(Y0));
-  for(let i=0;i<=N;i++)body.lineTo(sx(XB-d(ys[i])),sy(ys[i]));body.lineTo(sx(XB),sy(Y1));
-  solid(body,0,108,mFur,false);                                   /* smooth matte projector wall, full height, no slab */
-    band(0,10,0,15,mSlab,true);                                     /* marble hearth only, 15" high, 10" proud of the face */
+  solid(P.concat([[XB,Y1],[XB,Y0]]),0,108,mFur,true);             /* smooth matte projector wall, full height */
+  band(0,10,0,15,mSlab,true);                                     /* marble hearth, 15" high, 10" proud of the face */
   band(0,1,104.5,107,new THREE.MeshBasicMaterial({color:0xfff4e2}),false);   /* soft LED line at the head */
 })();
-tag(2,972,810,114,'rec');
+tag(2,978,810,114,'rec');
 /* 3 Built-ins either side of the projection wall, 4'-11" wide, 9'-3 1/2" high */
 [[899,957.9],[663.1,722]].forEach(q=>{mw(966.5,q[0],984,q[1],0,36,'lam3',3);front('W',966.5,q[0],984,q[1],2,34,2,2,'drawer',3);
   shelving(968.5,q[0],984,q[1],36,111.5,5,'W','lam3',3)});
@@ -357,11 +361,11 @@ shelving(932,286,944.4,340,54,102,2,'W','lam2',11);front('W',932,286,944.4,340,5
 /* 12 Bedroom closet wall 171 1/2" wide, 6 glass doors */
 mw(371,346.75,542.5,372.75,0,118,'lam2',12);front('S',371,346.75,542.5,372.75,4,112,6,1,'glass',12);tag(12,456,360,124,'bed');
 /* 13 Walk-in closet, lowers 30" deep, hanging above */
-mw(541.5,205,572.2,300,0,108,'lam2',13);front('E',541.5,205,572.2,300,2,106,3,2,'drawer',13);
+mw(546.5,205,572.2,300,0,108,'lam2',13);front('E',546.5,205,572.2,300,2,106,3,2,'drawer',13);
 mw(620,205,644.25,300,0,108,'lam2',13);front('W',620,205,644.25,300,2,106,3,2,'drawer',13);
 mw(572.2,200.8,620,232.75,0,108,'lam2',13);front('N',572.2,200.8,620,232.75,2,106,3,2,'drawer',13);tag(13,592,225,114,'bed');
 /* 14 Wall behind the bed, headboard panelling 171 1/2" x 48" with shelf, floating nightstands */
-mw(371,205,542.5,211,20,68,'lam2',14);mw(371,205,542.5,217,68,70,'lam2',14);
+mw(371,205,541.75,211,20,68,'lam2',14);mw(371,205,541.75,217,68,70,'lam2',14);
 mw(394,205,422,225,24,38,'lam2',14);mw(496,205,524,225,24,38,'lam2',14);tag(14,456,208,76,'bed');
 /* 15 Ensuite vanity 71 3/4" x 27 1/2" with glass tower 28 1/4" x 75" */
 mw(694,274,717.75,345.75,10,37.5,'lam2',15);front('W',694,274,717.75,345.75,12,36,4,2,'drawer',15);mw(694,274,718,345.75,37.5,39,'st2',15);
@@ -702,7 +706,7 @@ function cut(k){const a=AREAS[k];
       const inside=w.cx>a.bb[0]-140&&w.cx<a.bb[2]+140&&w.cy>a.bb[1]-140&&w.cy<a.bb[3]+140;
       low=inside&&s>0.45*half}
     w.target=low?w.low:1})}
-const STOPTH={4:Math.PI/2,5:Math.PI/2,7:Math.PI/2};
+const STOPTH={1:Math.PI/2,2:-Math.PI/2,3:-Math.PI/2,4:Math.PI/2,5:Math.PI/2,7:Math.PI/2};
 function focusStop(n){const t=TAGS.find(q=>q.n===n);if(!t)return;
   const to={tx:t.p.x,ty:Math.min(t.p.y,4.5),tz:t.p.z,r:ONLY?24:30,th:STOPTH[n]!==undefined?STOPTH[n]:S.th,ph:.78};
   fly={from:Object.assign({},S),to,t:0,dur:1.1};
