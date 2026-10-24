@@ -341,13 +341,7 @@ tag(2,972,810,114,'rec');
 [[899,957.9],[663.1,722]].forEach(q=>{mw(966.5,q[0],984,q[1],0,36,'lam3',3);front('W',966.5,q[0],984,q[1],2,34,2,2,'drawer',3);
   shelving(968.5,q[0],984,q[1],36,111.5,5,'W','lam3',3)});
 tag(3,975,690,118,'rec');tag(3,975,929,118,'rec');
-/* 4 Wet bar: lowers 109 3/4" x 24", uppers to 8'-10 1/4" with 12 glass doors, stone panel behind */
-mw(648,791,672,900.7,0,34,'lam2',4);front('E',648,791,672,900.7,2,32,6,2,'drawer',4);mw(648,791,672.5,900.7,34,36,'st2',4);
-mw(648,791,650,900.7,36,106.25,'st2',4);shelving(650,791,662,900.7,54,106.25,3,'E','lam2',4);front('E',650,791,662,900.7,54,106.25,6,2,'glass',4);tag(4,660,846,112,'rec');
-/* 5 Glass towers either side of the wet bar, 2'-10" and 2'-8", uppers 18" deep, lowers 22" deep */
-[[912,946],[746,778]].forEach(q=>{mw(648,q[0],670,q[1],0,36,'lam1',5);front('E',648,q[0],670,q[1],2,34,1,1,'drawer',5);
-  shelving(648,q[0],666,q[1],38,106.25,4,'E','lam1',5);front('E',648,q[0],666,q[1],38,106.25,1,1,'glass',5)});
-tag(5,659,929,112,'rec');tag(5,659,762,112,'rec');
+/* 4 Wet bar and 5 glass towers, as drawn: see the rec wet bar block after the golf room */
 /* 6 Island 111" x 36", stone top by others */
 mw(709.5,789.5,745.5,900.5,0,34,'lam2',6);front('E',709.5,789.5,745.5,900.5,2,32,4,2,'drawer',6);mw(708.5,788.5,746.5,901.5,34,36,'st2',6);tag(6,727.5,845,44,'rec');
 /* 7 Golf room, as drawn: see the golf room block after the fixtures */
@@ -398,10 +392,9 @@ function toilet(cx,y,xBack,w,dirBack){/* wall-hung bowl, back toward xBack */
   bx(Math.min(cx,xBack),y-w/2-.2,Math.max(cx,xBack),y+w/2+.2,16.5,17.5,mWhite);cy(cx,y,w/2+.2,16.5,17.5,mWhite,28);
   bx(Math.min(xBack,xBack+d*3.2),y-6,Math.max(xBack,xBack+d*3.2),y+6,0,46,mWhite);
   bx(Math.min(xBack,xBack-.4*d),y-3,Math.max(xBack,xBack-.4*d),y+3,38,42,mChrome)}
-/* sinks and taps: gym shower-room vanity, ensuite vanity, wet bar */
+/* sinks and taps: gym shower-room vanity, ensuite vanity */
 bx(920,285.5,944.4,340.5,37.5,39,mMarble);basin(927,302,941.5,322,39);faucet(944.4,312,46,-1);
 basin(701,277,716.5,293,39);faucet(717.75,285,46,-1);
-basin(655,832,670,860,36);faucet(650,846,46,1);
 /* gym shower: marble lining, glass, fittings, bench */
 bx(869,382.6,870,426.2,0,98,mMarble);bx(943.6,382.6,944.4,426.2,0,98,mMarble);bx(869,426.2,944.4,427,0,98,mMarble);
 bx(932.5,393,944.4,415,0,16,mWhite);bx(932.5,393,944.4,415,16,17.6,mMarble);
@@ -525,6 +518,70 @@ bx(571,605.2,585,607,0,84,mSteel);bx(585.2,605.2,599,607,0,84,mSteel);bx(570,605
   cy(560,930,5,F,F+40,MS({color:0x1d2b3a,roughness:.7}),20);[[558,930,F+58],[561,931,F+60],[560,928,F+56],[562,929,F+59]].forEach(q=>tube([560,930,F+40],[q[0],q[1],q[2]],.6,mChrome,6));
 })();
 
+/* ceiling-level pieces that fade to an outline while walls are cut away and the view is from above */
+const GHOST=[];
+/* ---------- 4 and 5 Rec wet bar and towers as drawn by Sensus, ID.200 rec kitchenette elev. A. Faces east off the wall at x 648 ---------- */
+(function(){
+  const XW=648,TT=98.75,HC=120,yS=744,b0=778,b1=914,yN=946;     /* south tower 2'-10", bay 11'-4", north tower 2'-8" */
+  const pk=(m,s)=>{m.userData.stop=s;PICK.push(m);return m};
+  const box=(x1,y1,x2,y2,z0,z1,mat,e,s)=>{const m=boxMesh(x1,y1,x2,y2,z0,z1,mat,e);scene.add(m);return pk(m,s||4)};
+  const mLED=new THREE.MeshBasicMaterial({color:0xfff0d2});
+  const mSt=stoneStd('st2',136,98,.16);
+  const L1=h=>M('lam1',34,h),L2=h=>M('lam2',110,h);
+
+  /* bay: 1" light wood frame 24" deep (LAM 1), stone backsplash behind, stone filler panels each side of the lowers */
+  box(XW,b0,XW+1,b1,0,TT,mSt);
+  box(XW,b0,XW+24,b0+1,0,TT,L1(99),true);box(XW,b1-1,XW+24,b1,0,TT,L1(99),true);box(XW,b0,XW+24,b1,TT-1,TT,L1(2),true);
+  box(XW+1,b0+1,XW+24,791.1,0,36,mSt);box(XW+1,900.9,XW+24,b1-1,0,36,mSt);
+  /* lowers 109 3/4" x 24": beer dispenser, 18" fridge, door, 18" dishwasher, door; toe kick, reveals, stone counter (ST 2) */
+  box(XW+1,792.9,XW+20.5,899.1,0,4,mReveal);
+  box(XW+1,792.9,XW+24,899.1,4,34.75,L2(31),true);
+  box(XW+1,791.1,XW+24,792.9,0,34.75,mSt);box(XW+1,899.1,XW+24,900.9,0,34.75,mSt);
+  box(XW+1,b0+1,XW+24.5,b1-1,34.75,36.25,mSt,true);
+  [[792.9,816.4],[816.4,836.4],[836.4,856.6],[856.6,876.6],[876.6,899.1]].forEach(q=>{
+    front('E',XW+1,q[0],XW+24,q[1],4.5,34.25,1,2,'drawer',4);
+    tube([XW+24.7,q[0]+3,30],[XW+24.7,q[1]-3,30],.3,mBlackM,6)});
+  /* twin beer and beverage tap over the dispenser, sink and faucet at the north end */
+  cy(XW+8,804,1.5,36.25,50,mChrome,16);[800.5,807.5].forEach(y=>{tube([XW+8,y,47],[XW+13,y,47],.45,mChrome);tube([XW+13,y,47],[XW+13,y,44.5],.32,mChrome);tube([XW+9.5,y,48],[XW+9.5,y,55],.55,mBlackM,8)});
+  bx(XW+5,800,XW+15,808,36.25,36.8,mSteel);
+  basin(XW+5,879,XW+19,897,36.25);faucet(XW+1,888,46,1,9);
+  /* uppers 8'-10 1/4" x 12" deep, 12 glass doors in 3/4" black metal frames, shelves, LED top and under-cabinet */
+  const u0=792.875,u1=899.125,uz0=54.25,uz1=77.25;
+  shelving(XW+1,u0,XW+12,u1,uz0,uz1,2,'E','lam1',4);
+  for(let i=0;i<12;i++){const y=u0+4.4+i*8.85;cy(XW+6,y,1.5,uz0+.75,uz0+(i%3?5.5:9),i%3?mGlass:MS({color:0x2d4a2f,roughness:.1,metalness:.2}),12);cy(XW+6,y+.5,1.4,uz0+11.6,uz0+16,mGlass,12)}
+  box(XW+1.8,u0+1,XW+11,u1-1,uz1-1.1,uz1-.8,mLED);
+  front('E',XW+1,u0,XW+12,u1,uz0,uz1,12,1,'glass',4);
+  box(XW+1.5,u0,XW+11,u1,uz0-.3,uz0,mLED);
+  /* stone upper panel 1'-9 1/4" high, 20" deep, full bay */
+  box(XW+1,b0+1,XW+20,b1-1,uz1+.25,TT-1,mSt,true);
+  /* wall sconces on the stone either side of the uppers */
+  const tW=(()=>{const c=document.createElement('canvas');c.width=64;c.height=128;const g=c.getContext('2d');const gr=g.createRadialGradient(32,40,2,32,48,70);
+    gr.addColorStop(0,'rgba(255,214,160,.9)');gr.addColorStop(1,'rgba(255,214,160,0)');g.fillStyle=gr;g.fillRect(0,0,64,128);return new THREE.CanvasTexture(c)})();
+  const mW=new THREE.MeshBasicMaterial({map:tW,transparent:true,blending:THREE.AdditiveBlending,depthWrite:false,opacity:.5});
+  const mBulb=new THREE.MeshBasicMaterial({color:0xffe2b0});
+  [785.4,906.6].forEach(y=>{bx(XW+1,y-1.5,XW+1.6,y+1.5,62,68,mBlackM);tube([XW+1.6,y,66],[XW+5,y,66],.3,mBlackM);
+    const sh=new THREE.Mesh(new THREE.CylinderGeometry(1.4*IN,3*IN,4*IN,18,1,true),mBlackM);sh.material.side=THREE.DoubleSide;sh.position.copy(W3(XW+5,y,64.5));scene.add(sh);
+    ball(XW+5,y,63,1.2,mBulb);
+    const w=new THREE.Mesh(new THREE.PlaneGeometry(22*IN,40*IN),mW);w.rotation.y=-Math.PI/2;w.position.copy(W3(XW+1.15,y,60));scene.add(w)});
+  tag(4,XW+12,846,TT+8,'rec');
+
+  /* towers (LAM 1): lowers 2'-9 1/4" high, 22" deep, sliding doors; glass uppers 18" deep to 8'-2 3/4", 3/4" black metal frames, LED on door sensor */
+  [[yS,b0],[b1,yN]].forEach(q=>{const [a,b]=q;
+    box(XW,a,XW+19,b,0,3.5,mReveal,false,5);
+    box(XW,a,XW+22,b,3.5,33.25,L1(30),true,5);
+    const m1=(a+b)/2;[[a+.5,m1+1,XW+22.4,XW+22.9],[m1-1,b-.5,XW+22,XW+22.4]].forEach(d=>box(d[2],d[0],d[3],d[1],4,32.75,L1(29),true,5));
+    [a+3,b-3].forEach(y=>bx(XW+22.9,y-.4,XW+23.2,y+.4,12,24,mBlackM));
+    shelving(XW,a,XW+18,b,33.25,TT,4,'E','lam1',5);
+    for(let k=0;k<3;k++){const z=33.25+.75+k*16.2;for(let i=0;i<3;i++)cy(XW+8,a+6+i*((b-a-12)/2),1.6+(i%2)*.6,z,z+7+(k%2)*3,i===1?MS({color:0x8b6a4a,roughness:.6}):mGlass,12)}
+    box(XW+1,a+1,XW+17,b-1,TT-1.6,TT-1.3,mLED,false,5);
+    front('E',XW,a,XW+18,b,33.25,TT,3,3,'glass',5)});
+  tag(5,XW+11,761,TT+8,'rec');tag(5,XW+11,930,TT+8,'rec');
+
+  /* header over the towers and the bay: 21 1/4" from the millwork top to the 10'-0" ceiling, flush with the 24" frame front, painted */
+  const mHdr=MS({color:0xf1eee8,roughness:.55,transparent:true});GHOST.push(mHdr);
+  box(XW,yS,XW+24,yN,TT,HC,mHdr,true);
+})();
+
 /* ---------- furniture and equipment, can be switched off ---------- */
 const FURN=new THREE.Group();scene.add(FURN);PARENT=FURN;
 const mFab=MS({color:0x938e86,roughness:.95}),mFab2=MS({color:0x6c6964,roughness:.95}),mRug=MS({color:0xbfb8aa,roughness:1}),mRug2=MS({color:0x9f978a,roughness:1});
@@ -645,8 +702,9 @@ function cut(k){const a=AREAS[k];
       const inside=w.cx>a.bb[0]-140&&w.cx<a.bb[2]+140&&w.cy>a.bb[1]-140&&w.cy<a.bb[3]+140;
       low=inside&&s>0.45*half}
     w.target=low?w.low:1})}
+const STOPTH={4:Math.PI/2,5:Math.PI/2,7:Math.PI/2};
 function focusStop(n){const t=TAGS.find(q=>q.n===n);if(!t)return;
-  const to={tx:t.p.x,ty:Math.min(t.p.y,4.5),tz:t.p.z,r:ONLY?24:30,th:S.th,ph:.78};
+  const to={tx:t.p.x,ty:Math.min(t.p.y,4.5),tz:t.p.z,r:ONLY?24:30,th:STOPTH[n]!==undefined?STOPTH[n]:S.th,ph:.78};
   fly={from:Object.assign({},S),to,t:0,dur:1.1};
   const wr=$('wrlink');if(wr)wr.href='BWD_ABL_WalkRound.html#s'+n}
 
@@ -734,6 +792,7 @@ function tick(now){
   else if(tour){S.th+=dt*.16}
   if(tour){tour.t+=dt;if(tour.t>(ORDER[tour.i]==='all'?4.5:5.6))tourNext()}
   WALLS.forEach(w=>{const d=w.target-w.full;if(Math.abs(d)>.002){w.full+=d*Math.min(1,dt*7);w.g.scale.y=w.full}else if(w.full!==w.target){w.full=w.target;w.g.scale.y=w.full}});
+  GHOST.forEach(m=>{const g=cutOn&&S.ph<1.05;m.opacity=g?.16:1;m.depthWrite=!g});
   applyCam();ren.render(scene,cam);
   const W=window.innerWidth,Hh=window.innerHeight;
   TAGS.forEach(l=>{const v=l.p.clone().project(cam);const show=v.z<1&&(curArea==='all'||l.a===curArea)&&!tour;
