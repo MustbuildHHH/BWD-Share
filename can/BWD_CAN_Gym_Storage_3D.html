@@ -4406,6 +4406,27 @@ function blenderKind(o,isPB){const n=o.name||'',mn=o.material&&o.material.name||
   return 'M'}
 
 /* ---------------- shell from the IFC ---------------- */
+
+/* TruStile TS3140 door look (C flat panel, OS one-step sticking), painted, both faces. Krys 23 Oct. */
+const TSM=new THREE.MeshStandardMaterial({color:0xf2f0ea,roughness:.48,envMapIntensity:.6});
+function ts3140(mn,mx){
+  const sx=mx.x-mn.x,sz=mx.z-mn.z,alongX=sx>=sz,W=alongX?sx:sz,H=mx.y-mn.y,T=0.044;
+  const g=new THREE.Group();g.position.set((mn.x+mx.x)/2,mn.y,(mn.z+mx.z)/2);if(!alongX)g.rotation.y=Math.PI/2;
+  const st=Math.min(0.115,W*0.15),tr=0.115,br=0.23,p=0.005,q=0.009;   // stiles 4 1/2", top rail 4 1/2", bottom rail 9", sticking proud 3/16"
+  const box=(x0,x1,y0,y1,zf)=>{const m=new THREE.Mesh(new THREE.BoxGeometry(Math.abs(x1-x0),Math.abs(y1-y0),p),TSM);m.position.set((x0+x1)/2,(y0+y1)/2,zf);m.castShadow=m.receiveShadow=true;g.add(m)};
+  const ring=(r,y,zf,tube)=>{const m=new THREE.Mesh(new THREE.TorusGeometry(r,tube||0.006,6,56),TSM);m.position.set(0,y,zf);m.castShadow=true;g.add(m)};
+  const slab=new THREE.Mesh(new THREE.BoxGeometry(W,H,T),TSM);slab.position.set(0,H/2,0);slab.castShadow=slab.receiveShadow=true;g.add(slab);
+  const iw=W/2-st,R3=iw*0.97,vc=H*0.47,R2=R3*0.62,R1=R3*0.52;
+  [1,-1].forEach(sd=>{const zf=sd*(T/2+p/2);
+    box(-W/2,-W/2+st,0,H,zf);box(W/2-st,W/2,0,H,zf);box(-iw,iw,H-tr,H,zf);box(-iw,iw,0,br,zf);   // stiles and rails
+    const topB=vc+R3+0.05,botT=vc-R3-0.05;
+    box(-iw,iw,topB-0.03,topB,zf);box(-iw,iw,botT,botT+0.03,zf);                                   // rails each side of the medallion band
+    // one-step sticking around the two flat panels
+    const stick=(y0,y1)=>{const z2=sd*(T/2+p+q/2);[[-iw,-iw+0.012,y0,y1],[iw-0.012,iw,y0,y1],[-iw,iw,y1-0.012,y1],[-iw,iw,y0,y0+0.012]].forEach(([a,b,c,d])=>{const m=new THREE.Mesh(new THREE.BoxGeometry(b-a,d-c,q),TSM);m.position.set((a+b)/2,(c+d)/2,z2);g.add(m)})};
+    stick(topB,H-tr);stick(br,botT);
+    ring(R3,vc,sd*(T/2+0.006),0.007);ring(R2,vc,sd*(T/2+0.008),0.009);ring(R1,vc,sd*(T/2+0.006),0.005);
+    const disc=new THREE.Mesh(new THREE.CircleGeometry(R1-0.004,40),TSM);disc.position.set(0,vc,sd*(T/2+0.002));if(sd<0)disc.rotation.y=Math.PI;g.add(disc)});
+  return g}
 function buildShell(root){
   const meshes=[];root.traverse(o=>{if(o.isMesh)meshes.push(o)});
   meshes.forEach(o=>{
@@ -4421,7 +4442,7 @@ function buildShell(root){
     if(t==='W'){o.material=MAT.wall;CUTW.push({o,c:[c.x,c.z],ifc:1,full:1,target:1,low:0.95/2.743,len:Math.max(bb.max.x-bb.min.x,bb.max.z-bb.min.z)});return}
     if(t==='D'&&/Bxxwb$/.test(n.split('~')[2]||'')){o.visible=false;o.userData.removed=1;return}
     if(t==='D'&&/PrlEyM$/.test(n.split('~')[1]||'')){o.visible=false;o.userData.removed=1;return}   // sauna door: replaced by the cedar hidden door
-    if(t==='D'){o.material=MAT.door;const host=n.split('~')[2];o.userData.host=host;DOORS.push(o);return}
+    if(t==='D'){o.material=MAT.door;{const bb2=new THREE.Box3().setFromObject(o);const dg=ts3140(bb2.min,bb2.max);SHELL.add(dg);o.userData.detail=dg;o.material=new THREE.MeshBasicMaterial({visible:false})}const host=n.split('~')[2];o.userData.host=host;DOORS.push(o);return}
     if(t==='G'){o.material=MAT.glass;o.castShadow=false;WINDOWS.push(o);return}
     if(t==='L'){ // floor slabs: herringbone, concrete in the services strip; a hair low so room model floors win
       const isConc=/Concrete/.test(n),isGym=/Gym/.test(n);
@@ -4905,7 +4926,7 @@ function cutUpdate(){
   });
   // doors ride with their wall
   DOORS.forEach(dr=>{const w=CUTW.find(q=>q.ifc&&q.o.name.split('~')[1]===dr.userData.host);const s=w?w.full:1;const vis=s>0.99&&(dr.userData.hiddenByRoom!==true)&&!dr.userData.removed;
-    if(dr.visible!==vis){dr.visible=vis;changed=true}});
+    if(dr.visible!==vis){dr.visible=vis;changed=true}if(dr.userData.detail&&dr.userData.detail.visible!==(vis&&!dr.userData.hiddenByRoom)){dr.userData.detail.visible=vis&&!dr.userData.hiddenByRoom;changed=true}});
   WINDOWS.forEach(g=>{const w=CUTW.find(q=>q.ifc&&q.o.name.split('~')[1]===g.name.split('~')[2]);const vis=!w||w.full>0.99;if(g.visible!==vis&&!g.userData.hiddenByRoom){g.visible=vis}});
   // ceilings only when the camera is under them
   const under=cam.position.y<2.55;
