@@ -162,7 +162,8 @@ scene.add(boxMesh(608,690,626,737,-18,-6,mStep,true));scene.add(boxMesh(590,690,
 
 /* ---------- walls ---------- */
 const WALLS=[];
-function wall(r,gaps){
+function wall(r,gaps,top){
+  const HT=top||H;
   const [x1,y1,x2,y2]=r;const horiz=(x2-x1)>=(y2-y1);
   const a0=horiz?x1:y1,a1=horiz?x2:y2,p0=horiz?y1:x1,p1=horiz?y2:x2;
   const g=new THREE.Group();g.position.y=BASE*IN;
@@ -173,9 +174,9 @@ function wall(r,gaps){
   const tr=(a,b)=>{if(golfSide||b-a<1)return;const e=.55;TRIM.add(horiz?boxMesh(a,p0-e,b,p1+e,0,4.5,mWhite):boxMesh(p0-e,a,p1+e,b,0,4.5,mWhite))};
   const gs=(gaps||[]).slice().sort((u,v)=>u[0]-v[0]);let cur=a0;
   gs.forEach(q=>{const [a,b,sill,head,kind]=q;
-    seg(cur,a,BASE,H,mWall,true);tr(cur,a);
+    seg(cur,a,BASE,HT,mWall,true);tr(cur,a);
     seg(a,b,BASE,sill>0?sill:0,mWall,false);
-    seg(a,b,head,H,mWall,true);
+    seg(a,b,head,HT,mWall,true);
     if(kind==='w'){add(horiz?boxMesh(a,(p0+p1)/2-.6,b,(p0+p1)/2+.6,sill,head,mGlass):boxMesh((p0+p1)/2-.6,a,(p0+p1)/2+.6,b,sill,head,mGlass));
       seg(a,b,sill-1.5,sill,mFrame);seg(a,b,head,head+1.5,mFrame)}
     if(kind==='g'){add(horiz?boxMesh(a,(p0+p1)/2-.6,b,(p0+p1)/2+.6,0,head,mGlass):boxMesh((p0+p1)/2-.6,a,(p0+p1)/2+.6,b,0,head,mGlass));
@@ -186,21 +187,22 @@ function wall(r,gaps){
       const lf=new THREE.Mesh(new THREE.BoxGeometry(len*IN,(head-1)*IN,1.75*IN),mDoor);lf.position.set(len*IN/2,(head-1)*IN/2,0);
       piv.add(lf);piv.rotation.y=(horiz?0:Math.PI/2)-1.75;g.add(piv)}
     cur=b});
-  seg(cur,a1,BASE,H,mWall,true);tr(cur,a1);
+  seg(cur,a1,BASE,HT,mWall,true);tr(cur,a1);
   scene.add(g);
   const cx=(x1+x2)/2,cy=(y1+y2)/2;
-  WALLS.push({g,cx,cy,full:1,target:1,low:(36-BASE)/(H-BASE)});
+  WALLS.push({g,cx,cy,full:1,target:1,low:(36-BASE)/(HT-BASE)});
   return g}
 function block(r){const m=boxMesh(r[0],r[1],r[2],r[3],BASE,H,mBlock,true);m.position.y-=BASE*IN;const g=new THREE.Group();g.position.y=BASE*IN;g.add(m);scene.add(g);
   WALLS.push({g,cx:(r[0]+r[2])/2,cy:(r[1]+r[3])/2,full:1,target:1,low:(36-BASE)/(H-BASE)})}
 
-/* Golf room and wine room */
-wall([349,943.5,650,961.5]);
-wall([349,812,367,945]);
-wall([367,793.25,406,811.25]);
-wall([388,688,406,795]);
-wall([355,664.2,650,688.5]);
-wall([625.25,736,648,945]);
+/* Golf room and wine room. Golf ceiling 13'-1 1/4" above the golf floor, as drawn on ID.200 elev. A */
+const HG=-18+157.25;
+wall([349,943.5,650,961.5],null,HG);
+wall([349,812,367,945],null,HG);
+wall([367,793.25,406,811.25],null,HG);
+wall([388,688,406,795],null,HG);
+wall([355,664.2,650,688.5],null,HG);
+wall([625.25,736,648,945],null,HG);
 /* Mechanical and cold cellar */
 wall([355,184.5,371,665],[[565,600,0,84,'d']]);
 wall([306,632,355,640]);wall([306,489,355,494]);wall([306,488,314,640]);
@@ -348,8 +350,7 @@ mw(648,791,650,900.7,36,106.25,'st2',4);shelving(650,791,662,900.7,54,106.25,3,'
 tag(5,659,929,112,'rec');tag(5,659,762,112,'rec');
 /* 6 Island 111" x 36", stone top by others */
 mw(709.5,789.5,745.5,900.5,0,34,'lam2',6);front('E',709.5,789.5,745.5,900.5,2,32,4,2,'drawer',6);mw(708.5,788.5,746.5,901.5,34,36,'st2',6);tag(6,727.5,845,44,'rec');
-/* 7 Golf room, as drawn by Sensus: built-in TV and wine fridges on the west wall (about 8 lin ft) */
-mw(406,690,428,771.5,0,96,'lam2',7);mw(428,706,429,752,36,80,'tv',7);tag(7,417,730,102,'golf');
+/* 7 Golf room, as drawn: see the golf room block after the fixtures */
 /* 8 Golf room stone island, about 4' x 18" */
 mw(464,705,482,752,0,34,'lam2',8);mw(462.5,703.5,483.5,753.5,34,36,'st5',8);tag(8,473,728,42,'golf');
 /* 9 Wine room (cold cellar): not drawn in the set, marker only */
@@ -376,10 +377,6 @@ mw(547,352,580,427.5,0,5,'lam2',16);mw(547,352,580,356,5,108,'lam2',16);mw(547,4
 mw(550,358,578,388,5,38,'app',16);mw(550,392,578,421,5,38,'app',16);shelving(547,356,580,423.5,64,108,2,'E','lam2',16);
 front('E',547,352,580,427.5,0,5,2,1,'drawer',16);tag(16,560,372,114,'laundry');
 
-/* ---------- golf simulator screen and hitting mat, as drawn by Sensus (to confirm) ---------- */
-scene.add(boxMesh(367,942.4,571,943.6,12,106,mFrame,false));
-scene.add(boxMesh(370,941.9,568,942.5,15,103,new THREE.MeshLambertMaterial({color:0xf3f2ee,emissive:0x333330}),false));
-scene.add(boxMesh(447,858,507,894,-18,-17,new THREE.MeshLambertMaterial({color:0x3f7a4a}),false));
 
 /* ---------- fixtures and detail (quality pass, 22 Oct) ---------- */
 const mCeram=MS({color:0xf6f5f1,roughness:.1,metalness:0,envMapIntensity:1.1});
@@ -428,11 +425,105 @@ bx(869.8,222,949.7,244,0,16,mCedar);bx(869.8,222,949.7,244,16,18,MS({color:0xd29
 bx(870,221.6,949.5,222.2,12,13,new THREE.MeshBasicMaterial({color:0xffc98a}));
 bx(931,266,949.5,279,0,28,mBlackM);bx(931.4,266.4,949.1,278.6,28,29.2,MS({color:0x2a2a2c,roughness:.6}));
 [[935,270],[940,274],[945,271],[937,276],[943,277],[947,268],[933,267]].forEach((q,i)=>ball(q[0],q[1],31+(i%2),3.1,MS({color:0x5b5a58,roughness:.95})));
-/* elevator doors, laundry machine doors, golf bits */
+/* elevator doors, laundry machine doors */
 bx(571,605.2,585,607,0,84,mSteel);bx(585.2,605.2,599,607,0,84,mSteel);bx(570,605.2,600,607,84,86.5,mBlackM);bx(601,605.4,603.4,607,40,50,mBlackM);
 [373,406.5].forEach(y=>{tube([578,y,21],[578.8,y,21],10.8,mChrome,32);tube([578.7,y,21],[579.2,y,21],8.6,MS({color:0x252b31,roughness:.08,metalness:.4,envMapIntensity:1.5}),32);bx(577.9,y-12,578.4,y+12,32.5,36.5,mBlackM)});
-ball(470,876,-16.2,.84,mWhite);bx(478,867,484,873,-17,-15,mBlackM);
-cy(440,934,5,-18,22,MS({color:0x1d2b3a,roughness:.7}),20);[[438,934,40],[441,935,42],[440,932,38],[442,933,41]].forEach(q=>tube([440,934,22],[q[0],q[1],q[2]],.6,mChrome,6));
+
+/* ---------- 7 Golf room as drawn by Sensus, ID.200 elev. A (bar wall) and B (flag wall). Floor 18" down, ceiling 13'-1 1/4" as drawn ---------- */
+(function(){
+  const F=-18,TOP=F+157.25,XW=406,Y0=688.5,Y1=769.5,yA=Y0+2,yB=Y1-2,R=4;
+  const pk=(m,s)=>{m.userData.stop=s||7;PICK.push(m);return m};
+  const box=(x1,y1,x2,y2,z0,z1,mat,e,s)=>{const m=boxMesh(x1,y1,x2,y2,z0,z1,mat,e);scene.add(m);return pk(m,s)};
+  const L2=h=>M('lam2',81,h);
+  const mLED=new THREE.MeshBasicMaterial({color:0xfff0d2});
+  const mTop=stoneStd('st5',81,24,.3);
+  const canvasTex=(w,h,draw)=>{const c=document.createElement('canvas');c.width=w;c.height=h;draw(c.getContext('2d'),w,h,rnd(11));return new THREE.CanvasTexture(c)};
+  /* a fairway on the TV and the projector screen */
+  const tGolf=canvasTex(256,160,(g,w,h,r)=>{let gr=g.createLinearGradient(0,0,0,h*.55);gr.addColorStop(0,'#7fb2e0');gr.addColorStop(1,'#d7e9f4');g.fillStyle=gr;g.fillRect(0,0,w,h);
+    g.fillStyle='#3e6b3a';for(let x=0;x<w;x+=6){const t=h*.42+Math.sin(x*.07)*4+r()*5;g.fillRect(x,t,6,h)}
+    gr=g.createLinearGradient(0,h*.5,0,h);gr.addColorStop(0,'#6fa64e');gr.addColorStop(1,'#4d8a37');g.fillStyle=gr;
+    g.beginPath();g.moveTo(w*.42,h*.5);g.lineTo(w*.58,h*.5);g.lineTo(w*.95,h);g.lineTo(w*.05,h);g.fill();
+    g.fillStyle='#86c063';g.beginPath();g.ellipse(w*.5,h*.53,w*.07,h*.025,0,0,6.3);g.fill();
+    g.strokeStyle='#eee';g.lineWidth=1.2;g.beginPath();g.moveTo(w*.5,h*.53);g.lineTo(w*.5,h*.44);g.stroke();g.fillStyle='#d33';g.fillRect(w*.5,h*.44,7,4)});
+  const mScreen=new THREE.MeshBasicMaterial({map:tGolf,color:0xe8e8e8});
+
+  /* bar wall: 2" wood gables 12" deep, full height */
+  box(XW,Y0,418,yA,F,TOP,L2(157),true);box(XW,yB,418,Y1,F,TOP,L2(157),true);
+  /* base 6'-9" x 24", dark wood (LAM 2), curved front corners, toe kick, hidden-edge top */
+  box(XW,yA,428-R,yB,F+4,F+35,L2(36),true);box(428-R,yA+R,428,yB-R,F+4,F+35,L2(36),false);
+  [yA+R,yB-R].forEach(y=>pk(cy(428-R,y,R,F+4,F+35,L2(36),24)));
+  box(XW,yA+1,425,yB-1,F,F+4,mReveal);
+  box(XW,yA,428-R,yB,F+35,F+36.25,mTop);box(428-R,yA+R,428,yB-R,F+35,F+36.25,mTop);
+  [yA+R,yB-R].forEach(y=>pk(cy(428-R,y,R,F+35,F+36.25,mTop,24)));
+  /* two 15" wine fridges (south end), glass doors, lit racks */
+  const tRack=canvasTex(64,128,(g,w,h)=>{const gr=g.createLinearGradient(0,0,0,h);gr.addColorStop(0,'#6b4a2a');gr.addColorStop(1,'#1c130c');g.fillStyle=gr;g.fillRect(0,0,w,h);
+    for(let j=0;j<7;j++)for(let i=0;i<4;i++){g.fillStyle=(i+j)%3?'#3b1a1a':'#55452a';g.beginPath();g.arc(9+i*15.5,10+j*17.5,5.5,0,6.3);g.fill();g.fillStyle='rgba(255,230,190,.35)';g.fillRect(2,17+j*17.5,w-4,1.5)}});
+  const mRack=new THREE.MeshBasicMaterial({map:tRack});
+  const fy=yA+R+31;
+  box(428,yA+R+1,428.2,fy-1,F+6,F+33,mRack);
+  front('E',XW,yA+R,428,fy,F+5,F+34,2,1,'glass',7);
+  front('E',XW,fy,428,yB-R,F+5,F+34,2,1,'drawer',7);
+  [yA+R+14.5,yA+R+16.5,fy+17.5,fy+20.5].forEach(y=>tube([428.9,y,F+12],[428.9,y,F+28],.35,mBlackM,6));
+  /* sink and wall-mount bar faucet (north end), beer tap (south end) */
+  basin(410,744,424,761,F+36.25);faucet(XW,752.5,F+47,1,9);
+  bx(412,697,422,707,F+36.25,F+36.9,mSteel);cy(414,702,1.6,F+36.25,F+52,mChrome,16);
+  tube([414,702,F+49],[419.5,702,F+49],.5,mChrome);tube([419.5,702,F+49],[419.5,702,F+46.5],.35,mChrome);tube([416,702,F+50],[416,702,F+57],.55,mBlackM,8);
+  /* 12" open shelf, wood back panel, 65" TV */
+  box(XW,yA,418,yB,F+63,F+65,L2(2),true);
+  box(XW,yA,407,yB,F+65,F+106.25,L2(41));
+  box(407,700.5,409,757.5,F+69.5,F+101.5,M('tv'));
+  box(409,701.3,409.1,756.7,F+70.3,F+100.7,mScreen);
+  /* uppers 12" deep: 4 doors, 3/4" black metal frame with glass, shelves, LED top and under-cabinet */
+  shelving(XW,yA,418,yB,F+106.25,F+143.25,3,'E','lam2',7);
+  [[F+107,0],[F+119.3,1],[F+131.6,2]].forEach(q=>{for(let i=0;i<9;i++){const y=yA+5+i*8.4;
+    if((i+q[1])%3===2)cy(411,y,1.4,q[0],q[0]+8.5,MS({color:0x2d4a2f,roughness:.1,metalness:.2}),12);else cy(411,y,1.5,q[0],q[0]+5,mGlass,12)}});
+  box(406.8,yA+1,417,yB-1,F+142.2,F+142.5,mLED);
+  front('E',XW,yA,418,yB,F+106.25,F+143.25,8,3,'glass',7);
+  box(407,yA,417,yB,F+105.95,F+106.25,mLED);
+  /* header to the ceiling */
+  box(XW,yA,418.5,yB,F+143.25,TOP,L2(14),true);
+  tag(7,417,729,F+124,'golf');
+
+  /* flag wall: 20 golf flag frames, five across and four high, wall sconces above */
+  const COLS=[427,448.75,470.5,492.25,514],ROWS=[64,85,106,127],FC=['#f2d23b','#f6f4ee','#c8322f','#22385e','#2f6d3b'];
+  const flagTex=k=>canvasTex(96,104,(g,w,h,r)=>{g.fillStyle='#f3efe6';g.fillRect(0,0,w,h);g.strokeStyle='rgba(0,0,0,.18)';g.lineWidth=3;g.strokeRect(8,8,w-16,h-16);
+    const c=FC[(k*3)%5];g.fillStyle=c;g.fillRect(16,22,w-32,h-46);g.strokeStyle='rgba(0,0,0,.15)';g.lineWidth=1;g.strokeRect(16,22,w-32,h-46);
+    g.fillStyle=c==='#f6f4ee'||c==='#f2d23b'?'#22385e':'#f6f4ee';g.beginPath();g.arc(w/2,h/2-1,13,0,6.3);g.fill();
+    g.fillStyle=c;g.font='bold 15px Arial';g.textAlign='center';g.textBaseline='middle';g.fillText(String(1+(k*7)%18),w/2,h/2);
+    g.strokeStyle='rgba(20,20,40,.7)';g.lineWidth=1.2;g.beginPath();let x=26;g.moveTo(x,h-30);for(let i=0;i<6;i++){x+=6;g.lineTo(x,h-30-r()*7)}g.stroke()});
+  const tWash=canvasTex(64,128,(g,w,h)=>{const gr=g.createRadialGradient(w/2,0,2,w/2,10,h*.9);gr.addColorStop(0,'rgba(255,214,160,.9)');gr.addColorStop(1,'rgba(255,214,160,0)');g.fillStyle=gr;g.fillRect(0,0,w,h)});
+  const mWash=new THREE.MeshBasicMaterial({map:tWash,transparent:true,blending:THREE.AdditiveBlending,depthWrite:false,opacity:.55});
+  COLS.forEach((x,i)=>{ROWS.forEach((z,j)=>{const k=i*4+j;
+      box(x-8,Y0-.01,x+8,690,F+z-8.75,F+z+8.75,mFrame);box(x-7,690,x+7,690.12,F+z-7.75,F+z+7.75,new THREE.MeshLambertMaterial({map:flagTex(k)}))});
+    bx(x-1.5,Y0,x+1.5,689.2,F+137,F+141,mBlackM);bx(x-4.5,689.2,x+4.5,692.2,F+138.2,F+139.8,mBlackM);bx(x-4,690,x+4,691.8,F+138.05,F+138.2,mLED);
+    const wsh=new THREE.Mesh(new THREE.PlaneGeometry(26*IN,46*IN),mWash);wsh.rotation.y=Math.PI;wsh.position.copy(W3(x,688.7,F+116));scene.add(wsh)});
+  tag(7,470,692,F+147,'golf');
+
+  /* glass partition beside the steps, black frame, floor to ceiling */
+  bx(572,736.3,625.25,737.1,F,TOP,mGlass);
+  [[572,573.5],[623.75,625.25]].forEach(q=>bx(q[0],736.2,q[1],737.2,F,TOP,mFrame));
+  bx(572,736.2,625.25,737.2,TOP-1.5,TOP,mFrame);bx(572,736.2,625.25,737.2,F,F+1.5,mFrame);
+
+  /* simulator: surround panels PT 3 Espresso Bean on the screen wall, both returns and the ceiling over the bay (allowance about 355 sq ft) */
+  const mPT3=MS({color:0x3a2f29,roughness:.8}),mJoint=new THREE.MeshLambertMaterial({color:0x120e0c});
+  const panels=(horiz,a0,a1,p0,p1)=>{const n=Math.max(1,Math.round((a1-a0)/24)),w=(a1-a0)/n;
+    horiz?box(a0,p0,a1,p0+.4,F,TOP,mJoint,false,7):box(p0,a0,p0+.4,a1,F,TOP,mJoint,false,7);
+    for(let i=0;i<n;i++){const a=a0+i*w+.2,b=a0+(i+1)*w-.2;horiz?box(a,p0,b,p1,F,TOP,mPT3,false,7):box(p0,a,p1,b,F,TOP,mPT3,false,7)}};
+  panels(false,811.25,943.5,367,368);
+  panels(true,367,406,811.25,812.25);
+  panels(true,367,415,942.5,943.5);
+  const cg=new THREE.PlaneGeometry(204*IN,132.25*IN);cg.rotateX(Math.PI/2);
+  const ceil=new THREE.Mesh(cg,mPT3);ceil.position.copy(W3(469,877.4,TOP-.6));scene.add(ceil);
+  /* projector screen about 10'-6" x 10'-8" (projector by others, not shown) */
+  box(368,814,369.6,941,F+22,F+152,mFrame);
+  box(369.6,815,369.8,940,F+23,F+151,mScreen);
+  tag(7,370,877,F+160,'golf');
+  /* turf and hitting mat, by others (placeholders) */
+  bx(368,812.25,571,942.5,F,F+.5,MS({map:T.turf.t,color:0x8fc483,roughness:.95}));
+  bx(492,850,552,906,F+.5,F+1.4,MS({color:0x2a5530,roughness:.95}));bx(500,872,546,884,F+1.4,F+1.7,MS({color:0x3f7a45,roughness:.95}));
+  ball(503,878,F+2.6,.84,mWhite);
+  cy(560,930,5,F,F+40,MS({color:0x1d2b3a,roughness:.7}),20);[[558,930,F+58],[561,931,F+60],[560,928,F+56],[562,929,F+59]].forEach(q=>tube([560,930,F+40],[q[0],q[1],q[2]],.6,mChrome,6));
+})();
 
 /* ---------- furniture and equipment, can be switched off ---------- */
 const FURN=new THREE.Group();scene.add(FURN);PARENT=FURN;
@@ -492,7 +583,7 @@ const AREAS={
  all:{name:'Whole basement',bb:[306,184,1030,974],cx:700,cy:580,th:-.25,ph:.5,r:118,cut:null},
  hall:{name:'Stair hall and display',bb:[532,432,850,690],dir:[0,-1],th:0,ph:1.0,r:62,ex:[0,0]},
  rec:{name:'Rec room',bb:[648,654,998,963],dir:[0,-1],th:0,ph:1.0,r:80},
- golf:{name:'Golf room',bb:[367,688,626,945],dir:[0,-1],th:0,ph:1.0,r:62,golf:1},
+ golf:{name:'Golf room',bb:[367,688,626,945],dir:[.8,.6],th:2.214,ph:1.0,r:66,golf:1,mg:8},
  wine:{name:'Wine room',bb:[306,488,355,640],dir:[1,0],th:Math.PI/2,ph:1.0,r:40},
  mech:{name:'Mechanical',bb:[306,372,532,665],dir:[1,0],th:Math.PI/2,ph:1.0,r:58},
  gym:{name:'Gym and shower',bb:[726,184,962,436],dir:[0,1],th:Math.PI,ph:1.0,r:58},
@@ -509,7 +600,7 @@ const LAB=[
  {t:'Stair hall and display',x:690,y:560,a:'hall'},{t:'Rec room',x:830,y:830,a:'rec'},{t:'Golf room',x:480,y:820,a:'golf'},
  {t:'Wine room',x:330,y:590,a:'wine'},{t:'Mechanical',x:445,y:560,a:'mech'},{t:'Gym',x:795,y:300,a:'gym'},
  {t:'Shower, toilet, sauna',x:908,y:300,a:'gym'},{t:'Bedroom 5',x:455,y:300,a:'bed'},{t:'Walk-in',x:595,y:275,a:'bed'},{t:'Ensuite',x:672,y:240,a:'bed'},
- {t:'Laundry',x:615,y:395,a:'laundry'},{t:'Screen, as drawn (to confirm)',x:469,y:930,minor:1,a:'golf'},{t:'Elevator',x:585,y:635,minor:1},{t:'Walk-out',x:940,y:545,minor:1},{t:'Stair up',x:640,y:480,minor:1}];
+ {t:'Laundry',x:615,y:395,a:'laundry'},{t:'Screen, mat and turf by others',x:470,y:900,minor:1,a:'golf'},{t:'Elevator',x:585,y:635,minor:1},{t:'Walk-out',x:940,y:545,minor:1},{t:'Stair up',x:640,y:480,minor:1}];
 const labDiv=document.getElementById('labels');
 LAB.forEach(l=>{const d=document.createElement('div');d.className='lb'+(l.minor?' minor':'');d.textContent=l.t;labDiv.appendChild(d);l.d=d;l.p=W3(l.x,l.y,(H+6))});
 
@@ -619,7 +710,7 @@ if(ONLY){
   scene.children.slice().forEach(o=>{if(o===ground||o.isLight||o===FURN||o===TRIM)return;
     const w=wallSet.get(o);
     if(w){o.visible=w.cx>bb[0]-100&&w.cx<bb[2]+100&&w.cy>bb[1]-100&&w.cy<bb[3]+100;if(!o.visible)w.target=w.full=1;return}
-    o.visible=keepBox(o,30)});
+    o.visible=keepBox(o,AREAS[ONLY].mg||30)});
   FURN.children.forEach(o=>{o.visible=keepBox(o,10)});TRIM.children.forEach(o=>{o.visible=keepBox(o,6)});
   WALLS.forEach(w=>{if(!w.g.visible)w.hidden=true});
   $('ttl').childNodes[0].nodeValue='12 Abilene Drive, '+AREAS[ONLY].name;document.title='12 Abilene Drive · '+AREAS[ONLY].name;
